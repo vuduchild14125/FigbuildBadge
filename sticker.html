@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sticker Peel</title>
+  <style>
+    :root{
+      --sticker-w: 280px;
+      --sticker-h: 180px;
+      --radius: 22px;
+      --shadow: 0 18px 40px rgba(0,0,0,.18);
+      --paper: #f6f4ef;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(1200px 600px at 20% 20%, #ffffff 0, #f0f2ff 35%, #eef5ff 60%, #f7f7fb 100%);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:#222;
+    }
+
+    .stage{
+      width:min(900px, 92vw);
+      height:min(560px, 70vh);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.8), rgba(255,255,255,.65)),
+        radial-gradient(800px 420px at 50% 40%, rgba(255,255,255,.7), rgba(255,255,255,0));
+      border:1px solid rgba(0,0,0,.06);
+      border-radius: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+      position:relative;
+      overflow:hidden;
+      padding:28px;
+    }
+
+    .hint{
+      position:absolute;
+      left:24px; top:18px;
+      font-size:14px;
+      opacity:.75;
+      user-select:none;
+    }
+
+    /* Sticker container (positionable) */
+    .sticker{
+      width:var(--sticker-w);
+      height:var(--sticker-h);
+      position:absolute;
+      left:50%;
+      top:52%;
+      transform: translate(-50%, -50%);
+      user-select:none;
+      touch-action:none;
+      cursor: grab;
+    }
+    .sticker.dragging{ cursor: grabbing; }
+
+    /* Sticker face */
+    .face{
+      position:absolute;
+      inset:0;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(220px 120px at 25% 25%, rgba(255,255,255,.9), rgba(255,255,255,0)),
+        linear-gradient(135deg, #ffeaa7, #ffb8ff 45%, #a7fffb);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .face::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          rgba(255,255,255,.18) 0px,
+          rgba(255,255,255,.18) 10px,
+          rgba(255,255,255,0) 10px,
+          rgba(255,255,255,0) 22px
+        );
+      mix-blend-mode: overlay;
+      opacity:.75;
+    }
+
+    .label{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:18px;
+      font-weight:800;
+      letter-spacing:.2px;
+      color: rgba(20,20,20,.85);
+      text-shadow: 0 2px 0 rgba(255,255,255,.55);
+    }
+    .label .big{ font-size:34px; line-height:1.05; }
+    .label .small{ font-size:14px; opacity:.85; font-weight:650; margin-top:8px; }
+
+    /* Peel overlay: same size as sticker, but clipped by a moving "fold" line. */
+    .peel{
+      position:absolute;
+      inset:0;
+      border-radius: var(--radius);
+      pointer-events:none; /* we attach pointer events to the sticker container */
+      /* The fold line position comes from --px/--py in percentages. */
+      --px: 0%;
+      --py: 0%;
+      --curl: 22px;
+
+      /* Show ONLY the peeled triangular-ish region from top-left to the fold line.
+         We use clip-path polygon with the dynamic point (px,py). */
+      clip-path: polygon(0 0, var(--px) 0, var(--px) var(--py), 0 var(--py));
+      filter: drop-shadow(0 10px 10px rgba(0,0,0,.12));
+    }
+
+    /* The peeled "back side" */
+    .peel .back{
+      position:absolute;
+      inset:0;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(240px 160px at 35% 35%, rgba(255,255,255,.95), rgba(255,255,255,0)),
+        linear-gradient(180deg, #fff, var(--paper));
+      box-shadow:
+        inset 0 0 0 1px rgba(0,0,0,.08),
+        inset 0 18px 30px rgba(0,0,0,.06);
+    }
+
+    /* A subtle “adhesive” tint near the edge */
+    .peel .back::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: var(--radius);
+      background: radial-gradient(220px 160px at 10% 10%, rgba(255,220,120,.35), rgba(255,220,120,0) 60%);
+      opacity:.85;
+      mix-blend-mode:multiply;
+    }
+
+    /* Curl highlight along the fold line */
+    .curl{
+      position:absolute;
+      left:0; top:0;
+      width:100%; height:100%;
+      border-radius: var(--radius);
+      pointer-events:none;
+      /* We fake the curl with a moving gradient anchored near the fold */
+      background:
+        radial-gradient(
+          circle at var(--px) var(--py),
+          rgba(255,255,255,.85) 0,
+          rgba(255,255,255,.55) 14px,
+          rgba(0,0,0,.08) 26px,
+          rgba(0,0,0,0) 56px
+        );
+      mix-blend-mode: soft-light;
+      opacity:.9;
+    }
+
+    /* A small corner "grab" affordance */
+    .corner{
+      position:absolute;
+      left:10px; top:10px;
+      width:44px; height:44px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.22);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+      backdrop-filter: blur(6px);
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      color: rgba(0,0,0,.55);
+      pointer-events:none;
+    }
+
+    /* When peeled far, reduce face shadow a bit so it feels lifted */
+    .sticker[data-lift="1"] .face{
+      box-shadow: 0 12px 28px rgba(0,0,0,.16);
+    }
+  </style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <div class="hint">Drag from the top-left corner to peel. Release to stick. Double-click to reset.</div>
+
+    <div class="sticker" id="sticker" aria-label="Peelable sticker">
+      <div class="face">
+        <div class="corner">↘︎</div>
+        <div class="label">
+          <div>
+            <div class="big">PEEL ME</div>
+            <div class="small">drag the corner • stick it down</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="peel" id="peel">
+        <div class="back"></div>
+        <div class="curl"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const sticker = document.getElementById('sticker');
+      const peel = document.getElementById('peel');
+      const stage = document.getElementById('stage');
+
+      // State
+      let dragging = false;
+      let mode = "peel"; // "peel" or "move"
+      let grabOffset = { x: 0, y: 0 };  // for moving sticker
+      let originPos = { x: 0, y: 0 };   // sticker's current absolute left/top (px)
+      let peelP = { x: 0, y: 0 };       // 0..1 peel fold position
+
+      // Helpers
+      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+      // Initialize sticker position (absolute in stage coords)
+      const init = () => {
+        const sRect = sticker.getBoundingClientRect();
+        const pRect = stage.getBoundingClientRect();
+        // Convert current center-based transform to absolute left/top in stage space
+        const left = (sRect.left - pRect.left);
+        const top  = (sRect.top  - pRect.top);
+        sticker.style.transform = 'none';
+        sticker.style.left = left + 'px';
+        sticker.style.top = top + 'px';
+        originPos = { x: left, y: top };
+        setPeel(0, 0);
+      };
+
+      const setPeel = (nx, ny) => {
+        peelP.x = clamp(nx, 0, 1);
+        peelP.y = clamp(ny, 0, 1);
+
+        // Update CSS variables as percentages
+        peel.style.setProperty('--px', (peelP.x * 100).toFixed(2) + '%');
+        peel.style.setProperty('--py', (peelP.y * 100).toFixed(2) + '%');
+
+        // Lift feeling if peeled past a threshold
+        const lift = (peelP.x + peelP.y) > 0.35 ? "1" : "0";
+        sticker.dataset.lift = lift;
+
+        // If fully unpeeled, hide peel layer by making it tiny
+        // (clip-path already does it; this just reduces extra rendering cost)
+        peel.style.opacity = (peelP.x + peelP.y) < 0.02 ? "0" : "1";
+      };
+
+      // Determine if pointer is near the peel corner (top-left).
+      const isCornerGrab = (e) => {
+        const r = sticker.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const y = e.clientY - r.top;
+        return (x >= 0 && y >= 0 && x < 70 && y < 70);
+      };
+
+      // Pointer events
+      sticker.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        sticker.setPointerCapture(e.pointerId);
+        dragging = true;
+        sticker.classList.add('dragging');
+
+        const rect = sticker.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+
+        // If you're grabbing near the corner OR currently peeled enough, peel mode.
+        // Otherwise move mode.
+        if (isCornerGrab(e) || (peelP.x + peelP.y) > 0.10) {
+          mode = "peel";
+        } else {
+          mode = "move";
+          // offset from sticker top-left so it tracks nicely
+          grabOffset.x = px;
+          grabOffset.y = py;
+        }
+      });
+
+      sticker.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+
+        const sRect = sticker.getBoundingClientRect();
+        const stRect = stage.getBoundingClientRect();
+
+        if (mode === "peel") {
+          // Convert pointer to normalized 0..1 within sticker
+          const nx = (e.clientX - sRect.left) / sRect.width;
+          const ny = (e.clientY - sRect.top) / sRect.height;
+
+          // We only peel from top-left outward: fold line must be >= 0
+          // A little easing for nicer feel
+          const easedX = Math.pow(clamp(nx, 0, 1), 0.85);
+          const easedY = Math.pow(clamp(ny, 0, 1), 0.85);
+          setPeel(easedX, easedY);
+
+        } else {
+          // Move sticker within stage
+          let x = (e.clientX - stRect.left) - grabOffset.x;
+          let y = (e.clientY - stRect.top)  - grabOffset.y;
+
+          // Clamp so it stays in the stage bounds (a bit forgiving)
+          x = clamp(x, -40, stRect.width - sRect.width + 40);
+          y = clamp(y, -40, stRect.height - sRect.height + 40);
+
+          sticker.style.left = x + 'px';
+          sticker.style.top  = y + 'px';
+          originPos = { x, y };
+        }
+      });
+
+      const endDrag = (e) => {
+        if (!dragging) return;
+        dragging = false;
+        sticker.classList.remove('dragging');
+        sticker.releasePointerCapture?.(e.pointerId);
+
+        // On release: if peeled only a little, snap back down
+        const amount = peelP.x + peelP.y;
+        if (amount < 0.18) {
+          // smooth snap back
+          const startX = peelP.x, startY = peelP.y;
+          const t0 = performance.now();
+          const dur = 180;
+
+          const tick = (t) => {
+            const k = clamp((t - t0) / dur, 0, 1);
+            const kk = 1 - Math.pow(1 - k, 3);
+            setPeel(startX * (1 - kk), startY * (1 - kk));
+            if (k < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      };
+
+      sticker.addEventListener('pointerup', endDrag);
+      sticker.addEventListener('pointercancel', endDrag);
+
+      // Double click to reset
+      sticker.addEventListener('dblclick', () => {
+        setPeel(0, 0);
+      });
+
+      // Kick off
+      window.addEventListener('load', init, { once: true });
+      window.addEventListener('resize', () => {
+        // keep the current left/top; nothing special needed
+      });
+    })();
+  </script>
+</body>
+</html>
