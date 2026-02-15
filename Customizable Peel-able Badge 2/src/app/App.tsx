@@ -25,6 +25,8 @@ interface PlacedSticker {
   y: number;
   rotation: number;
   pronounText?: string;
+  aboutColor?: string;
+  goalColor?: string;
 }
 
 interface DrawPoint {
@@ -49,6 +51,19 @@ const TEXT_STICKER = {
   bgColor: '#ECECEC',
   textColor: '#171717'
 };
+
+const ABOUT_STICKER_TYPES = [
+  { id: 'ambivert', label: 'AMBIVERT', color: '#24CB71' },
+  { id: 'introvert', label: 'INTROVERT', color: '#C4BAFF' },
+  { id: 'extrovert', label: 'EXTROVERT', color: '#FF7237' },
+];
+
+const GOAL_STICKER_TYPES = [
+  { id: 'win', label: 'HERE 2 WIN', color: '#FF7237' },
+  { id: 'fun', label: 'HERE 4 FUN', color: '#C4BAFF' },
+];
+
+const GOAL_SHAPE_PATH = 'M36.5322 8.99609L46.4688 0H58.9541L68.8906 8.99609L78.8281 0H90.542L105.423 13.4727V59.5918L90.542 73.0645H78.8281L68.8906 64.0684L58.9541 73.0645H46.4688L36.5322 64.0684L26.5957 73.0645H14.8809L0 59.5918V13.4727L14.8809 0H26.5957L36.5322 8.99609Z';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
@@ -348,8 +363,8 @@ export default function App() {
                   <div className="relative h-[130px] overflow-hidden">
                     {mobileStickerTab === 'year' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'pronouns' && <PronounStickerRoll isAnimating={isMobileStickerAnimating} />}
-                    {mobileStickerTab === 'about' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
-                    {mobileStickerTab === 'goals' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
+                    {mobileStickerTab === 'about' && <AboutStickerRoll isAnimating={isMobileStickerAnimating} />}
+                    {mobileStickerTab === 'goals' && <GoalStickerRoll isAnimating={isMobileStickerAnimating} />}
                   </div>
                 </div>
               )}
@@ -538,8 +553,8 @@ function StickersPanel() {
       <div className="relative h-[130px] overflow-hidden">
         {activeTab === 'year' && <StickerRoll isAnimating={isAnimating} />}
         {activeTab === 'pronouns' && <PronounStickerRoll isAnimating={isAnimating} />}
-        {activeTab === 'about' && <StickerRoll isAnimating={isAnimating} />}
-        {activeTab === 'goals' && <StickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'about' && <AboutStickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'goals' && <GoalStickerRoll isAnimating={isAnimating} />}
       </div>
     </div>
   );
@@ -702,6 +717,267 @@ function PronounStickerRoll({ isAnimating }: { isAnimating: boolean }) {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// About Sticker Roll Component
+function AboutStickerRoll({ isAnimating }: { isAnimating: boolean }) {
+  const extendedStickers = [
+    ...ABOUT_STICKER_TYPES,
+    ...ABOUT_STICKER_TYPES,
+    ...ABOUT_STICKER_TYPES,
+  ];
+
+  return (
+    <div className="relative h-full">
+      {/* Back of spool */}
+      <div className="absolute bg-white h-[50px] right-0 rounded-tr-[16px] top-[50px] w-[64px]" />
+
+      {/* Main sticker roll container */}
+      <div className={`absolute bg-white h-[80px] right-0 overflow-hidden rounded-tr-[20px] top-[15px] w-[64px] ${
+        isAnimating ? 'animate-roll-collapse' : 'animate-roll-expand'
+      }`}>
+        <div className="absolute left-[8px] top-[8px] w-[900px]">
+          <div className="flex gap-[9px] items-center py-[10px]">
+            {extendedStickers.map((sticker, idx) => (
+              <DraggableAboutSticker key={`about-${idx}`} aboutId={sticker.id} label={sticker.label} color={sticker.color} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Roll cylinder */}
+      <div className="absolute h-[16px] right-0 top-[91px] w-[64px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 64.367 15.5321">
+          <ellipse cx="32.1835" cy="7.76607" fill="url(#paint0_radial_roll_about)" rx="32.1835" ry="7.76607" />
+          <defs>
+            <radialGradient cx="0" cy="0" gradientTransform="translate(32.1835 7.76607) rotate(90) scale(49.858 12.031)" gradientUnits="userSpaceOnUse" id="paint0_radial_roll_about" r="1">
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="#D9D9D9" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Inner spool */}
+      <div className="absolute h-[11px] right-[8px] top-[93px] w-[48px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 48.3099 10.9606">
+          <ellipse cx="24.155" cy="5.48032" fill="url(#paint0_linear_spool_about)" rx="24.155" ry="5.48032" />
+          <defs>
+            <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_spool_about" x1="24.155" x2="24.155" y1="-14.9701" y2="9.88243">
+              <stop stopColor="#5A5A5A" />
+              <stop offset="0.971154" stopColor="white" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Highlight effect */}
+      <div className="absolute flex h-[76px] items-center justify-center right-[17px] mix-blend-overlay top-[16px] w-[1px]">
+        <div className="rotate-[-0.53deg]">
+          <div className="h-[76px] relative w-0">
+            <div className="absolute inset-[0_-2.5px]">
+              <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 5.01443 76.3958">
+                <g style={{ mixBlendMode: "overlay" }}>
+                  <path d="M2.50722 0C3.88623 0 5.00722 34.1778 5.00722 76.3958H0C0 34.1778 1.12099 0 2.50722 0Z" fill="url(#paint0_linear_highlight_about)" />
+                </g>
+                <defs>
+                  <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_highlight_about" x1="3.00722" x2="3.00722" y1="0" y2="76.3958">
+                    <stop stopColor="white" stopOpacity="0.12" />
+                    <stop offset="0.5" stopColor="white" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.12" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Draggable About Sticker Component
+function DraggableAboutSticker({ aboutId, label, color }: { aboutId: string; label: string; color: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'aboutSticker',
+    item: { aboutId, label, color },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <div
+      ref={drag}
+      className="cursor-move transition-all duration-300 flex-shrink-0"
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative">
+        <div
+          className="px-[11px] py-[6px] rounded-[100px] whitespace-nowrap"
+          style={{ backgroundColor: color }}
+        >
+          <span
+            className="text-[12px] text-black uppercase leading-[1.2]"
+            style={{ fontFamily: "'Figma Mono VF:Regular', monospace" }}
+          >
+            {label}
+          </span>
+        </div>
+        {isHovered && !isDragging && (
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[65px] h-[20px] pointer-events-none">
+            <svg width="65" height="20" viewBox="0 0 65 20" fill="none" className="opacity-40">
+              <ellipse cx="32.5" cy="10" rx="32.5" ry="10" fill="url(#shadow-gradient-about)" />
+              <defs>
+                <radialGradient id="shadow-gradient-about" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(32.5 10) rotate(90) scale(10 32.5)">
+                  <stop stopColor="#000000" stopOpacity="0.3" />
+                  <stop offset="1" stopColor="#000000" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Goal Sticker Roll Component
+function GoalStickerRoll({ isAnimating }: { isAnimating: boolean }) {
+  const extendedStickers = [
+    ...GOAL_STICKER_TYPES,
+    ...GOAL_STICKER_TYPES,
+    ...GOAL_STICKER_TYPES,
+    ...GOAL_STICKER_TYPES,
+  ];
+
+  return (
+    <div className="relative h-full">
+      {/* Back of spool */}
+      <div className="absolute bg-white h-[50px] right-0 rounded-tr-[16px] top-[50px] w-[64px]" />
+
+      {/* Main sticker roll container */}
+      <div className={`absolute bg-white h-[80px] right-0 overflow-hidden rounded-tr-[20px] top-[15px] w-[64px] ${
+        isAnimating ? 'animate-roll-collapse' : 'animate-roll-expand'
+      }`}>
+        <div className="absolute left-[8px] top-[2px] h-[56px] w-[900px]">
+          <div className="flex gap-3 py-1 items-center">
+            {extendedStickers.map((sticker, idx) => (
+              <DraggableGoalSticker key={`goal-${idx}`} goalId={sticker.id} label={sticker.label} color={sticker.color} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Roll cylinder */}
+      <div className="absolute h-[16px] right-0 top-[91px] w-[64px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 64.367 15.5321">
+          <ellipse cx="32.1835" cy="7.76607" fill="url(#paint0_radial_roll_goal)" rx="32.1835" ry="7.76607" />
+          <defs>
+            <radialGradient cx="0" cy="0" gradientTransform="translate(32.1835 7.76607) rotate(90) scale(49.858 12.031)" gradientUnits="userSpaceOnUse" id="paint0_radial_roll_goal" r="1">
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="#D9D9D9" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Inner spool */}
+      <div className="absolute h-[11px] right-[8px] top-[93px] w-[48px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 48.3099 10.9606">
+          <ellipse cx="24.155" cy="5.48032" fill="url(#paint0_linear_spool_goal)" rx="24.155" ry="5.48032" />
+          <defs>
+            <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_spool_goal" x1="24.155" x2="24.155" y1="-14.9701" y2="9.88243">
+              <stop stopColor="#5A5A5A" />
+              <stop offset="0.971154" stopColor="white" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
+      {/* Highlight effect */}
+      <div className="absolute flex h-[76px] items-center justify-center right-[17px] mix-blend-overlay top-[16px] w-[1px]">
+        <div className="rotate-[-0.53deg]">
+          <div className="h-[76px] relative w-0">
+            <div className="absolute inset-[0_-2.5px]">
+              <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 5.01443 76.3958">
+                <g style={{ mixBlendMode: "overlay" }}>
+                  <path d="M2.50722 0C3.88623 0 5.00722 34.1778 5.00722 76.3958H0C0 34.1778 1.12099 0 2.50722 0Z" fill="url(#paint0_linear_highlight_goal)" />
+                </g>
+                <defs>
+                  <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_highlight_goal" x1="3.00722" x2="3.00722" y1="0" y2="76.3958">
+                    <stop stopColor="white" stopOpacity="0.12" />
+                    <stop offset="0.5" stopColor="white" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.12" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Draggable Goal Sticker Component
+function DraggableGoalSticker({ goalId, label, color }: { goalId: string; label: string; color: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'goalSticker',
+    item: { goalId, label, color },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <div
+      ref={drag}
+      className="cursor-move transition-all duration-300 flex-shrink-0"
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative">
+        <div className="w-[75px] h-[52px] relative">
+          <svg width="75" height="52" viewBox="0 0 105.423 73.0645" fill="none" className="absolute inset-0">
+            <path d={GOAL_SHAPE_PATH} fill={color} />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span
+              className="text-[10px] text-black uppercase leading-[1.2] text-center whitespace-nowrap"
+              style={{ fontFamily: "'Figma Mono VF:Regular', monospace" }}
+            >
+              {label}
+            </span>
+          </div>
+        </div>
+        {isHovered && !isDragging && (
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[65px] h-[20px] pointer-events-none">
+            <svg width="65" height="20" viewBox="0 0 65 20" fill="none" className="opacity-40">
+              <ellipse cx="32.5" cy="10" rx="32.5" ry="10" fill="url(#shadow-gradient-goal)" />
+              <defs>
+                <radialGradient id="shadow-gradient-goal" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(32.5 10) rotate(90) scale(10 32.5)">
+                  <stop stopColor="#000000" stopOpacity="0.3" />
+                  <stop offset="1" stopColor="#000000" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -944,7 +1220,7 @@ const BadgePreview = React.forwardRef<
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: ['sticker', 'textSticker', 'pronounSticker'],
+    accept: ['sticker', 'textSticker', 'pronounSticker', 'aboutSticker', 'goalSticker'],
     drop: (item: any, monitor) => {
       const offset = monitor.getClientOffset();
       const badgeEl = (ref as React.RefObject<HTMLDivElement>).current;
@@ -952,7 +1228,7 @@ const BadgePreview = React.forwardRef<
         const badgeRect = badgeEl.getBoundingClientRect();
         const x = (offset.x - badgeRect.left) / scale;
         const y = (offset.y - badgeRect.top) / scale;
-        
+
         if (item.stickerType) {
           setPlacedStickers(prev => [
             ...prev,
@@ -962,6 +1238,32 @@ const BadgePreview = React.forwardRef<
               x,
               y,
               rotation: Math.random() * 30 - 15,
+            }
+          ]);
+        } else if (item.goalId) {
+          setPlacedStickers(prev => [
+            ...prev,
+            {
+              id: `goal-${Date.now()}`,
+              type: 0,
+              x,
+              y,
+              rotation: Math.random() * 20 - 10,
+              pronounText: item.label,
+              goalColor: item.color,
+            }
+          ]);
+        } else if (item.aboutId) {
+          setPlacedStickers(prev => [
+            ...prev,
+            {
+              id: `about-${Date.now()}`,
+              type: 0,
+              x,
+              y,
+              rotation: Math.random() * 20 - 10,
+              pronounText: item.label,
+              aboutColor: item.color,
             }
           ]);
         } else if (item.text) {
@@ -1154,6 +1456,52 @@ const BadgePreview = React.forwardRef<
 
         {/* Placed Stickers */}
         {placedStickers.map((sticker) => {
+          if (sticker.goalColor && sticker.pronounText) {
+            return (
+              <div
+                key={sticker.id}
+                className="absolute pointer-events-none"
+                style={{
+                  left: sticker.x - 37,
+                  top: sticker.y - 26,
+                  transform: `rotate(${sticker.rotation}deg)`,
+                }}
+              >
+                <div className="w-[75px] h-[52px] relative">
+                  <svg width="75" height="52" viewBox="0 0 105.423 73.0645" fill="none" className="absolute inset-0">
+                    <path d={GOAL_SHAPE_PATH} fill={sticker.goalColor} />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span
+                      className="text-[10px] text-black uppercase leading-[1.2] text-center whitespace-nowrap"
+                      style={{ fontFamily: "'Figma Mono VF:Regular', monospace" }}
+                    >
+                      {sticker.pronounText}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          if (sticker.aboutColor && sticker.pronounText) {
+            return (
+              <div
+                key={sticker.id}
+                className="absolute pointer-events-none"
+                style={{
+                  left: sticker.x - 40,
+                  top: sticker.y - 14,
+                  transform: `rotate(${sticker.rotation}deg)`,
+                }}
+              >
+                <div className="px-[11px] py-[6px] rounded-[100px] whitespace-nowrap" style={{ backgroundColor: sticker.aboutColor }}>
+                  <span className="text-[12px] text-black uppercase leading-[1.2]" style={{ fontFamily: "'Figma Mono VF:Regular', monospace" }}>
+                    {sticker.pronounText}
+                  </span>
+                </div>
+              </div>
+            );
+          }
           if (sticker.pronounText) {
             return (
               <div
