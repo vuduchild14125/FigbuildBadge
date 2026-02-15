@@ -99,17 +99,17 @@ export default function App() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="size-full bg-[#F5F5F5] overflow-auto relative">
-        <div className="hidden md:block min-h-screen py-24 px-8">
-          <div className="flex gap-8 items-start mt-12">
+      <div className="size-full bg-[#F5F5F5] overflow-hidden relative">
+        <div className="hidden md:flex h-screen overflow-hidden">
+          <div className="flex gap-6 items-start w-full px-[80px] pt-[48px]">
             {/* Left Column - Header + Border + Cords */}
-            <div className="flex-shrink-0 space-y-6 w-[372px]">
+            <div className="flex-shrink-0 space-y-5 w-[372px]">
               {/* Header */}
-              <div className="mb-6">
-                <button onClick={() => setCurrentScreen('welcome')} className="flex items-center gap-2 text-black/50 hover:text-black transition-colors mb-6">
-                  <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] tracking-[-0.42px]">{"< Back"}</span>
+              <div className="mb-2">
+                <button onClick={() => setCurrentScreen('welcome')} className="flex items-center gap-2 text-black/50 hover:text-black transition-colors mb-4">
+                  <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[20px] tracking-[-0.6px] opacity-45">{"< Back"}</span>
                 </button>
-                <h1 className="font-['Figma_Sans_VF:Regular',sans-serif] text-[64px] tracking-[-1.92px] leading-[0.95] text-black max-w-[339px]">
+                <h1 className="font-['Figma_Sans_VF:Regular',sans-serif] text-[64px] tracking-[-1.92px] leading-[0.95] text-black w-[339px]">
                   Make your FigBadge your own!
                 </h1>
               </div>
@@ -122,7 +122,7 @@ export default function App() {
             </div>
 
             {/* Middle Column - Draw + Stickers + Background */}
-            <div className="flex-shrink-0 space-y-6 w-[372px]" style={{ marginTop: '40px' }}>
+            <div className="flex-shrink-0 space-y-5 w-[372px]">
               {/* Draw Tools */}
               <DrawTools drawSize={drawSize} setDrawSize={setDrawSize} />
 
@@ -134,7 +134,7 @@ export default function App() {
             </div>
 
             {/* Right Column - Badge Preview */}
-            <div className="flex-1 flex flex-col items-center gap-6" style={{ marginTop: '80px' }}>
+            <div className="flex-1 flex flex-col items-center gap-4 justify-start pt-[32px]">
               <BadgePreview
                 ref={badgeRef}
                 borderStyle={borderStyle}
@@ -152,22 +152,22 @@ export default function App() {
               />
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
+              <div className="flex gap-3 items-center">
                 <button
                   onClick={handleUndo}
-                  className="px-6 py-3 bg-white border border-black/10 rounded-lg font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors flex items-center gap-2"
+                  className="px-[8px] py-[12px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
                 >
                   Undo
                 </button>
                 <button
                   onClick={handleClear}
-                  className="px-6 py-3 bg-white border border-black/10 rounded-lg font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors flex items-center gap-2"
+                  className="px-[8px] py-[12px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
                 >
                   Clear
                 </button>
                 <button
                   onClick={handleDone}
-                  className="px-6 py-3 bg-[#4d49fc] rounded-lg font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-white hover:bg-[#3d39ec] transition-colors"
+                  className="px-[19px] py-[14px] bg-[#4d49fc] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-white hover:bg-[#3d39ec] transition-colors"
                 >
                   I'm done!
                 </button>
@@ -372,6 +372,7 @@ export default function App() {
         </div>
 
         {/* Decorative Elements at Bottom */}
+        <DecorativeElements />
       </div>
     </DndProvider>
   );
@@ -380,8 +381,8 @@ export default function App() {
 // Border Selector Component
 function BorderSelector({ borderStyle, setBorderStyle }: { borderStyle: BorderStyle; setBorderStyle: (style: BorderStyle) => void }) {
   return (
-    <div className="bg-[#ececec] rounded-[12px] pb-[40px] pt-[20px] px-[20px] w-[372px]">
-      <div className="flex flex-col font-['Figma_Sans_VF:Bold',sans-serif] justify-center leading-[0] not-italic text-[24px] text-black tracking-[-0.72px] mb-[20px]" style={{ fontVariationSettings: "'wdth' 100" }}>
+    <div className="bg-[#ececec] rounded-[12px] pb-[40px] pt-[20px] px-[20px] w-full">
+      <div className="flex flex-col font-['Figma_Sans_VF:Bold',sans-serif] justify-center leading-[0] not-italic text-[24px] text-black tracking-[-0.72px] mb-[16px]" style={{ fontVariationSettings: "'wdth' 100" }}>
         <p className="leading-[0.95]">Border</p>
       </div>
       <div className="flex items-center justify-between w-full">
@@ -458,9 +459,11 @@ function BorderSelector({ borderStyle, setBorderStyle }: { borderStyle: BorderSt
 // Draw Tools Component
 function DrawTools({ drawSize, setDrawSize }: { drawSize: DrawSize; setDrawSize: (size: DrawSize) => void }) {
   return (
-    <div className="bg-[#ececec] rounded-xl p-5 w-[372px]">
-      <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-5">Draw</h2>
-      <div className="flex gap-6">
+    <div className="bg-[#ececec] rounded-[12px] p-[20px] w-full flex flex-col items-start justify-between">
+      <div className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] text-black w-full">
+        <p className="leading-[0.95]">Draw</p>
+      </div>
+      <div className="flex gap-[24px] h-[129px] items-center w-full mt-4">
         {[
           { size: 'small' as DrawSize, diameter: 8 },
           { size: 'medium' as DrawSize, diameter: 12 },
@@ -469,12 +472,20 @@ function DrawTools({ drawSize, setDrawSize }: { drawSize: DrawSize; setDrawSize:
           <button
             key={size}
             onClick={() => setDrawSize(size)}
-            className={`flex-1 h-[98px] bg-white rounded-md flex items-center justify-center ${drawSize === size ? 'ring-2 ring-[#4d49fc]' : ''}`}
+            className={`flex flex-1 h-[98px] items-center p-[4px] ${
+              drawSize === size
+                ? 'border border-[#4d49fc] rounded-[6px]'
+                : 'rounded-[2px]'
+            }`}
           >
-            <div 
-              className="rounded-full bg-[#171717]" 
-              style={{ width: diameter, height: diameter }}
-            />
+            <div className={`bg-white flex-1 h-full relative ${
+              drawSize === size ? 'rounded-[6px]' : 'rounded-[5.625px]'
+            }`}>
+              <div
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black"
+                style={{ width: diameter, height: diameter }}
+              />
+            </div>
           </button>
         ))}
       </div>
@@ -498,7 +509,7 @@ function StickersPanel() {
   };
   
   return (
-    <div className="bg-[#ececec] rounded-xl p-5 w-[372px] relative">
+    <div className="bg-[#ececec] rounded-[12px] pt-[20px] pb-[24px] px-[20px] w-full relative">
       <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-3">Stickers</h2>
       
       {/* Tabs */}
@@ -792,23 +803,25 @@ function DraggablePronounSticker({ text }: { text: string }) {
 // Cords Panel Component  
 function CordsPanel({ cordColor, setCordColor }: { cordColor: CordColor; setCordColor: (color: CordColor) => void }) {
   return (
-    <div className="bg-[#ececec] rounded-xl p-5 w-[372px]">
+    <div className="bg-[#ececec] rounded-[12px] pt-[20px] pb-[24px] px-[20px] w-full">
       <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-5">Cords</h2>
-      <div className="flex gap-4">
-        {(['black', 'blue', 'periwinkle'] as CordColor[]).map((color) => (
+      <div className="flex gap-[9.5px]">
+        {(['black', 'periwinkle', 'blue'] as CordColor[]).map((color) => (
           <button
             key={color}
             onClick={() => setCordColor(color)}
-            className="flex flex-col items-center gap-2 group relative"
+            className="flex flex-col gap-[9.5px] items-start relative w-[104px]"
           >
-            <div className={`w-[90px] h-[90px] bg-white rounded overflow-hidden flex items-center justify-center ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
-              <div className="scale-[0.09] origin-center">
-                {color === 'black' && <BlackLanyard />}
-                {color === 'blue' && <BlueLanyard />}
-                {color === 'periwinkle' && <PeriwinkleLanyard />}
+            <div className={`p-[4.7px] rounded-[2.4px] relative w-full ${cordColor === color ? 'border border-[#4d49fc]' : ''}`}>
+              <div className="w-full h-[90px] bg-white rounded-[1px] overflow-hidden flex items-center justify-center">
+                <div className="scale-[0.09] origin-center">
+                  {color === 'black' && <BlackLanyard />}
+                  {color === 'blue' && <BlueLanyard />}
+                  {color === 'periwinkle' && <PeriwinkleLanyard />}
+                </div>
               </div>
             </div>
-            <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 capitalize">{color}</span>
+            <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 tracking-[-0.42px] capitalize">{color}</span>
           </button>
         ))}
       </div>
@@ -825,19 +838,25 @@ function BackgroundPanel({ background, setBackground }: { background: Background
   };
 
   return (
-    <div className="bg-[#ececec] rounded-xl p-5 w-[372px]">
+    <div className="bg-[#ececec] rounded-[12px] pt-[20px] pb-[24px] px-[20px] w-full">
       <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-5">Background</h2>
-      <div className="flex gap-4">
-        {(['swag', 'creative', 'playful'] as Background[]).map((bg) => (
+      <div className="flex gap-[9.5px]">
+        {([
+          { id: 'swag' as Background, label: 'Swag', img: '/swagbg.png' },
+          { id: 'creative' as Background, label: 'Cool', img: '/coolbg.png' },
+          { id: 'playful' as Background, label: 'Fun', img: '/funbg.png' },
+        ]).map(({ id, label, img }) => (
           <button
-            key={bg}
-            onClick={() => setBackground(bg)}
-            className="flex flex-col items-center gap-2 group relative"
+            key={id}
+            onClick={() => setBackground(id)}
+            className="flex flex-col gap-[9.5px] items-start relative w-[104px]"
           >
-            <div className={`w-[104px] h-[53px] bg-white rounded overflow-hidden ${background === bg ? 'ring-2 ring-[#4d49fc]' : ''}`}>
-              <PatternPreview pattern={patterns[bg]} />
+            <div className={`p-[4.7px] rounded-[2.4px] relative w-full ${background === id ? 'border border-[#4d49fc]' : ''}`}>
+              <div className="w-[94.8px] h-[43.8px] overflow-hidden rounded-[1px]">
+                <img src={img} alt={label} className="w-full h-full object-cover" />
+              </div>
             </div>
-            <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 capitalize">{bg}</span>
+            <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 tracking-[-0.42px]">{label}</span>
           </button>
         ))}
       </div>
@@ -848,8 +867,8 @@ function BackgroundPanel({ background, setBackground }: { background: Background
 // Pattern Preview Component
 function PatternPreview({ pattern }: { pattern: { primary: string; secondary: string } }) {
   return (
-    <div className="size-full p-1 scale-[0.45] origin-top-left">
-      <svg width="119" height="85" viewBox="0 0 119 85" fill="none">
+    <div className="size-full overflow-hidden">
+      <svg width="100%" height="100%" viewBox="0 0 119 85" preserveAspectRatio="xMinYMin slice" fill="none">
         <rect width="119" height="85" rx="1.272" fill={pattern.primary} />
         <rect width="25" height="20" rx="1.272" fill={pattern.secondary} />
         <rect x="63" width="16" height="20" rx="1.272" fill={pattern.secondary} />
@@ -1018,28 +1037,25 @@ const BadgePreview = React.forwardRef<
   };
 
   return (
-    <div className="relative w-[483px] h-[1200px]">
-      {/* Lanyard - absolutely positioned */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: '-840px' }}>
-        <div className="w-[400px] h-[850px] overflow-visible">
-          <div className="scale-[1.0] origin-top-left">
-            {cordColor === 'black' && <BlackLanyard />}
-            {cordColor === 'blue' && <BlueLanyard />}
-            {cordColor === 'periwinkle' && <PeriwinkleLanyard />}
-          </div>
+    <div className="relative w-[483px]" style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}>
+      {/* Lanyard - positioned above badge */}
+      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: '-560px' }}>
+        <div className="w-[345px] h-[736px] overflow-visible">
+          {cordColor === 'black' && <BlackLanyard />}
+          {cordColor === 'blue' && <BlueLanyard />}
+          {cordColor === 'periwinkle' && <PeriwinkleLanyard />}
         </div>
       </div>
 
-      {/* Badge - absolutely positioned */}
+      {/* Badge */}
       <div
         ref={(node) => {
           (ref as any).current = node;
           drop(node);
         }}
-        className="absolute left-1/2 -translate-x-1/2 bg-white w-[483px] h-[682px] overflow-hidden cursor-crosshair z-0"
+        className="bg-white w-[483px] h-[682px] overflow-hidden cursor-crosshair relative border border-black"
         style={{
           background: isOver ? '#f9f9f9' : 'white',
-          top: '0px'
         }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -1084,19 +1100,23 @@ const BadgePreview = React.forwardRef<
           </>
         )}
 
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <PatternBackground pattern={patterns[background]} />
+        {/* Background Pattern - bottom portion of badge */}
+        <div className="absolute bottom-[-70px] left-0 right-0 h-[45%]">
+          <img
+            src={`/${background === 'swag' ? 'swagbg' : background === 'creative' ? 'coolbg' : 'funbg'}.png`}
+            alt=""
+            className="w-full h-full object-cover object-top"
+          />
         </div>
 
         {/* Header */}
-        <div className="absolute top-[6.11%] left-[5.85%] right-[4.76%] flex gap-2">
-          <div className="bg-black px-4 py-4 flex items-center justify-center">
+        <div className="absolute top-[14.71%] left-[5.85%] right-[4.76%] flex gap-0">
+          <div className="bg-black px-[18px] py-[18px] flex items-center justify-center">
             <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[63px] leading-[0.95] tracking-[-1.89px]">
               FigBuild
             </span>
           </div>
-          <div className="bg-black px-4 py-4 rounded-full flex items-center justify-center">
+          <div className="bg-black px-[18px] py-[18px] rounded-[472px] flex items-center justify-center">
             <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[63px] leading-[0.95] tracking-[-1.89px]">
               2026
             </span>
@@ -1183,31 +1203,16 @@ function PatternBackground({ pattern }: { pattern: { primary: string; secondary:
 
 // Decorative Elements at Bottom
 function DecorativeElements() {
-  const patterns = [
-    { primary: '#4d49fc', secondary: '#24cb71' },
-    { primary: '#ff00e5', secondary: '#c4baff' },
-    { primary: '#ff7238', secondary: '#e4ff97' },
-    { primary: '#24cb71', secondary: '#4d49fc' },
-  ];
-
   return (
     <>
-      {/* Bottom Left Decorative Patterns */}
-      <div className="absolute bottom-0 left-0 flex gap-2 p-4">
-        {patterns.slice(0, 2).map((pattern, idx) => (
-          <div key={`left-${idx}`} className="w-[120px] h-[120px] rounded-lg overflow-hidden transform rotate-12">
-            <PatternBackground pattern={pattern} />
-          </div>
-        ))}
+      {/* Bottom Left Decorative Elements */}
+      <div className="hidden md:block absolute bottom-0 left-0 pointer-events-none">
+        <img src="/bottomleft.png" alt="" className="block max-w-none" style={{ width: '580px', height: 'auto' }} />
       </div>
 
-      {/* Bottom Right Decorative Patterns */}
-      <div className="absolute bottom-0 right-0 flex gap-2 p-4">
-        {patterns.slice(2).map((pattern, idx) => (
-          <div key={`right-${idx}`} className="w-[120px] h-[120px] rounded-lg overflow-hidden transform -rotate-12">
-            <PatternBackground pattern={pattern} />
-          </div>
-        ))}
+      {/* Bottom Right Decorative Elements */}
+      <div className="hidden md:block absolute bottom-0 right-0 pointer-events-none">
+        <img src="/bottomright.png" alt="" className="block max-w-none" style={{ width: '580px', height: 'auto' }} />
       </div>
     </>
   );
@@ -1220,21 +1225,12 @@ function WelcomeScreen({ onStart }: { onStart: () => void }) {
       {/* Main content */}
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-center min-h-screen gap-8 md:gap-16 px-6 md:px-8 py-12">
         {/* Left - Badge with Lanyard */}
-        <div className="relative flex-shrink-0 flex flex-col items-center">
-          {/* Lanyard */}
-          <div className="absolute -top-[280px] md:-top-[340px] -left-[10px] md:-left-[15px] w-[160px] md:w-[200px] h-[340px] md:h-[425px] z-10">
-            <BlackLanyard />
-          </div>
-          {/* Lanyard clip */}
-          <div className="w-[75px] md:w-[96px] h-[16px] md:h-[20px] bg-[#d9d9d9] border border-black/40 mb-[-2px] relative z-20" />
-          {/* Badge image */}
-          <div className="w-[295px] md:w-[378px] relative z-0">
-            <img
-              src="/welcome-badge.png"
-              alt="Example FigBuild badge"
-              className="w-full h-auto"
-            />
-          </div>
+        <div className="relative flex-shrink-0 self-start -mt-[60px]">
+          <img
+            src="/introscreenbadge.png"
+            alt="Example FigBuild badge"
+            className="w-[280px] md:w-[380px] h-auto"
+          />
         </div>
 
         {/* Right - Hero content */}
@@ -1274,64 +1270,8 @@ function WelcomeScreen({ onStart }: { onStart: () => void }) {
         </div>
       </div>
 
-      {/* Decorative bottom-left elements */}
-      <div className="absolute bottom-0 left-0 pointer-events-none">
-        <div className="relative w-[366px] h-[240px]">
-          {/* Pink checkered block */}
-          <div className="absolute bottom-[80px] left-0 w-[80px] h-[57px] bg-[#ff01e5] rounded-[1px]" />
-          {/* Pink small blocks grid */}
-          <div className="absolute bottom-[30px] left-0 grid grid-cols-3 gap-[5px]">
-            <div className="w-[11px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[11px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[17px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[11px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[11px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[17px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[11px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[11px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-            <div className="w-[17px] h-[13px] bg-[#ffc9c1] rounded-[1px]" />
-          </div>
-          {/* Blue/green abstract shape */}
-          <div className="absolute bottom-0 left-0 w-[178px] h-[178px] overflow-hidden">
-            <div className="absolute inset-0 bg-[#4d49fc] rounded-sm" />
-            <div className="absolute left-0 top-0 w-[89px] h-full bg-[#24cb71]" />
-            <div className="absolute right-0 top-0 w-[89px] h-full bg-white" />
-          </div>
-          {/* Periwinkle pill */}
-          <div className="absolute bottom-0 left-[178px] w-[189px] h-[72px] bg-[#c4baff] rounded-full" />
-        </div>
-      </div>
-
-      {/* Decorative bottom-right elements */}
-      <div className="absolute bottom-0 right-0 pointer-events-none">
-        <div className="relative w-[350px] h-[200px]">
-          {/* Green pattern block */}
-          <div className="absolute bottom-0 right-[166px] w-[175px] h-[125px] bg-[#24cb71] rounded-[2px] overflow-hidden">
-            <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 gap-0">
-              {Array.from({ length: 9 }).map((_, i) => (
-                <div key={i} className="flex items-center justify-center">
-                  <div className="w-[60%] h-[60%] bg-[#4d49fc] rounded-[6px]" />
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Colorful shape - right */}
-          <div className="absolute bottom-0 right-0 w-[166px] h-[188px] overflow-hidden">
-            <div className="absolute inset-0 bg-[#c4baff] rounded-[2px]" />
-            <div className="absolute top-0 left-0 w-1/2 h-1/3 bg-[#ff7238] rounded-[2px]" />
-            <div className="absolute top-1/3 right-0 w-1/2 h-1/3 bg-[#4d49fc] rounded-[2px]" />
-            <div className="absolute bottom-0 left-1/4 w-1/2 h-1/3 bg-[#24cb71] rounded-[2px]" />
-          </div>
-          {/* Small blue/green checker */}
-          <div className="absolute bottom-0 right-[341px] w-[92px] h-[86px] overflow-hidden">
-            <div className="grid grid-cols-4 grid-rows-4 size-full">
-              {Array.from({ length: 16 }).map((_, i) => (
-                <div key={i} className={`${(Math.floor(i / 4) + i % 4) % 2 === 0 ? 'bg-[#4d49fc]' : 'bg-[#24cb71]'}`} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Decorative Elements */}
+      <DecorativeElements />
     </div>
   );
 }
