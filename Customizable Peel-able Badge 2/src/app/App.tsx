@@ -100,19 +100,20 @@ export default function App() {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="size-full bg-[#F5F5F5] overflow-hidden relative">
-        <div className="hidden md:flex h-screen overflow-hidden">
-          <div className="flex gap-6 items-start w-full px-[80px] pt-[48px]">
+        <div className="hidden lg:flex h-screen overflow-hidden">
+          <div className="flex gap-4 xl:gap-6 items-start w-full px-6 xl:px-[80px] pt-[48px]">
             {/* Left Column - Header + Border + Cords */}
-            <div className="flex-shrink-0 space-y-5 w-[372px]">
+            <div className="flex-shrink-0 space-y-5 w-[300px] xl:w-[372px]">
               {/* Header */}
               <div className="mb-2">
                 <button onClick={() => setCurrentScreen('welcome')} className="flex items-center gap-2 text-black/50 hover:text-black transition-colors mb-4">
                   <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[20px] tracking-[-0.6px] opacity-45">{"< Back"}</span>
                 </button>
-                <h1 className="font-['Figma_Sans_VF:Regular',sans-serif] text-[64px] tracking-[-1.92px] leading-[0.95] text-black w-[339px]">
-                  Make your FigBadge your own!
+                <h1 className="font-['Figma_Sans_VF:Regular',sans-serif] text-[36px] xl:text-[48px] tracking-[-1.92px] leading-[0.95] text-black w-[280px] xl:w-[339px]">
+                  Make your FigBuild Badge your own!
                 </h1>
               </div>
+              <div className="h-[40px]" />
 
               {/* Border Options */}
               <BorderSelector borderStyle={borderStyle} setBorderStyle={setBorderStyle} />
@@ -122,7 +123,7 @@ export default function App() {
             </div>
 
             {/* Middle Column - Draw + Stickers + Background */}
-            <div className="flex-shrink-0 space-y-5 w-[372px]">
+            <div className="flex-shrink-0 space-y-5 w-[300px] xl:w-[372px]">
               {/* Draw Tools */}
               <DrawTools drawSize={drawSize} setDrawSize={setDrawSize} />
 
@@ -134,22 +135,26 @@ export default function App() {
             </div>
 
             {/* Right Column - Badge Preview */}
-            <div className="flex-1 flex flex-col items-center gap-4 justify-start pt-[32px]">
-              <BadgePreview
-                ref={badgeRef}
-                borderStyle={borderStyle}
-                cordColor={cordColor}
-                background={background}
-                drawSize={drawSize}
-                placedStickers={placedStickers}
-                setPlacedStickers={setPlacedStickers}
-                drawPaths={drawPaths}
-                isDrawing={isDrawing}
-                setIsDrawing={setIsDrawing}
-                currentPath={currentPath}
-                setCurrentPath={setCurrentPath}
-                setDrawPaths={setDrawPaths}
-              />
+            <div className="flex-1 flex flex-col items-center gap-4 justify-start pt-[32px] min-w-0">
+              <div className="w-full flex justify-center">
+                <div className="lg:scale-[0.65] xl:scale-[0.85] 2xl:scale-100 origin-top">
+                  <BadgePreview
+                    ref={badgeRef}
+                    borderStyle={borderStyle}
+                    cordColor={cordColor}
+                    background={background}
+                    drawSize={drawSize}
+                    placedStickers={placedStickers}
+                    setPlacedStickers={setPlacedStickers}
+                    drawPaths={drawPaths}
+                    isDrawing={isDrawing}
+                    setIsDrawing={setIsDrawing}
+                    currentPath={currentPath}
+                    setCurrentPath={setCurrentPath}
+                    setDrawPaths={setDrawPaths}
+                  />
+                </div>
+              </div>
 
               {/* Action Buttons */}
               <div className="flex gap-3 items-center">
@@ -176,8 +181,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Mobile Layout */}
-        <div className="flex md:hidden flex-col h-screen">
+        {/* Mobile/Tablet Layout */}
+        <div className="flex lg:hidden flex-col h-screen">
           {/* Back button */}
           <div className="px-4 pt-4 pb-2 flex-shrink-0">
             <button onClick={() => setCurrentScreen('welcome')} className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] tracking-[-0.42px] text-black/50">
@@ -803,17 +808,23 @@ function DraggablePronounSticker({ text }: { text: string }) {
 // Cords Panel Component  
 function CordsPanel({ cordColor, setCordColor }: { cordColor: CordColor; setCordColor: (color: CordColor) => void }) {
   return (
-    <div className="bg-[#ececec] rounded-[12px] pt-[20px] pb-[24px] px-[20px] w-full">
-      <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-5">Cords</h2>
-      <div className="flex gap-[9.5px]">
+    <div className="bg-[#ececec] rounded-[12px] p-[20px] w-full flex flex-col gap-[16px]">
+      <div className="font-['Figma_Sans_VF:Medium',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] text-black h-[17px] flex flex-col justify-center">
+        <p className="leading-[0.95]">Cords</p>
+      </div>
+      <div className="flex gap-[10px] h-[103px] items-center w-full">
         {(['black', 'periwinkle', 'blue'] as CordColor[]).map((color) => (
           <button
             key={color}
             onClick={() => setCordColor(color)}
-            className="flex flex-col gap-[9.5px] items-start relative w-[104px]"
+            className={`flex gap-[10px] items-center p-[4px] relative ${
+              cordColor === color
+                ? 'border border-[#4d49fc] rounded-[4px]'
+                : 'rounded-[2px]'
+            }`}
           >
-            <div className={`p-[4.7px] rounded-[2.4px] relative w-full ${cordColor === color ? 'border border-[#4d49fc]' : ''}`}>
-              <div className="w-full h-[90px] bg-white rounded-[1px] overflow-hidden flex items-center justify-center">
+            <div className="size-[82px] bg-white rounded-[3.184px] overflow-hidden relative">
+              <div className="absolute inset-0 flex items-center justify-center">
                 <div className="scale-[0.09] origin-center">
                   {color === 'black' && <BlackLanyard />}
                   {color === 'blue' && <BlueLanyard />}
@@ -821,7 +832,7 @@ function CordsPanel({ cordColor, setCordColor }: { cordColor: CordColor; setCord
                 </div>
               </div>
             </div>
-            <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 tracking-[-0.42px] capitalize">{color}</span>
+            <span className="absolute bottom-[-11.5px] left-[-1px] translate-y-1/2 font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 tracking-[-0.42px] capitalize w-[104px] text-left leading-[0.95]">{color}</span>
           </button>
         ))}
       </div>
@@ -1206,13 +1217,13 @@ function DecorativeElements() {
   return (
     <>
       {/* Bottom Left Decorative Elements */}
-      <div className="hidden md:block absolute bottom-0 left-0 pointer-events-none">
-        <img src="/bottomleft.png" alt="" className="block max-w-none" style={{ width: '580px', height: 'auto' }} />
+      <div className="hidden lg:block absolute bottom-0 left-0 pointer-events-none">
+        <img src="/bottomleft.png" alt="" className="block max-w-none w-[350px] xl:w-[450px] 2xl:w-[580px] h-auto" />
       </div>
 
       {/* Bottom Right Decorative Elements */}
-      <div className="hidden md:block absolute bottom-0 right-0 pointer-events-none">
-        <img src="/bottomright.png" alt="" className="block max-w-none" style={{ width: '580px', height: 'auto' }} />
+      <div className="hidden lg:block absolute bottom-0 right-0 pointer-events-none">
+        <img src="/bottomright.png" alt="" className="block max-w-none w-[350px] xl:w-[450px] 2xl:w-[580px] h-auto" />
       </div>
     </>
   );
@@ -1223,48 +1234,48 @@ function WelcomeScreen({ onStart }: { onStart: () => void }) {
   return (
     <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
       {/* Main content */}
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-center min-h-screen gap-8 md:gap-16 px-6 md:px-8 py-12">
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-6 sm:gap-8 lg:gap-16 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Left - Badge with Lanyard */}
-        <div className="relative flex-shrink-0 self-start -mt-[60px]">
+        <div className="relative flex-shrink-0 lg:self-start lg:-mt-[60px]">
           <img
             src="/introscreenbadge.png"
             alt="Example FigBuild badge"
-            className="w-[280px] md:w-[380px] h-auto"
+            className="w-[220px] sm:w-[280px] lg:w-[340px] xl:w-[380px] h-auto"
           />
         </div>
 
         {/* Right - Hero content */}
-        <div className="flex flex-col items-center gap-[27px]">
+        <div className="flex flex-col items-center gap-[20px] sm:gap-[27px]">
           <div className="flex flex-col items-center gap-2">
-            <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[40px] md:text-[66px] tracking-[-1.98px] text-black text-center leading-normal">
+            <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[32px] sm:text-[40px] lg:text-[54px] xl:text-[66px] tracking-[-1.98px] text-black text-center leading-normal">
               Welcome to
             </p>
             <div className="flex">
-              <div className="bg-black px-4 md:px-5 py-3 md:py-5 flex items-center justify-center">
-                <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[44px] md:text-[71px] leading-[0.95] tracking-[-2.13px]">
+              <div className="bg-black px-3 sm:px-4 lg:px-5 py-2 sm:py-3 lg:py-5 flex items-center justify-center">
+                <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[36px] sm:text-[44px] lg:text-[58px] xl:text-[71px] leading-[0.95] tracking-[-2.13px]">
                   FigBuild
                 </span>
               </div>
-              <div className="bg-black px-4 md:px-5 py-3 md:py-5 rounded-full flex items-center justify-center">
-                <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[44px] md:text-[71px] leading-[0.95] tracking-[-2.13px]">
+              <div className="bg-black px-3 sm:px-4 lg:px-5 py-2 sm:py-3 lg:py-5 rounded-full flex items-center justify-center">
+                <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[36px] sm:text-[44px] lg:text-[58px] xl:text-[71px] leading-[0.95] tracking-[-2.13px]">
                   2026
                 </span>
               </div>
             </div>
           </div>
-          <p className="font-['Figma_Sans_VF:Medium',sans-serif] text-[24px] md:text-[36px] text-black text-center max-w-[300px] md:max-w-[381px] leading-normal">
+          <p className="font-['Figma_Sans_VF:Medium',sans-serif] text-[20px] sm:text-[24px] lg:text-[30px] xl:text-[36px] text-black text-center max-w-[260px] sm:max-w-[300px] lg:max-w-[381px] leading-normal">
             Start your journey with a FigBuild Badge!
           </p>
           {/* Buttons */}
-          <div className="flex flex-col gap-[23px] w-[245px]">
+          <div className="flex flex-col gap-[16px] sm:gap-[23px] w-[220px] sm:w-[245px]">
             <button
               onClick={onStart}
-              className="bg-[#4d49fc] w-full px-[19px] py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[21px] text-center text-white leading-[1.45] tracking-[-0.1px] hover:bg-[#3d39ec] transition-colors"
+              className="bg-[#4d49fc] w-full px-[16px] sm:px-[19px] py-[12px] sm:py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] sm:text-[21px] text-center text-white leading-[1.45] tracking-[-0.1px] hover:bg-[#3d39ec] transition-colors"
             >
-              Build a FigBadge
+              Build a FigBuild Badge
             </button>
-            <button className="border border-[#171717] w-full px-[19px] py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[21px] text-black text-center leading-[1.45] tracking-[-0.1px] hover:bg-black/5 transition-colors">
-              I made a FigBadge IRL
+            <button className="border border-[#171717] w-full px-[16px] sm:px-[19px] py-[12px] sm:py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] sm:text-[21px] text-black text-center leading-[1.45] tracking-[-0.1px] hover:bg-black/5 transition-colors">
+              I made a FigBuild Badge IRL
             </button>
           </div>
         </div>
