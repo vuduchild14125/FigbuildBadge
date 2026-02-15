@@ -27,6 +27,7 @@ interface PlacedSticker {
   pronounText?: string;
   aboutColor?: string;
   goalColor?: string;
+  funStickerId?: string;
 }
 
 interface DrawPoint {
@@ -65,6 +66,24 @@ const GOAL_STICKER_TYPES = [
 
 const GOAL_SHAPE_PATH = 'M36.5322 8.99609L46.4688 0H58.9541L68.8906 8.99609L78.8281 0H90.542L105.423 13.4727V59.5918L90.542 73.0645H78.8281L68.8906 64.0684L58.9541 73.0645H46.4688L36.5322 64.0684L26.5957 73.0645H14.8809L0 59.5918V13.4727L14.8809 0H26.5957L36.5322 8.99609Z';
 
+const FUN_STICKERS = [
+  { id: 'figma-edu-green', type: 'text', label: 'Figma for Edu', bg: '#24CB71', textColor: '#000000' },
+  { id: 'figma-edu-blue', type: 'text', label: 'Figma for Edu', bg: '#4D49FC', textColor: '#FFFFFF' },
+  { id: 'figbuild-2026', type: 'text-stacked', label1: 'FigBuild', label2: '2026', bg: '#000000', textColor: '#FFFFFF' },
+  { id: 'figbuild-2026-h', type: 'text-horizontal', label1: 'FigBuild', label2: '2026', bg: '#000000', textColor: '#FFFFFF' },
+  { id: 'component-icon', type: 'svg', src: '/stickers/component-icon.svg' },
+  { id: 'flower-shape', type: 'svg-bg', src: '/stickers/flower-shape.svg', bg: '#FFC9C1' },
+  { id: 'u-hook', type: 'svg-bg', src: '/stickers/u-hook.svg', bg: '#E4FF97' },
+  { id: 'checkerboard', type: 'checkerboard' },
+  { id: 'blob-star', type: 'svg-bg', src: '/stickers/blob-star.svg', bg: '#4D49FC' },
+  { id: 'clover', type: 'svg-bg', src: '/stickers/clover.svg', bg: '#24CB71' },
+  { id: 'diamond-donut', type: 'svg-bg', src: '/stickers/diamond-donut.svg', bg: '#E4FF97' },
+  { id: 'sunburst', type: 'svg-bg', src: '/stickers/sunburst.svg', bg: '#FF01E5' },
+  { id: 'mini-shapes', type: 'svg', src: '/stickers/mini-shapes.svg' },
+  { id: 'figma-logo-black', type: 'figma-logo', blobSrc: '/stickers/figma-blob-black.svg', iconSrc: '/stickers/figma-icon-bw.svg' },
+  { id: 'figma-logo-lavender', type: 'figma-logo', blobSrc: '/stickers/figma-blob-lavender.svg', iconSrc: '/stickers/figma-icon-lavender.svg' },
+];
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
   const [borderStyle, setBorderStyle] = useState<BorderStyle>('none');
@@ -78,7 +97,7 @@ export default function App() {
   const badgeRef = useRef<HTMLDivElement>(null);
   const mobileBadgeRef = useRef<HTMLDivElement>(null);
   const [mobileTab, setMobileTab] = useState<MobileTab>('background');
-  const [mobileStickerTab, setMobileStickerTab] = useState<'year' | 'pronouns' | 'about' | 'goals'>('year');
+  const [mobileStickerTab, setMobileStickerTab] = useState<'year' | 'pronouns' | 'about' | 'goals' | 'time' | 'role'>('year');
   const [isMobileStickerAnimating, setIsMobileStickerAnimating] = useState(false);
 
   const handleUndo = () => {
@@ -98,7 +117,7 @@ export default function App() {
     alert("Your FigBadge is complete! 🎉");
   };
 
-  const handleMobileStickerTabChange = (newTab: 'year' | 'pronouns' | 'about' | 'goals') => {
+  const handleMobileStickerTabChange = (newTab: 'year' | 'pronouns' | 'about' | 'goals' | 'time' | 'role') => {
     if (newTab !== mobileStickerTab) {
       setIsMobileStickerAnimating(true);
       setTimeout(() => {
@@ -348,7 +367,7 @@ export default function App() {
               {mobileTab === 'stickers' && (
                 <div>
                   <div className="flex gap-3 mb-3">
-                    {(['year', 'pronouns', 'about', 'goals'] as const).map((tab) => (
+                    {(['year', 'pronouns', 'about', 'goals', 'time', 'role'] as const).map((tab) => (
                       <button
                         key={tab}
                         onClick={() => handleMobileStickerTabChange(tab)}
@@ -365,7 +384,10 @@ export default function App() {
                     {mobileStickerTab === 'pronouns' && <PronounStickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'about' && <AboutStickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'goals' && <GoalStickerRoll isAnimating={isMobileStickerAnimating} />}
+                    {mobileStickerTab === 'time' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
+                    {mobileStickerTab === 'role' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
                   </div>
+                  <FunStickersSheet />
                 </div>
               )}
 
@@ -515,10 +537,10 @@ function DrawTools({ drawSize, setDrawSize }: { drawSize: DrawSize; setDrawSize:
 
 // Stickers Panel Component
 function StickersPanel() {
-  const [activeTab, setActiveTab] = useState<'year' | 'pronouns' | 'about' | 'goals'>('year');
+  const [activeTab, setActiveTab] = useState<'year' | 'pronouns' | 'about' | 'goals' | 'time' | 'role'>('year');
   const [isAnimating, setIsAnimating] = useState(false);
-  
-  const handleTabChange = (newTab: 'year' | 'pronouns' | 'about' | 'goals') => {
+
+  const handleTabChange = (newTab: 'year' | 'pronouns' | 'about' | 'goals' | 'time' | 'role') => {
     if (newTab !== activeTab) {
       setIsAnimating(true);
       setTimeout(() => {
@@ -534,7 +556,7 @@ function StickersPanel() {
       
       {/* Tabs */}
       <div className="flex gap-4 mb-4">
-        {(['year', 'pronouns', 'about', 'goals'] as const).map((tab) => (
+        {(['year', 'pronouns', 'about', 'goals', 'time', 'role'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabChange(tab)}
@@ -548,14 +570,17 @@ function StickersPanel() {
           </button>
         ))}
       </div>
-      
+
       {/* Sticker Roll */}
       <div className="relative h-[130px] overflow-hidden">
         {activeTab === 'year' && <StickerRoll isAnimating={isAnimating} />}
         {activeTab === 'pronouns' && <PronounStickerRoll isAnimating={isAnimating} />}
         {activeTab === 'about' && <AboutStickerRoll isAnimating={isAnimating} />}
         {activeTab === 'goals' && <GoalStickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'time' && <StickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'role' && <StickerRoll isAnimating={isAnimating} />}
       </div>
+      <FunStickersSheet />
     </div>
   );
 }
@@ -983,6 +1008,125 @@ function DraggableGoalSticker({ goalId, label, color }: { goalId: string; label:
   );
 }
 
+// Draggable Fun Sticker Component
+function DraggableFunSticker({ sticker }: { sticker: typeof FUN_STICKERS[number] }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'funSticker',
+    item: { funStickerId: sticker.id },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  const renderContent = () => {
+    if (sticker.type === 'text') {
+      return (
+        <div className="px-[8px] py-[4px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
+          <span className="text-[9px] tracking-[-0.3px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+            {(sticker as any).label}
+          </span>
+        </div>
+      );
+    }
+    if (sticker.type === 'text-stacked') {
+      return (
+        <div className="flex flex-col items-stretch w-full">
+          <div className="px-[6px] py-[2px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
+            <span className="text-[10px] tracking-[-0.3px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+              {(sticker as any).label1}
+            </span>
+          </div>
+          <div className="px-[6px] py-[2px] rounded-[20px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
+            <span className="text-[10px] tracking-[-0.3px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+              {(sticker as any).label2}
+            </span>
+          </div>
+        </div>
+      );
+    }
+    if (sticker.type === 'text-horizontal') {
+      return (
+        <div className="flex items-center">
+          <div className="px-[6px] py-[2px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
+            <span className="text-[9px] tracking-[-0.3px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+              {(sticker as any).label1}
+            </span>
+          </div>
+          <div className="px-[6px] py-[2px] rounded-[20px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
+            <span className="text-[9px] tracking-[-0.3px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+              {(sticker as any).label2}
+            </span>
+          </div>
+        </div>
+      );
+    }
+    if (sticker.type === 'svg') {
+      return <img src={(sticker as any).src} alt="" className="w-full h-full object-contain" />;
+    }
+    if (sticker.type === 'svg-bg') {
+      return (
+        <div className="w-full h-full relative" style={{ backgroundColor: (sticker as any).bg }}>
+          <img src={(sticker as any).src} alt="" className="absolute inset-0 w-full h-full object-contain" />
+        </div>
+      );
+    }
+    if (sticker.type === 'checkerboard') {
+      return (
+        <div className="w-full h-full bg-[#24CB71] rounded-[12px] overflow-hidden relative">
+          <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 gap-[4px] p-[4px]">
+            {Array.from({ length: 16 }).map((_, i) => (
+              <div key={i} className="bg-[#E4FF97] rounded-[4px]" />
+            ))}
+          </div>
+        </div>
+      );
+    }
+    if (sticker.type === 'figma-logo') {
+      return (
+        <div className="w-full h-full relative">
+          <img src={(sticker as any).blobSrc} alt="" className="absolute inset-[-10%] w-[120%] h-[120%] object-contain" />
+          <img src={(sticker as any).iconSrc} alt="" className="absolute inset-[10%] w-[80%] h-[80%] object-contain" />
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div
+      ref={drag}
+      className="cursor-move transition-all duration-300"
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        transform: isHovered && !isDragging ? 'translateY(-4px) scale(1.05)' : 'translateY(0) scale(1)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="w-[55px] h-[55px] overflow-hidden rounded-[4px]">
+        {renderContent()}
+      </div>
+    </div>
+  );
+}
+
+// Fun Stickers Sheet Component
+function FunStickersSheet() {
+  return (
+    <div className="mt-4 px-2">
+      <div className="text-[11px] font-bold uppercase text-black mb-2" style={{ fontFamily: "'Figma Mono VF:Regular', monospace" }}>
+        Fun Stickers
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {FUN_STICKERS.map((sticker) => (
+          <DraggableFunSticker key={sticker.id} sticker={sticker} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Draggable Sticker Component
 function DraggableSticker({ stickerType, color, label, textColor }: { stickerType: number; color: string; label?: string; textColor?: string }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -1220,7 +1364,7 @@ const BadgePreview = React.forwardRef<
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: ['sticker', 'textSticker', 'pronounSticker', 'aboutSticker', 'goalSticker'],
+    accept: ['sticker', 'textSticker', 'pronounSticker', 'aboutSticker', 'goalSticker', 'funSticker'],
     drop: (item: any, monitor) => {
       const offset = monitor.getClientOffset();
       const badgeEl = (ref as React.RefObject<HTMLDivElement>).current;
@@ -1276,6 +1420,18 @@ const BadgePreview = React.forwardRef<
               y,
               rotation: Math.random() * 20 - 10,
               pronounText: item.text,
+            }
+          ]);
+        } else if (item.funStickerId) {
+          setPlacedStickers(prev => [
+            ...prev,
+            {
+              id: `fun-${Date.now()}`,
+              type: 0,
+              x,
+              y,
+              rotation: Math.random() * 20 - 10,
+              funStickerId: item.funStickerId,
             }
           ]);
         }
@@ -1456,6 +1612,72 @@ const BadgePreview = React.forwardRef<
 
         {/* Placed Stickers */}
         {placedStickers.map((sticker) => {
+          if (sticker.funStickerId) {
+            const funSticker = FUN_STICKERS.find(s => s.id === sticker.funStickerId);
+            if (!funSticker) return null;
+            return (
+              <div
+                key={sticker.id}
+                className="absolute pointer-events-none"
+                style={{
+                  left: sticker.x - 27,
+                  top: sticker.y - 27,
+                  transform: `rotate(${sticker.rotation}deg)`,
+                }}
+              >
+                <div className="w-[55px] h-[55px] overflow-hidden rounded-[4px]">
+                  {funSticker.type === 'text' && (
+                    <div className="w-full h-full px-[8px] py-[4px] flex items-center justify-center" style={{ backgroundColor: (funSticker as any).bg }}>
+                      <span className="text-[9px] tracking-[-0.3px] whitespace-nowrap" style={{ color: (funSticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+                        {(funSticker as any).label}
+                      </span>
+                    </div>
+                  )}
+                  {funSticker.type === 'svg' && <img src={(funSticker as any).src} alt="" className="w-full h-full object-contain" />}
+                  {funSticker.type === 'svg-bg' && (
+                    <div className="w-full h-full relative" style={{ backgroundColor: (funSticker as any).bg }}>
+                      <img src={(funSticker as any).src} alt="" className="absolute inset-0 w-full h-full object-contain" />
+                    </div>
+                  )}
+                  {funSticker.type === 'checkerboard' && (
+                    <div className="w-full h-full bg-[#24CB71] rounded-[12px] overflow-hidden relative">
+                      <div className="absolute inset-0 grid grid-cols-4 grid-rows-4 gap-[4px] p-[4px]">
+                        {Array.from({ length: 16 }).map((_, i) => (
+                          <div key={i} className="bg-[#E4FF97] rounded-[4px]" />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {funSticker.type === 'text-stacked' && (
+                    <div className="flex flex-col items-stretch w-full h-full justify-center" style={{ backgroundColor: (funSticker as any).bg }}>
+                      <div className="px-[6px] py-[1px] flex items-center justify-center">
+                        <span className="text-[10px] tracking-[-0.3px]" style={{ color: (funSticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>{(funSticker as any).label1}</span>
+                      </div>
+                      <div className="mx-[4px] py-[1px] rounded-[20px] flex items-center justify-center" style={{ backgroundColor: (funSticker as any).bg }}>
+                        <span className="text-[10px] tracking-[-0.3px]" style={{ color: (funSticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>{(funSticker as any).label2}</span>
+                      </div>
+                    </div>
+                  )}
+                  {funSticker.type === 'text-horizontal' && (
+                    <div className="flex items-center h-full" style={{ backgroundColor: (funSticker as any).bg }}>
+                      <div className="px-[4px] flex items-center justify-center">
+                        <span className="text-[9px] tracking-[-0.3px]" style={{ color: (funSticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>{(funSticker as any).label1}</span>
+                      </div>
+                      <div className="px-[4px] py-[1px] rounded-[20px] flex items-center justify-center" style={{ backgroundColor: '#333' }}>
+                        <span className="text-[9px] tracking-[-0.3px]" style={{ color: (funSticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>{(funSticker as any).label2}</span>
+                      </div>
+                    </div>
+                  )}
+                  {funSticker.type === 'figma-logo' && (
+                    <div className="w-full h-full relative">
+                      <img src={(funSticker as any).blobSrc} alt="" className="absolute inset-[-10%] w-[120%] h-[120%] object-contain" />
+                      <img src={(funSticker as any).iconSrc} alt="" className="absolute inset-[10%] w-[80%] h-[80%] object-contain" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          }
           if (sticker.goalColor && sticker.pronounText) {
             return (
               <div
