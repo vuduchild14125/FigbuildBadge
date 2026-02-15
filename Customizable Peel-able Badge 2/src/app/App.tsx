@@ -38,10 +38,10 @@ interface DrawPath {
 }
 
 const STICKER_TYPES = [
-  { id: 1, color: '#D65EFF' },
-  { id: 2, color: '#FF00E5' },
-  { id: 3, color: '#24CB71' },
-  { id: 4, color: '#8676FF' },
+  { id: 1, color: '#A89BFF', label: '1ST\nYEAR', textColor: '#000000' },
+  { id: 2, color: '#FF00E5', label: '2ND\nYEAR', textColor: '#000000' },
+  { id: 3, color: '#24CB71', label: '3RD\nYEAR', textColor: '#000000' },
+  { id: 4, color: '#4D49FC', label: '4TH\nYEAR', textColor: '#FFFFFF' },
 ];
 
 const TEXT_STICKER = {
@@ -567,7 +567,7 @@ function StickerRoll({ isAnimating }: { isAnimating: boolean }) {
         <div className="absolute left-[8px] top-[2px] h-[56px] w-[900px]">
           <div className="flex gap-3 py-3">
             {extendedStickers.map((sticker, idx) => (
-              <DraggableSticker key={`roll-${idx}`} stickerType={sticker.id} color={sticker.color} />
+              <DraggableSticker key={`roll-${idx}`} stickerType={sticker.id} color={sticker.color} label={sticker.label} textColor={sticker.textColor} />
             ))}
           </div>
         </div>
@@ -708,7 +708,7 @@ function PronounStickerRoll({ isAnimating }: { isAnimating: boolean }) {
 }
 
 // Draggable Sticker Component
-function DraggableSticker({ stickerType, color }: { stickerType: number; color: string }) {
+function DraggableSticker({ stickerType, color, label, textColor }: { stickerType: number; color: string; label?: string; textColor?: string }) {
   const [isHovered, setIsHovered] = useState(false);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'sticker',
@@ -738,6 +738,16 @@ function DraggableSticker({ stickerType, color }: { stickerType: number; color: 
               </svg>
             </div>
           </div>
+          {label && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span
+                className="text-[10px] font-bold uppercase leading-[1.2] text-center whitespace-pre-line"
+                style={{ color: textColor || '#000000', fontFamily: "'Figma Mono VF:Regular', monospace" }}
+              >
+                {label}
+              </span>
+            </div>
+          )}
         </div>
         {/* Shadow/Peel effect - only show on hover */}
         {isHovered && !isDragging && (
@@ -1174,7 +1184,7 @@ const BadgePreview = React.forwardRef<
                 transform: `rotate(${sticker.rotation}deg)`,
               }}
             >
-              <div className="w-[70px] h-[51px]">
+              <div className="w-[70px] h-[51px] relative">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="rotate-90">
                     <svg width="51" height="71" viewBox="0 0 51 71" fill="none">
@@ -1182,6 +1192,16 @@ const BadgePreview = React.forwardRef<
                     </svg>
                   </div>
                 </div>
+                {StickerType?.label && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span
+                      className="text-[10px] font-bold uppercase leading-[1.2] text-center whitespace-pre-line"
+                      style={{ color: StickerType.textColor || '#000000', fontFamily: "'Figma Mono VF:Regular', monospace" }}
+                    >
+                      {StickerType.label}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           );
