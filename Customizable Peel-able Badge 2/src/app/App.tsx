@@ -16,7 +16,7 @@ import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
 import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
 import lanyardCordPeriwinkle from '../assets/LanyardCord-Periwinkle.svg';
 
-type BorderStyle = 'none' | 'dashed' | 'wiggly' | 'solid';
+type BorderStyle = 'none' | 'dashed' | 'wiggly';
 type CordColor = 'black' | 'periwinkle' | 'blue';
 type Background = 'swag' | 'creative' | 'playful';
 type DrawSize = 'small' | 'medium' | 'large';
@@ -33,6 +33,9 @@ interface PlacedSticker {
   aboutColor?: string;
   goalColor?: string;
   funStickerId?: string;
+  roleColor?: string;
+  roleLabel?: string;
+  timeId?: string;
 }
 
 interface DrawPoint {
@@ -70,6 +73,22 @@ const GOAL_STICKER_TYPES = [
 ];
 
 const GOAL_SHAPE_PATH = 'M36.5322 8.99609L46.4688 0H58.9541L68.8906 8.99609L78.8281 0H90.542L105.423 13.4727V59.5918L90.542 73.0645H78.8281L68.8906 64.0684L58.9541 73.0645H46.4688L36.5322 64.0684L26.5957 73.0645H14.8809L0 59.5918V13.4727L14.8809 0H26.5957L36.5322 8.99609Z';
+
+const ROLE_STICKER_TYPES = [
+  { id: 'designer', label: 'DESIGNER', color: '#24CB71', textColor: '#000000' },
+  { id: 'developer', label: 'DEVELOPER', color: '#4D49FC', textColor: '#000000' },
+  { id: 'creative', label: 'CREATIVE', color: '#FF00E5', textColor: '#FFFFFF' },
+];
+
+const TIME_STICKER_TYPES = [
+  { id: 'pst', label: 'PST', src: '/stickers/time-pst.svg', textColor: '#000000' },
+  { id: 'cst', label: 'CST', src: '/stickers/time-cst.svg', textColor: '#000000' },
+  { id: 'est', label: 'EST', src: '/stickers/time-est.svg', textColor: '#FFFFFF' },
+  { id: 'aest', label: 'AEST', src: '/stickers/time-aest.svg', textColor: '#000000' },
+  { id: 'acst', label: 'ACST', src: '/stickers/time-acst.svg', textColor: '#000000' },
+  { id: 'awst', label: 'AWST', src: '/stickers/time-awst.svg', textColor: '#000000' },
+  { id: 'ist', label: 'IST', src: '/stickers/time-ist.svg', textColor: '#000000' },
+];
 
 const FUN_STICKERS = [
   { id: 'figma-edu-green', type: 'text', label: 'Figma for Edu', bg: '#24CB71', textColor: '#000000' },
@@ -328,19 +347,14 @@ export default function App() {
                     ))}
                   </div>
                   <div className="flex gap-2">
-                    {(['none', 'dashed', 'wiggly', 'solid'] as BorderStyle[]).map((border) => (
+                    {(['none', 'dashed', 'wiggly'] as BorderStyle[]).map((border) => (
                       <button key={border} onClick={() => setBorderStyle(border)} className="flex flex-col items-center gap-1">
                         <div className={`w-[64px] h-[32px] bg-white rounded relative ${borderStyle === border ? 'ring-2 ring-[#4d49fc]' : ''}`}>
                           {border === 'dashed' && (
                             <div className="absolute border-2 border-black border-dashed inset-0 pointer-events-none" />
                           )}
                           {border === 'wiggly' && (
-                            <svg className="absolute inset-0 pointer-events-none" width="100%" height="100%" fill="none">
-                              <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" stroke="black" strokeWidth="2" strokeDasharray="6,3" strokeLinecap="round" fill="none" />
-                            </svg>
-                          )}
-                          {border === 'solid' && (
-                            <div className="absolute border-2 border-black border-solid inset-0 pointer-events-none" />
+                            <div className="absolute inset-0 pointer-events-none" style={{ border: '2px wiggly black' }} />
                           )}
                         </div>
                         <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50 capitalize">{border}</span>
@@ -396,8 +410,8 @@ export default function App() {
                     {mobileStickerTab === 'pronouns' && <PronounStickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'about' && <AboutStickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'goals' && <GoalStickerRoll isAnimating={isMobileStickerAnimating} />}
-                    {mobileStickerTab === 'time' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
-                    {mobileStickerTab === 'role' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
+                    {mobileStickerTab === 'time' && <TimeStickerRoll isAnimating={isMobileStickerAnimating} />}
+                    {mobileStickerTab === 'role' && <RoleStickerRoll isAnimating={isMobileStickerAnimating} />}
                   </div>
                   <FunStickersSheet />
                 </div>
@@ -473,36 +487,10 @@ function BorderSelector({ borderStyle, setBorderStyle }: { borderStyle: BorderSt
         >
           <div className={`absolute inset-0 pointer-events-none rounded-[2px] ${borderStyle === 'wiggly' ? 'border border-[#4d49fc] border-solid' : ''}`} />
           <div className="bg-white relative size-[66px]">
-            <svg className="absolute inset-[-1.5px] pointer-events-none" width="69" height="69" fill="none">
-              <rect
-                x="1.5"
-                y="1.5"
-                width="66"
-                height="66"
-                stroke="black"
-                strokeWidth="3"
-                strokeDasharray="8,4"
-                strokeLinecap="round"
-                fill="none"
-              />
-            </svg>
+            <div className="absolute inset-0 pointer-events-none" style={{ border: '3px wiggly black' }} />
           </div>
           <div className="-translate-y-1/2 absolute flex flex-col font-['Figma_Sans_VF:Regular',sans-serif] justify-center leading-[0] left-[4px] not-italic opacity-50 text-[14px] text-black top-[86px] tracking-[-0.42px] whitespace-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
             <p className="leading-[0.95]">Wiggly</p>
-          </div>
-        </button>
-
-        {/* Solid */}
-        <button
-          onClick={() => setBorderStyle('solid')}
-          className="content-stretch flex flex-col gap-[10px] items-start justify-center p-[4px] relative rounded-[2px]"
-        >
-          <div className={`absolute inset-0 pointer-events-none rounded-[2px] ${borderStyle === 'solid' ? 'border border-[#4d49fc] border-solid' : ''}`} />
-          <div className="bg-white relative size-[66px]">
-            <div className="absolute border-[3px] border-black border-solid inset-[-1.5px] pointer-events-none" />
-          </div>
-          <div className="-translate-y-1/2 absolute flex flex-col font-['Figma_Sans_VF:Regular',sans-serif] justify-center leading-[0] left-[4px] not-italic opacity-50 text-[14px] text-black top-[86px] tracking-[-0.42px] whitespace-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
-            <p className="leading-[0.95]">Solid</p>
           </div>
         </button>
       </div>
@@ -589,8 +577,8 @@ function StickersPanel() {
         {activeTab === 'pronouns' && <PronounStickerRoll isAnimating={isAnimating} />}
         {activeTab === 'about' && <AboutStickerRoll isAnimating={isAnimating} />}
         {activeTab === 'goals' && <GoalStickerRoll isAnimating={isAnimating} />}
-        {activeTab === 'time' && <StickerRoll isAnimating={isAnimating} />}
-        {activeTab === 'role' && <StickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'time' && <TimeStickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'role' && <RoleStickerRoll isAnimating={isAnimating} />}
       </div>
       <FunStickersSheet />
     </div>
@@ -1020,6 +1008,248 @@ function DraggableGoalSticker({ goalId, label, color }: { goalId: string; label:
   );
 }
 
+// Draggable Role Sticker Component
+function DraggableRoleSticker({ roleId, label, color, textColor }: { roleId: string; label: string; color: string; textColor: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'roleSticker',
+    item: { roleId, label, color },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <div
+      ref={drag}
+      className="cursor-move transition-all duration-300 flex-shrink-0"
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative">
+        <div className="w-[75px] h-[52px] relative">
+          <svg width="75" height="52" viewBox="0 0 105.423 73.0645" fill="none" className="absolute inset-0">
+            <path d={GOAL_SHAPE_PATH} fill={color} />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span
+              className="text-[9px] uppercase leading-[1.2] text-center whitespace-nowrap"
+              style={{ color: textColor, fontFamily: "'Figma Mono VF:Regular', monospace" }}
+            >
+              {label}
+            </span>
+          </div>
+        </div>
+        {isHovered && !isDragging && (
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[65px] h-[20px] pointer-events-none">
+            <svg width="65" height="20" viewBox="0 0 65 20" fill="none" className="opacity-40">
+              <ellipse cx="32.5" cy="10" rx="32.5" ry="10" fill="url(#shadow-gradient-role)" />
+              <defs>
+                <radialGradient id="shadow-gradient-role" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(32.5 10) rotate(90) scale(10 32.5)">
+                  <stop stopColor="#000000" stopOpacity="0.3" />
+                  <stop offset="1" stopColor="#000000" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Draggable Time Sticker Component
+function DraggableTimeSticker({ timeId, label, src, textColor }: { timeId: string; label: string; src: string; textColor: string }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'timeSticker',
+    item: { timeId, label, src },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <div
+      ref={drag}
+      className="cursor-move transition-all duration-300 flex-shrink-0"
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="relative">
+        <div className="w-[52px] h-[52px] relative">
+          <img src={src} alt="" className="absolute inset-0 w-full h-full" />
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span
+              className="text-[8px] uppercase leading-[1.2] text-center whitespace-nowrap"
+              style={{ color: textColor, fontFamily: "'Figma Mono VF:Regular', monospace" }}
+            >
+              {label}
+            </span>
+          </div>
+        </div>
+        {isHovered && !isDragging && (
+          <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[50px] h-[16px] pointer-events-none">
+            <svg width="50" height="16" viewBox="0 0 50 16" fill="none" className="opacity-40">
+              <ellipse cx="25" cy="8" rx="25" ry="8" fill="url(#shadow-gradient-time)" />
+              <defs>
+                <radialGradient id="shadow-gradient-time" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(25 8) rotate(90) scale(8 25)">
+                  <stop stopColor="#000000" stopOpacity="0.3" />
+                  <stop offset="1" stopColor="#000000" stopOpacity="0" />
+                </radialGradient>
+              </defs>
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Role Sticker Roll Component
+function RoleStickerRoll({ isAnimating }: { isAnimating: boolean }) {
+  const extendedStickers = [
+    ...ROLE_STICKER_TYPES,
+    ...ROLE_STICKER_TYPES,
+    ...ROLE_STICKER_TYPES,
+    ...ROLE_STICKER_TYPES,
+  ];
+
+  return (
+    <div className="relative h-full">
+      <div className="absolute bg-white h-[50px] right-0 rounded-tr-[16px] top-[50px] w-[64px]" />
+      <div className={`absolute bg-white h-[80px] right-0 overflow-hidden rounded-tr-[20px] top-[15px] w-[64px] ${
+        isAnimating ? 'animate-roll-collapse' : 'animate-roll-expand'
+      }`}>
+        <div className="absolute left-[8px] top-[2px] h-[56px] w-[900px]">
+          <div className="flex gap-3 py-1 items-center">
+            {extendedStickers.map((sticker, idx) => (
+              <DraggableRoleSticker key={`role-${idx}`} roleId={sticker.id} label={sticker.label} color={sticker.color} textColor={sticker.textColor} />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="absolute h-[16px] right-0 top-[91px] w-[64px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 64.367 15.5321">
+          <ellipse cx="32.1835" cy="7.76607" fill="url(#paint0_radial_roll_role)" rx="32.1835" ry="7.76607" />
+          <defs>
+            <radialGradient cx="0" cy="0" gradientTransform="translate(32.1835 7.76607) rotate(90) scale(49.858 12.031)" gradientUnits="userSpaceOnUse" id="paint0_radial_roll_role" r="1">
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="#D9D9D9" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+      <div className="absolute h-[11px] right-[8px] top-[93px] w-[48px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 48.3099 10.9606">
+          <ellipse cx="24.155" cy="5.48032" fill="url(#paint0_linear_spool_role)" rx="24.155" ry="5.48032" />
+          <defs>
+            <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_spool_role" x1="24.155" x2="24.155" y1="-14.9701" y2="9.88243">
+              <stop stopColor="#5A5A5A" />
+              <stop offset="0.971154" stopColor="white" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div className="absolute flex h-[76px] items-center justify-center right-[17px] mix-blend-overlay top-[16px] w-[1px]">
+        <div className="rotate-[-0.53deg]">
+          <div className="h-[76px] relative w-0">
+            <div className="absolute inset-[0_-2.5px]">
+              <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 5.01443 76.3958">
+                <g style={{ mixBlendMode: "overlay" }}>
+                  <path d="M2.50722 0C3.88623 0 5.00722 34.1778 5.00722 76.3958H0C0 34.1778 1.12099 0 2.50722 0Z" fill="url(#paint0_linear_highlight_role)" />
+                </g>
+                <defs>
+                  <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_highlight_role" x1="3.00722" x2="3.00722" y1="0" y2="76.3958">
+                    <stop stopColor="white" stopOpacity="0.12" />
+                    <stop offset="0.5" stopColor="white" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.12" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Time Sticker Roll Component
+function TimeStickerRoll({ isAnimating }: { isAnimating: boolean }) {
+  const extendedStickers = [
+    ...TIME_STICKER_TYPES,
+    ...TIME_STICKER_TYPES,
+  ];
+
+  return (
+    <div className="relative h-full">
+      <div className="absolute bg-white h-[50px] right-0 rounded-tr-[16px] top-[50px] w-[64px]" />
+      <div className={`absolute bg-white h-[80px] right-0 overflow-hidden rounded-tr-[20px] top-[15px] w-[64px] ${
+        isAnimating ? 'animate-roll-collapse' : 'animate-roll-expand'
+      }`}>
+        <div className="absolute left-[8px] top-[2px] h-[56px] w-[900px]">
+          <div className="flex gap-3 py-1 items-center">
+            {extendedStickers.map((sticker, idx) => (
+              <DraggableTimeSticker key={`time-${idx}`} timeId={sticker.id} label={sticker.label} src={sticker.src} textColor={sticker.textColor} />
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="absolute h-[16px] right-0 top-[91px] w-[64px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 64.367 15.5321">
+          <ellipse cx="32.1835" cy="7.76607" fill="url(#paint0_radial_roll_time)" rx="32.1835" ry="7.76607" />
+          <defs>
+            <radialGradient cx="0" cy="0" gradientTransform="translate(32.1835 7.76607) rotate(90) scale(49.858 12.031)" gradientUnits="userSpaceOnUse" id="paint0_radial_roll_time" r="1">
+              <stop stopColor="white" />
+              <stop offset="1" stopColor="#D9D9D9" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+      <div className="absolute h-[11px] right-[8px] top-[93px] w-[48px]">
+        <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 48.3099 10.9606">
+          <ellipse cx="24.155" cy="5.48032" fill="url(#paint0_linear_spool_time)" rx="24.155" ry="5.48032" />
+          <defs>
+            <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_spool_time" x1="24.155" x2="24.155" y1="-14.9701" y2="9.88243">
+              <stop stopColor="#5A5A5A" />
+              <stop offset="0.971154" stopColor="white" />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div className="absolute flex h-[76px] items-center justify-center right-[17px] mix-blend-overlay top-[16px] w-[1px]">
+        <div className="rotate-[-0.53deg]">
+          <div className="h-[76px] relative w-0">
+            <div className="absolute inset-[0_-2.5px]">
+              <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 5.01443 76.3958">
+                <g style={{ mixBlendMode: "overlay" }}>
+                  <path d="M2.50722 0C3.88623 0 5.00722 34.1778 5.00722 76.3958H0C0 34.1778 1.12099 0 2.50722 0Z" fill="url(#paint0_linear_highlight_time)" />
+                </g>
+                <defs>
+                  <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear_highlight_time" x1="3.00722" x2="3.00722" y1="0" y2="76.3958">
+                    <stop stopColor="white" stopOpacity="0.12" />
+                    <stop offset="0.5" stopColor="white" />
+                    <stop offset="1" stopColor="white" stopOpacity="0.12" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Draggable Fun Sticker Component
 function DraggableFunSticker({ sticker }: { sticker: typeof FUN_STICKERS[number] }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -1380,7 +1610,7 @@ const BadgePreview = React.forwardRef<
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: ['sticker', 'textSticker', 'pronounSticker', 'aboutSticker', 'goalSticker', 'funSticker'],
+    accept: ['sticker', 'textSticker', 'pronounSticker', 'aboutSticker', 'goalSticker', 'funSticker', 'roleSticker', 'timeSticker'],
     drop: (item: any, monitor) => {
       const offset = monitor.getClientOffset();
       const badgeEl = (ref as React.RefObject<HTMLDivElement>).current;
@@ -1448,6 +1678,31 @@ const BadgePreview = React.forwardRef<
               y,
               rotation: Math.random() * 20 - 10,
               funStickerId: item.funStickerId,
+            }
+          ]);
+        } else if (item.roleId) {
+          setPlacedStickers(prev => [
+            ...prev,
+            {
+              id: `role-${Date.now()}`,
+              type: 0,
+              x,
+              y,
+              rotation: Math.random() * 20 - 10,
+              roleColor: item.color,
+              roleLabel: item.label,
+            }
+          ]);
+        } else if (item.timeId) {
+          setPlacedStickers(prev => [
+            ...prev,
+            {
+              id: `time-${Date.now()}`,
+              type: 0,
+              x,
+              y,
+              rotation: Math.random() * 20 - 10,
+              timeId: item.timeId,
             }
           ]);
         }
@@ -1567,40 +1822,13 @@ const BadgePreview = React.forwardRef<
       >
         {/* Border with gap from edge */}
         {borderStyle !== 'none' && (
-          <>
-            {borderStyle === 'wiggly' ? (
-              <svg
-                className="absolute pointer-events-none"
-                style={{ inset: '12px' }}
-                width="100%"
-                height="100%"
-                fill="none"
-              >
-                <rect
-                  x="1.5"
-                  y="1.5"
-                  width="calc(100% - 3px)"
-                  height="calc(100% - 3px)"
-                  rx="0"
-                  ry="0"
-                  stroke="black"
-                  strokeWidth="3"
-                  strokeDasharray="8,4"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </svg>
-            ) : (
-              <div
-                className="absolute pointer-events-none"
-                style={{
-                  inset: '12px',
-                  border: '3px black',
-                  borderStyle: borderStyle === 'solid' ? 'solid' : 'dashed',
-                }}
-              />
-            )}
-          </>
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              inset: '12px',
+              border: `3px ${borderStyle} black`,
+            }}
+          />
         )}
 
         {/* Background Pattern - bottom portion of badge */}
@@ -1698,6 +1926,60 @@ const BadgePreview = React.forwardRef<
                       <img src={(funSticker as any).iconSrc} alt="" className="absolute inset-[10%] w-[80%] h-[80%] object-contain" />
                     </div>
                   )}
+                </div>
+              </div>
+            );
+          }
+          if (sticker.roleColor && sticker.roleLabel) {
+            return (
+              <div
+                key={sticker.id}
+                className="absolute pointer-events-none"
+                style={{
+                  left: sticker.x - 37,
+                  top: sticker.y - 26,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.75)`,
+                }}
+              >
+                <div className="w-[75px] h-[52px] relative">
+                  <svg width="75" height="52" viewBox="0 0 105.423 73.0645" fill="none" className="absolute inset-0">
+                    <path d={GOAL_SHAPE_PATH} fill={sticker.roleColor} />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span
+                      className="text-[9px] uppercase leading-[1.2] text-center whitespace-nowrap"
+                      style={{ color: sticker.roleColor === '#FF00E5' ? '#FFFFFF' : '#000000', fontFamily: "'Figma Mono VF:Regular', monospace" }}
+                    >
+                      {sticker.roleLabel}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          if (sticker.timeId) {
+            const timeSticker = TIME_STICKER_TYPES.find(s => s.id === sticker.timeId);
+            if (!timeSticker) return null;
+            return (
+              <div
+                key={sticker.id}
+                className="absolute pointer-events-none"
+                style={{
+                  left: sticker.x - 26,
+                  top: sticker.y - 26,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.75)`,
+                }}
+              >
+                <div className="w-[52px] h-[52px] relative">
+                  <img src={timeSticker.src} alt="" className="absolute inset-0 w-full h-full" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span
+                      className="text-[8px] uppercase leading-[1.2] text-center whitespace-nowrap"
+                      style={{ color: timeSticker.textColor, fontFamily: "'Figma Mono VF:Regular', monospace" }}
+                    >
+                      {timeSticker.label}
+                    </span>
+                  </div>
                 </div>
               </div>
             );
