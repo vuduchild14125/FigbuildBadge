@@ -3,7 +3,7 @@ export type CordColor = 'black' | 'periwinkle' | 'blue';
 export type Background = 'swag' | 'creative' | 'playful';
 export type DrawSize = 'small' | 'medium' | 'large';
 export type MobileTab = 'background' | 'cord' | 'stickers' | 'draw';
-export type Screen = 'welcome' | 'customize';
+export type Screen = 'welcome' | 'customize' | 'gallery' | 'complete';
 export type StickerTab = 'year' | 'pronouns' | 'about' | 'goals' | 'time' | 'role';
 
 export interface PlacedSticker {

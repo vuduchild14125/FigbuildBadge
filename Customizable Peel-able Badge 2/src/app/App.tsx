@@ -5,6 +5,8 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import type { BorderStyle, CordColor, Background, DrawSize, MobileTab, Screen, StickerTab, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
 import { WelcomeScreen } from '../components/WelcomeScreen';
+import { GalleryScreen } from '../components/GalleryScreen';
+import { CompleteScreen } from '../components/CompleteScreen';
 import { BadgePreview } from '../components/BadgePreview';
 import { BorderSelector } from '../components/BorderSelector';
 import { DrawTools, CordsPanel, BackgroundPanel, PatternPreview } from '../components/Panels';
@@ -46,7 +48,7 @@ export default function App() {
   };
 
   const handleDone = () => {
-    alert("Your FigBadge is complete! 🎉");
+    setCurrentScreen('complete');
   };
 
   const handleMobileStickerTabChange = (newTab: StickerTab) => {
@@ -60,7 +62,25 @@ export default function App() {
   };
 
   if (currentScreen === 'welcome') {
-    return <WelcomeScreen onStart={() => setCurrentScreen('customize')} />;
+    return (
+      <WelcomeScreen
+        onStart={() => setCurrentScreen('customize')}
+        onGallery={() => setCurrentScreen('gallery')}
+      />
+    );
+  }
+
+  if (currentScreen === 'gallery') {
+    return (
+      <GalleryScreen
+        onBack={() => setCurrentScreen('welcome')}
+        onComplete={() => setCurrentScreen('complete')}
+      />
+    );
+  }
+
+  if (currentScreen === 'complete') {
+    return <CompleteScreen onRestart={() => setCurrentScreen('welcome')} />;
   }
 
   return (
