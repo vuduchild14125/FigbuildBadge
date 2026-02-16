@@ -6,6 +6,11 @@ import { Undo2, Trash2, ArrowLeft } from 'lucide-react';
 // Import SVG paths from Figma
 import svgPaths from '../imports/svg-fkhx66co9q';
 
+// Import cord button SVGs
+import cordBlackSvg from '../assets/filbutton-cordblack.svg';
+import cordBlueSvg from '../assets/filbutton-cordblue.svg';
+import cordPeriwinkleSvg from '../assets/filbutton-cordperiwinkle.svg';
+
 type BorderStyle = 'none' | 'dashed' | 'wiggly' | 'solid';
 type CordColor = 'black' | 'periwinkle' | 'blue';
 type Background = 'swag' | 'creative' | 'playful';
@@ -1230,8 +1235,14 @@ function DraggablePronounSticker({ text }: { text: string }) {
   );
 }
 
-// Cords Panel Component  
+// Cords Panel Component
 function CordsPanel({ cordColor, setCordColor }: { cordColor: CordColor; setCordColor: (color: CordColor) => void }) {
+  const cordSvgs = {
+    black: cordBlackSvg,
+    periwinkle: cordPeriwinkleSvg,
+    blue: cordBlueSvg
+  };
+
   return (
     <div className="bg-[#ececec] rounded-[12px] p-[20px] w-full flex flex-col gap-[16px]">
       <div className="font-['Figma_Sans_VF:Medium',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] text-black h-[17px] flex flex-col justify-center">
@@ -1242,20 +1253,18 @@ function CordsPanel({ cordColor, setCordColor }: { cordColor: CordColor; setCord
           <button
             key={color}
             onClick={() => setCordColor(color)}
-            className={`flex gap-[10px] items-center p-[4px] relative ${
+            className={`flex-1 flex gap-[10px] items-center p-[4px] relative ${
               cordColor === color
                 ? 'border border-[#4d49fc] rounded-[4px]'
                 : 'rounded-[2px]'
             }`}
           >
-            <div className="size-[82px] bg-white rounded-[3.184px] overflow-hidden relative">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <img
-                  src={`/LanyardCord-${color.charAt(0).toUpperCase() + color.slice(1)}.png`}
-                  alt={`${color} lanyard cord`}
-                  className="w-full h-full object-contain scale-[0.09]"
-                />
-              </div>
+            <div className="w-full aspect-square bg-white rounded-[3.184px] overflow-hidden relative">
+              <img
+                src={cordSvgs[color]}
+                alt={`${color} cord button`}
+                className="w-full h-full object-cover"
+              />
             </div>
             <span className="absolute bottom-[-11.5px] left-[-1px] translate-y-1/2 font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 tracking-[-0.42px] capitalize w-[104px] text-left leading-[0.95]">{color}</span>
           </button>
@@ -1440,8 +1449,8 @@ const BadgePreview = React.forwardRef<
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.button === 0) {
       const rect = e.currentTarget.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / scale;
-      const y = (e.clientY - rect.top) / scale;
+      const x = ((e.clientX - rect.left) / rect.width) * 483;
+      const y = ((e.clientY - rect.top) / rect.height) * 682;
       setIsDrawing(true);
       setCurrentPath([{ x, y, size: drawSize }]);
     }
@@ -1450,8 +1459,8 @@ const BadgePreview = React.forwardRef<
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isDrawing) {
       const rect = e.currentTarget.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / scale;
-      const y = (e.clientY - rect.top) / scale;
+      const x = ((e.clientX - rect.left) / rect.width) * 483;
+      const y = ((e.clientY - rect.top) / rect.height) * 682;
       setCurrentPath(prev => [...prev, { x, y, size: drawSize }]);
     }
   };
@@ -1619,7 +1628,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 27,
                   top: sticker.y - 27,
-                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.5)`,
                 }}
               >
                 <div className="w-[55px] h-[55px] overflow-hidden rounded-[4px]">
@@ -1683,7 +1692,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 37,
                   top: sticker.y - 26,
-                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.75)`,
                 }}
               >
                 <div className="w-[75px] h-[52px] relative">
@@ -1710,7 +1719,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 40,
                   top: sticker.y - 14,
-                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.5)`,
                 }}
               >
                 <div className="px-[11px] py-[6px] rounded-[100px] whitespace-nowrap" style={{ backgroundColor: sticker.aboutColor }}>
@@ -1729,7 +1738,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 40,
                   top: sticker.y - 14,
-                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.5)`,
                 }}
               >
                 <div className="bg-[#e4ff97] px-[12px] py-[6px] whitespace-nowrap">
@@ -1748,7 +1757,7 @@ const BadgePreview = React.forwardRef<
               style={{
                 left: sticker.x - 35,
                 top: sticker.y - 25,
-                transform: `rotate(${sticker.rotation}deg) scale(1.25)`,
+                transform: `rotate(${sticker.rotation}deg) scale(1.75)`,
               }}
             >
               <div className="w-[70px] h-[51px] relative">
