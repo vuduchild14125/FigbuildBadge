@@ -16,12 +16,15 @@ import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
 import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
 import lanyardCordPeriwinkle from '../assets/LanyardCord-Periwinkle.svg';
 
+// Import welcome screen lanyard
+import lanyardWholeExample from '../assets/LanyardWhole_Example.svg';
+
 type BorderStyle = 'none' | 'dashed' | 'wiggly' | 'solid';
 type CordColor = 'black' | 'periwinkle' | 'blue';
 type Background = 'swag' | 'creative' | 'playful';
 type DrawSize = 'small' | 'medium' | 'large';
 type MobileTab = 'background' | 'cord' | 'stickers' | 'draw';
-type Screen = 'welcome' | 'customize';
+type Screen = 'welcome' | 'customize' | 'gallery';
 
 interface PlacedSticker {
   id: string;
@@ -133,7 +136,14 @@ export default function App() {
   };
 
   if (currentScreen === 'welcome') {
-    return <WelcomeScreen onStart={() => setCurrentScreen('customize')} />;
+    return <WelcomeScreen
+      onStart={() => setCurrentScreen('customize')}
+      onGallery={() => setCurrentScreen('gallery')}
+    />;
+  }
+
+  if (currentScreen === 'gallery') {
+    return <GalleryScreen onBack={() => setCurrentScreen('welcome')} />;
   }
 
   return (
@@ -1844,15 +1854,15 @@ function DecorativeElements() {
 }
 
 // Welcome Screen Component
-function WelcomeScreen({ onStart }: { onStart: () => void }) {
+function WelcomeScreen({ onStart, onGallery }: { onStart: () => void; onGallery: () => void }) {
   return (
     <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
       {/* Main content */}
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-6 sm:gap-8 lg:gap-16 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Left - Badge with Lanyard */}
-        <div className="relative flex-shrink-0 lg:self-start lg:-mt-[60px]">
+        <div className="relative flex-shrink-0 lg:self-start lg:-mt-[420px]">
           <img
-            src="/introscreenbadge.png"
+            src={lanyardWholeExample}
             alt="Example FigBuild badge"
             className="w-[220px] sm:w-[280px] lg:w-[340px] xl:w-[380px] h-auto"
           />
@@ -1888,11 +1898,129 @@ function WelcomeScreen({ onStart }: { onStart: () => void }) {
             >
               Build a FigBuild Badge
             </button>
-            <button className="border border-[#171717] w-full px-[16px] sm:px-[19px] py-[12px] sm:py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] sm:text-[21px] text-black text-center leading-[1.45] tracking-[-0.1px] hover:bg-black/5 transition-colors">
+            <button
+              onClick={onGallery}
+              className="border border-[#171717] w-full px-[16px] sm:px-[19px] py-[12px] sm:py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] sm:text-[21px] text-black text-center leading-[1.45] tracking-[-0.1px] hover:bg-black/5 transition-colors"
+            >
               I made a FigBuild Badge IRL
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Decorative Elements */}
+      <DecorativeElements />
+    </div>
+  );
+}
+
+// Gallery Screen for users who made badges IRL
+function GalleryScreen({ onBack }: { onBack: () => void }) {
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setUploadedImage(event.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-8 px-4 sm:px-6 lg:px-8 py-12">
+        {/* Back button */}
+        <button
+          onClick={onBack}
+          className="absolute top-6 left-6 flex items-center gap-2 text-black hover:text-[#4d49fc] transition-colors"
+        >
+          <ArrowLeft size={24} />
+          <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px]">Back</span>
+        </button>
+
+        {/* Header */}
+        <div className="flex flex-col items-center gap-4 max-w-2xl">
+          <div className="flex">
+            <div className="bg-black px-5 py-3 flex items-center justify-center">
+              <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[48px] lg:text-[58px] leading-[0.95] tracking-[-1.74px]">
+                FigBuild
+              </span>
+            </div>
+            <div className="bg-black px-5 py-3 rounded-full flex items-center justify-center">
+              <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[48px] lg:text-[58px] leading-[0.95] tracking-[-1.74px]">
+                2026
+              </span>
+            </div>
+          </div>
+          <h1 className="font-['Figma_Sans_VF:Regular',sans-serif] text-[32px] lg:text-[42px] tracking-[-1.26px] text-black text-center">
+            Share Your FigBuild Badge!
+          </h1>
+          <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] lg:text-[22px] text-black/70 text-center max-w-lg">
+            Upload a photo of your IRL FigBuild badge to share with the community
+          </p>
+        </div>
+
+        {/* Upload Area */}
+        <div className="w-full max-w-2xl">
+          {!uploadedImage ? (
+            <label className="flex flex-col items-center justify-center w-full h-[400px] border-2 border-dashed border-black/30 rounded-[12px] cursor-pointer bg-white hover:bg-black/5 transition-colors">
+              <div className="flex flex-col items-center justify-center gap-4 py-8">
+                <div className="w-16 h-16 rounded-full bg-[#4d49fc] flex items-center justify-center">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <p className="font-['Figma_Sans_VF:Medium',sans-serif] text-[20px] text-black">
+                    Click to upload your badge photo
+                  </p>
+                  <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50">
+                    PNG, JPG up to 10MB
+                  </p>
+                </div>
+              </div>
+              <input
+                type="file"
+                className="hidden"
+                accept="image/*"
+                onChange={handleImageUpload}
+              />
+            </label>
+          ) : (
+            <div className="flex flex-col items-center gap-6">
+              <div className="relative w-full max-w-md bg-white rounded-[12px] overflow-hidden shadow-lg">
+                <img
+                  src={uploadedImage}
+                  alt="Uploaded badge"
+                  className="w-full h-auto"
+                />
+              </div>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setUploadedImage(null)}
+                  className="px-6 py-3 border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-black hover:bg-black/5 transition-colors"
+                >
+                  Upload Different Photo
+                </button>
+                <button
+                  className="px-6 py-3 bg-[#4d49fc] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-white hover:bg-[#3d39ec] transition-colors"
+                >
+                  Share to Gallery
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Info text */}
+        <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 text-center max-w-md">
+          By uploading, you agree to share your badge with the FigBuild community
+        </p>
       </div>
 
       {/* Decorative Elements */}
