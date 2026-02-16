@@ -36,13 +36,13 @@ export function CompleteScreen({
             </div>
           </div>
 
-          <h1 className="font-['Figma_Sans_VF:Medium',sans-serif] text-[36px] lg:text-[54px] tracking-[-1.62px] text-black text-left">
-            Get hyped, you're competing in Figbuild 2026!
-          </h1>
+         <h1 className="font-['Figma_Sans_VF:Medium',sans-serif] text-[36px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-tight">
+  Get hyped, <br /> you're competing in FigBuild 2026!
+</h1>
 
-          <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] lg:text-[24px] text-black/70 text-left leading-relaxed">
-            Share your journey with #FigBuild2026 on LinkedIn or IG!
-          </p>
+<p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[36px] lg:text-[36px] text-black/70 text-left leading-tight">
+  Share your journey <br />with #FigBuild2026 <br />on LinkedIn or IG!
+</p>
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-4 w-full max-w-md">
