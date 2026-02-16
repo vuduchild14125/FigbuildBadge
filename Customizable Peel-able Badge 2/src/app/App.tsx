@@ -3,11 +3,6 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Undo2, Trash2, ArrowLeft } from 'lucide-react';
 
-// Import Figma lanyard components
-import BlackLanyard from '../imports/Group2147221362';
-import BlueLanyard from '../imports/Group2147221363-9-3579';
-import PeriwinkleLanyard from '../imports/Group2147221361';
-
 // Import SVG paths from Figma
 import svgPaths from '../imports/svg-fkhx66co9q';
 
@@ -169,9 +164,9 @@ export default function App() {
             </div>
 
             {/* Right Column - Badge Preview */}
-            <div className="flex-1 flex flex-col items-center gap-4 justify-start pt-[32px] min-w-0">
+            <div className="flex-1 flex flex-col items-center gap-[36px] justify-start pt-[140px] min-w-0">
               <div className="w-full flex justify-center">
-                <div className="lg:scale-[0.65] xl:scale-[0.85] 2xl:scale-100 origin-top">
+                <div className="lg:scale-[0.52] xl:scale-[0.68] 2xl:scale-[0.8] origin-top">
                   <BadgePreview
                     ref={badgeRef}
                     borderStyle={borderStyle}
@@ -191,7 +186,7 @@ export default function App() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center -mt-[150px]">
                 <button
                   onClick={handleUndo}
                   className="px-[8px] py-[12px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
@@ -234,7 +229,7 @@ export default function App() {
               marginBottom: '8px'
             }}>
               <div style={{
-                transform: 'scale(0.565)',
+                transform: 'scale(0.452)',
                 transformOrigin: 'top left',
                 width: '483px',
                 position: 'absolute',
@@ -351,11 +346,11 @@ export default function App() {
                   {(['black', 'periwinkle', 'blue'] as CordColor[]).map((color) => (
                     <button key={color} onClick={() => setCordColor(color)} className="flex flex-col items-center gap-2">
                       <div className={`w-[80px] h-[80px] bg-white rounded overflow-hidden flex items-center justify-center ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
-                        <div className="scale-[0.08] origin-center">
-                          {color === 'black' && <BlackLanyard />}
-                          {color === 'blue' && <BlueLanyard />}
-                          {color === 'periwinkle' && <PeriwinkleLanyard />}
-                        </div>
+                        <img
+                          src={`/LanyardCord-${color.charAt(0).toUpperCase() + color.slice(1)}.png`}
+                          alt={`${color} lanyard cord`}
+                          className="w-full h-full object-contain scale-[0.08]"
+                        />
                       </div>
                       <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50 capitalize">{color}</span>
                     </button>
@@ -1255,11 +1250,11 @@ function CordsPanel({ cordColor, setCordColor }: { cordColor: CordColor; setCord
           >
             <div className="size-[82px] bg-white rounded-[3.184px] overflow-hidden relative">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="scale-[0.09] origin-center">
-                  {color === 'black' && <BlackLanyard />}
-                  {color === 'blue' && <BlueLanyard />}
-                  {color === 'periwinkle' && <PeriwinkleLanyard />}
-                </div>
+                <img
+                  src={`/LanyardCord-${color.charAt(0).toUpperCase() + color.slice(1)}.png`}
+                  alt={`${color} lanyard cord`}
+                  className="w-full h-full object-contain scale-[0.09]"
+                />
               </div>
             </div>
             <span className="absolute bottom-[-11.5px] left-[-1px] translate-y-1/2 font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/50 tracking-[-0.42px] capitalize w-[104px] text-left leading-[0.95]">{color}</span>
@@ -1518,11 +1513,13 @@ const BadgePreview = React.forwardRef<
   return (
     <div className="relative w-[483px]" style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}>
       {/* Lanyard - positioned above badge */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: '-560px' }}>
+      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: '-736px' }}>
         <div className="w-[345px] h-[736px] overflow-visible">
-          {cordColor === 'black' && <BlackLanyard />}
-          {cordColor === 'blue' && <BlueLanyard />}
-          {cordColor === 'periwinkle' && <PeriwinkleLanyard />}
+          <img
+            src={`/LanyardCord-${cordColor.charAt(0).toUpperCase() + cordColor.slice(1)}.png?v=2`}
+            alt={`${cordColor} lanyard cord`}
+            className="w-full h-full object-contain"
+          />
         </div>
       </div>
 
@@ -1622,7 +1619,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 27,
                   top: sticker.y - 27,
-                  transform: `rotate(${sticker.rotation}deg)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
                 }}
               >
                 <div className="w-[55px] h-[55px] overflow-hidden rounded-[4px]">
@@ -1686,7 +1683,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 37,
                   top: sticker.y - 26,
-                  transform: `rotate(${sticker.rotation}deg)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
                 }}
               >
                 <div className="w-[75px] h-[52px] relative">
@@ -1713,7 +1710,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 40,
                   top: sticker.y - 14,
-                  transform: `rotate(${sticker.rotation}deg)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
                 }}
               >
                 <div className="px-[11px] py-[6px] rounded-[100px] whitespace-nowrap" style={{ backgroundColor: sticker.aboutColor }}>
@@ -1732,7 +1729,7 @@ const BadgePreview = React.forwardRef<
                 style={{
                   left: sticker.x - 40,
                   top: sticker.y - 14,
-                  transform: `rotate(${sticker.rotation}deg)`,
+                  transform: `rotate(${sticker.rotation}deg) scale(1.35)`,
                 }}
               >
                 <div className="bg-[#e4ff97] px-[12px] py-[6px] whitespace-nowrap">
@@ -1751,7 +1748,7 @@ const BadgePreview = React.forwardRef<
               style={{
                 left: sticker.x - 35,
                 top: sticker.y - 25,
-                transform: `rotate(${sticker.rotation}deg)`,
+                transform: `rotate(${sticker.rotation}deg) scale(1.25)`,
               }}
             >
               <div className="w-[70px] h-[51px] relative">
@@ -1808,12 +1805,12 @@ function DecorativeElements() {
     <>
       {/* Bottom Left Decorative Elements */}
       <div className="hidden lg:block absolute bottom-0 left-0 pointer-events-none">
-        <img src="/bottomleft.png" alt="" className="block max-w-none w-[350px] xl:w-[450px] 2xl:w-[580px] h-auto" />
+        <img src="/bottomleft.png" alt="" className="block max-w-none w-[180px] xl:w-[220px] 2xl:w-[280px] h-auto" />
       </div>
 
       {/* Bottom Right Decorative Elements */}
       <div className="hidden lg:block absolute bottom-0 right-0 pointer-events-none">
-        <img src="/bottomright.png" alt="" className="block max-w-none w-[350px] xl:w-[450px] 2xl:w-[580px] h-auto" />
+        <img src="/bottomright.png" alt="" className="block max-w-none w-[180px] xl:w-[220px] 2xl:w-[280px] h-auto" />
       </div>
     </>
   );
