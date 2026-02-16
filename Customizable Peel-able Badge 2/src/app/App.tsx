@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import html2canvas from 'html2canvas';
 
 import type { BorderStyle, CordColor, Background, DrawSize, MobileTab, Screen, StickerTab, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
@@ -33,6 +34,7 @@ export default function App() {
   const [mobileTab, setMobileTab] = useState<MobileTab>('background');
   const [mobileStickerTab, setMobileStickerTab] = useState<StickerTab>('year');
   const [isMobileStickerAnimating, setIsMobileStickerAnimating] = useState(false);
+  const [savedBadgeImage, setSavedBadgeImage] = useState<string | null>(null);
 
   const handleUndo = () => {
     if (drawPaths.length > 0) {
@@ -47,7 +49,34 @@ export default function App() {
     setPlacedStickers([]);
   };
 
-  const handleDone = () => {
+  const handleDone = async () => {
+    // Capture the badge before transitioning to complete screen
+    const ref = window.innerWidth < 1024 ? mobileBadgeRef : badgeRef;
+
+    if (ref.current) {
+      try {
+        console.log('Capturing badge...', ref.current);
+        const canvas = await html2canvas(ref.current, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          allowTaint: true,
+        });
+        const imageData = canvas.toDataURL('image/png');
+        console.log('Badge captured successfully, image size:', imageData.length);
+        setSavedBadgeImage(imageData);
+
+        // Small delay to ensure state is updated before screen transition
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error('Error capturing badge:', error);
+        // Still transition even if capture fails
+      }
+    } else {
+      console.warn('Badge ref is null, cannot capture');
+    }
+
     setCurrentScreen('complete');
   };
 
@@ -80,7 +109,15 @@ export default function App() {
   }
 
   if (currentScreen === 'complete') {
-    return <CompleteScreen onRestart={() => setCurrentScreen('welcome')} />;
+    return (
+      <CompleteScreen
+        onRestart={() => {
+          setCurrentScreen('welcome');
+          setSavedBadgeImage(null);
+        }}
+        badgeImage={savedBadgeImage}
+      />
+    );
   }
 
   return (

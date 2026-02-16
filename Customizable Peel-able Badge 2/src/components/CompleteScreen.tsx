@@ -1,12 +1,28 @@
-import React from 'react';
 import { DecorativeElements } from './DecorativeElements';
 
-export function CompleteScreen({ onRestart }: { onRestart: () => void }) {
+export function CompleteScreen({
+  onRestart,
+  badgeImage
+}: {
+  onRestart: () => void;
+  badgeImage: string | null;
+}) {
+  const handleDownload = (aspectRatio: '3:4' | '9:16') => {
+    if (!badgeImage) return;
+
+    const link = document.createElement('a');
+    link.href = badgeImage;
+    link.download = `figbuild-badge-${aspectRatio}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
-      <div className="relative z-10 flex flex-col items-start justify-start min-h-screen gap-8 px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="flex flex-col items-start gap-6 max-w-2xl">
+      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-center min-h-screen gap-8 lg:gap-12 px-4 sm:px-6 lg:px-8 py-12 lg:py-0">
+        {/* Left Column - Text Content */}
+        <div className="flex flex-col items-start gap-8 max-w-xl">
           <div className="flex">
             <div className="bg-black px-5 py-3 flex items-center justify-center">
               <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[48px] lg:text-[58px] leading-[0.95] tracking-[-1.74px]">
@@ -24,33 +40,53 @@ export function CompleteScreen({ onRestart }: { onRestart: () => void }) {
             Get hyped, you're competing in Figbuild 2026!
           </h1>
 
-          <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] lg:text-[24px] text-black/70 text-left max-w-lg leading-relaxed">
+          <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] lg:text-[24px] text-black/70 text-left leading-relaxed">
             Share your journey with #FigBuild2026 on LinkedIn or IG!
+          </p>
+
+          {/* Action Buttons */}
+          <div className="flex flex-col gap-4 w-full max-w-md">
+            <button
+              onClick={() => handleDownload('3:4')}
+              disabled={!badgeImage}
+              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Download 3:4 (Grid)
+            </button>
+
+            <button
+              onClick={() => handleDownload('9:16')}
+              disabled={!badgeImage}
+              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Download 9:16 (Story)
+            </button>
+          </div>
+
+          <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/40 text-left">
+            See you at FigBuild 2026!
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col gap-4 w-full max-w-md">
-          <button
-            onClick={() => window.print()}
-            className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
-          >
-            Download 3:4 (Grid)
-          </button>
-
-          <button
-            onClick={onRestart}
-            className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
-          >
-            Download 9:16 (Story)
-          </button>
+        {/* Right Column - Badge Preview */}
+        <div className="flex-1 flex items-center justify-center lg:justify-end max-w-2xl">
+          {badgeImage ? (
+            <div className="relative">
+              <img
+                src={badgeImage}
+                alt="Your custom badge"
+                className="w-full max-w-[350px] lg:max-w-[450px] xl:max-w-[550px] h-auto"
+                style={{ filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))' }}
+              />
+            </div>
+          ) : (
+            <div className="w-[350px] lg:w-[450px] h-[525px] lg:h-[675px] bg-white/50 rounded-lg border-2 border-dashed border-black/20 flex items-center justify-center">
+              <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-black/40">
+                Loading badge...
+              </p>
+            </div>
+          )}
         </div>
-        
-        {/* Footer note */}
-       <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/40 text-center max-w-md mt-4 mx-auto">
-  See you at FigBuild 2026!
-</p>
-
       </div>
 
       <DecorativeElements />
