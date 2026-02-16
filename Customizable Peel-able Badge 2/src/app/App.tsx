@@ -11,6 +11,11 @@ import cordBlackSvg from '../assets/filbutton-cordblack.svg';
 import cordBlueSvg from '../assets/filbutton-cordblue.svg';
 import cordPeriwinkleSvg from '../assets/filbutton-cordperiwinkle.svg';
 
+// Import lanyard cord SVGs
+import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
+import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
+import lanyardCordPeriwinkle from '../assets/LanyardCord-Periwinkle.svg';
+
 type BorderStyle = 'none' | 'dashed' | 'wiggly' | 'solid';
 type CordColor = 'black' | 'periwinkle' | 'blue';
 type Background = 'swag' | 'creative' | 'playful';
@@ -348,18 +353,25 @@ export default function App() {
               {/* Cord tab */}
               {mobileTab === 'cord' && (
                 <div className="flex gap-3">
-                  {(['black', 'periwinkle', 'blue'] as CordColor[]).map((color) => (
-                    <button key={color} onClick={() => setCordColor(color)} className="flex flex-col items-center gap-2">
-                      <div className={`w-[80px] h-[80px] bg-white rounded overflow-hidden flex items-center justify-center ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
-                        <img
-                          src={`/LanyardCord-${color.charAt(0).toUpperCase() + color.slice(1)}.png`}
-                          alt={`${color} lanyard cord`}
-                          className="w-full h-full object-contain scale-[0.08]"
-                        />
-                      </div>
-                      <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50 capitalize">{color}</span>
-                    </button>
-                  ))}
+                  {(['black', 'periwinkle', 'blue'] as CordColor[]).map((color) => {
+                    const lanyardImages = {
+                      black: lanyardCordBlack,
+                      periwinkle: lanyardCordPeriwinkle,
+                      blue: lanyardCordBlue
+                    };
+                    return (
+                      <button key={color} onClick={() => setCordColor(color)} className="flex flex-col items-center gap-2">
+                        <div className={`w-[80px] h-[80px] bg-white rounded overflow-hidden flex items-center justify-center ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
+                          <img
+                            src={lanyardImages[color]}
+                            alt={`${color} lanyard cord`}
+                            className="w-full h-full object-contain scale-[0.08]"
+                          />
+                        </div>
+                        <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50 capitalize">{color}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               )}
 
@@ -1519,13 +1531,19 @@ const BadgePreview = React.forwardRef<
     blue: '#4d49fc'
   };
 
+  const lanyardCordImages = {
+    black: lanyardCordBlack,
+    periwinkle: lanyardCordPeriwinkle,
+    blue: lanyardCordBlue
+  };
+
   return (
     <div className="relative w-[483px]" style={{ transform: `scale(${scale})`, transformOrigin: 'top center' }}>
       {/* Lanyard - positioned above badge */}
       <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ top: '-736px' }}>
         <div className="w-[345px] h-[736px] overflow-visible">
           <img
-            src={`/LanyardCord-${cordColor.charAt(0).toUpperCase() + cordColor.slice(1)}.png?v=2`}
+            src={lanyardCordImages[cordColor]}
             alt={`${cordColor} lanyard cord`}
             className="w-full h-full object-contain"
           />
