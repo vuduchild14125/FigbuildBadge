@@ -405,7 +405,7 @@ export const BadgePreview = React.forwardRef<
           if (sticker.aboutColor && sticker.pronounText) {
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x, top: sticker.y, transform: `translate(-50%, -50%) rotate(${sticker.rotation}deg) scale(1.5)` }}>
+                style={{ left: sticker.x, top: sticker.y, transform: `translate(-50%, -50%) rotate(${sticker.rotation}deg) scale(1.2)` }}>
                 <div className="px-[11px] py-[6px] rounded-[100px] whitespace-nowrap" style={{ backgroundColor: sticker.aboutColor }}>
                   <span className="text-[12px] text-black uppercase leading-[1.2]" style={{ fontFamily: "'Figma Mono VF:Regular', monospace" }}>
                     {sticker.pronounText}
@@ -417,7 +417,7 @@ export const BadgePreview = React.forwardRef<
           if (sticker.pronounText) {
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x, top: sticker.y, transform: `translate(-50%, -50%) rotate(${sticker.rotation}deg) scale(1.5)` }}>
+                style={{ left: sticker.x, top: sticker.y, transform: `translate(-50%, -50%) rotate(${sticker.rotation}deg) scale(1.2)` }}>
                 <div className="bg-[#e4ff97] px-[12px] py-[6px] whitespace-nowrap">
                   <span className="font-['Figma_Mono_VF:Regular',sans-serif] text-[14px] text-black uppercase leading-[1.2]">
                     {sticker.pronounText}

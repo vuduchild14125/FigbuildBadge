@@ -104,7 +104,7 @@ export function RoleStickerRoll({ isAnimating }: { isAnimating: boolean }) {
 
   return (
     <div className="relative h-full w-full flex justify-center items-center">
-      <div className="relative">
+      <div className="relative min-h-[100px]">
         <div className="absolute bg-white h-[50px] rounded-tr-[16px] top-[35px] w-[64px] right-0" />
         <div className={`relative bg-white h-[80px] overflow-hidden rounded-tr-[20px] w-[64px] ${
           isAnimating ? 'animate-roll-collapse' : 'animate-roll-expand'

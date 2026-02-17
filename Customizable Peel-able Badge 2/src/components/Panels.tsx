@@ -49,7 +49,7 @@ export function CordsPanel({ cordColor, setCordColor }: { cordColor: CordColor; 
       <div className="font-['Figma_Sans_VF:Medium',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] text-black h-[17px] flex flex-col justify-center">
         <p className="leading-[0.95]">Cords</p>
       </div>
-      <div className="flex gap-[10px] h-[103px] items-center w-full">
+      <div className="flex gap-[10px] h-[103px] 2xl:h-[123px] items-center w-full">
         {(['black', 'periwinkle', 'blue'] as CordColor[]).map((color) => (
           <button
             key={color}

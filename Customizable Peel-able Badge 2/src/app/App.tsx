@@ -154,9 +154,9 @@ export default function App() {
             </div>
 
             {/* Right Column - Badge Preview */}
-            <div className="flex-1 flex flex-col items-center gap-[36px] justify-start pt-[140px] min-w-0">
+            <div className="flex-1 flex flex-col items-center gap-[36px] justify-start pt-[140px] 2xl:pt-[80px] min-w-0">
               <div className="w-full flex justify-center">
-                <div className="lg:scale-[0.45] xl:scale-[0.55] 2xl:scale-[0.65] origin-top">
+                <div className="lg:scale-[0.75] xl:scale-[0.75] 2xl:scale-[0.95] origin-top">
                   <BadgePreview
                     ref={badgeRef}
                     borderStyle={borderStyle}
@@ -270,28 +270,14 @@ export default function App() {
           {/* Bottom panel */}
           <div className="bg-[#ececec] rounded-t-[20px] flex-shrink-0 flex flex-col items-center">
             {/* Tab bar container */}
-            <div className="w-full border-b border-[#CFCFCF]">
+            <div className="w-full max-w-[362px]">
               {/* Tab bar */}
-              <div ref={tabBarRef} className="flex gap-2 pl-4 pr-8 pt-4 pb-3 overflow-x-auto scroll-smooth">
+              <div ref={tabBarRef} className="flex gap-1 px-2 pt-4 pb-3 overflow-x-auto translate-x-[15px]">
               {(['background', 'cord', 'stickers', 'draw'] as MobileTab[]).map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => {
-                    setMobileTab(tab);
-                    if (tab === 'stickers' && tabBarRef.current && doneButtonRef.current) {
-                      requestAnimationFrame(() => {
-                        const container = tabBarRef.current!;
-                        const done = doneButtonRef.current!;
-                        const containerRect = container.getBoundingClientRect();
-                        const doneRect = done.getBoundingClientRect();
-                        const scrollTarget = container.scrollLeft + (doneRect.right - containerRect.right) + 40;
-                        container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
-                      });
-                    } else if ((tab === 'background' || tab === 'cord') && tabBarRef.current) {
-                      tabBarRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-                    }
-                  }}
-                  className={`px-[16px] py-[12px] rounded-[9px] text-[16px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] capitalize flex-shrink-0 ${
+                  onClick={() => setMobileTab(tab)}
+                  className={`px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] capitalize ${
                     mobileTab === tab ? 'bg-[#4d49fc]' : 'bg-[#171717]'
                   }`}
                 >
@@ -301,7 +287,7 @@ export default function App() {
               <button
                 ref={doneButtonRef}
                 onClick={handleDone}
-                className="px-[16px] py-[12px] rounded-[9px] text-[16px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717] flex-shrink-0"
+                className="px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717] flex-shrink-0"
               >
                 Done!
               </button>
@@ -309,7 +295,7 @@ export default function App() {
             </div>
 
             {/* Tab content */}
-            <div className="p-4 h-[220px] w-full max-w-[362px] overflow-hidden">
+            <div className="p-4 h-[220px] w-full max-w-[362px]">
               {/* Background tab */}
               {mobileTab === 'background' && (
                 <div>
@@ -413,7 +399,7 @@ export default function App() {
                       </button>
                     ))}
                   </div>
-                  <div className="relative h-[130px] overflow-hidden flex items-center justify-center">
+                  <div className="relative flex items-start justify-center pt-2">
                     {mobileStickerTab === 'year' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'pronouns' && <PronounStickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'about' && <AboutStickerRoll isAnimating={isMobileStickerAnimating} />}
