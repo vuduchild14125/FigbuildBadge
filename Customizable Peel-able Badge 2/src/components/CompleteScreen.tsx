@@ -32,6 +32,19 @@ export function CompleteScreen({
   const [currentPath] = useState<DrawPoint[]>([]);
   const [layoutType, setLayoutType] = useState<'story' | 'grid'>('story'); // Default to story
   const [isDownloading, setIsDownloading] = useState(false);
+  const layoutStyles = {
+    story: {
+      backgroundWidth: '40%',
+      previewScale: 0.55,
+      previewOffsetY: -80,
+    },
+    grid: {
+      backgroundWidth: '56%',
+      previewScale: 0.66,
+      previewOffsetY: -70,
+    },
+  } as const;
+  const activeLayoutStyle = layoutStyles[layoutType];
 
   const triggerDownload = async (aspectRatio: '3:4' | '9:16') => {
     const target = downloadContainerRef.current;
@@ -72,7 +85,7 @@ export function CompleteScreen({
 
   return (
     <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
-      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-center min-h-screen gap-8 lg:gap-12 px-4 sm:px-6 lg:px-8 py-12 lg:py-0">
+      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-center min-h-screen w-full max-w-[1200px] mx-auto gap-6 lg:gap-8 px-6 sm:px-8 lg:px-12 py-12 lg:py-0">
         {/* Left Column - Text Content */}
         <div className="flex flex-col items-start gap-8 max-w-xl">
           <div className="flex">
@@ -121,13 +134,14 @@ export function CompleteScreen({
         </div>
 
         {/* Right Column - Badge Preview with Background */}
-        <div className="flex-1 flex items-center justify-center lg:justify-end">
+        <div className="flex items-center justify-center">
           <div ref={downloadContainerRef} className="relative w-full h-full overflow-hidden">
             {/* Background Image - Full width and height */}
             <img
               src={layoutType === 'story' ? photoBackgroundStory : photoBackgroundGrid}
               alt="Background"
-              className="w-[40%] h-auto object-contain mx-auto"
+              className="h-auto object-contain mx-auto"
+              style={{ width: activeLayoutStyle.backgroundWidth }}
 
             />
 
@@ -135,7 +149,12 @@ export function CompleteScreen({
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
               <DndProvider backend={HTML5Backend}>
                 
-<div className="scale-[0.55] origin-center -translate-y-[80px]">
+                <div
+                  className="origin-center"
+                  style={{
+                    transform: `scale(${activeLayoutStyle.previewScale}) translateY(${activeLayoutStyle.previewOffsetY}px)`,
+                  }}
+                >
                   <BadgePreview
                     ref={staticBadgeRef}
                     borderStyle={borderStyle}
