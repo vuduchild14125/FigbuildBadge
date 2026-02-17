@@ -60,29 +60,15 @@ export default function App() {
       try {
         console.log('📐 Element size:', ref.current.offsetWidth, 'x', ref.current.offsetHeight);
 
-        // Capture badge with html2canvas
+        // Capture badge with html2canvas using foreignObject rendering
+        // This bypasses CSS parsing and uses browser's native rendering
         const canvas = await html2canvas(ref.current, {
           backgroundColor: '#ffffff',
-          scale: 2, // 2x resolution for quality
+          scale: 2,
           useCORS: true,
           allowTaint: true,
-          logging: false,
-          width: ref.current.offsetWidth,
-          height: ref.current.offsetHeight,
-          onclone: (clonedDoc) => {
-            // FIX: Convert OkLch colors to RGB (html2canvas doesn't support oklch)
-            const allElements = clonedDoc.querySelectorAll('*');
-            allElements.forEach((el: Element) => {
-              const htmlEl = el as HTMLElement;
-              const computedStyle = window.getComputedStyle(el);
-
-              // Replace oklch colors with computed RGB values
-              if (computedStyle.color) htmlEl.style.color = computedStyle.color;
-              if (computedStyle.backgroundColor) htmlEl.style.backgroundColor = computedStyle.backgroundColor;
-              if (computedStyle.borderColor) htmlEl.style.borderColor = computedStyle.borderColor;
-            });
-            console.log('✅ Fixed OkLch colors in cloned DOM');
-          },
+          logging: true,
+          foreignObjectRendering: true, // Use SVG foreignObject (handles modern CSS)
         });
 
         console.log('🖼️ Canvas created:', canvas.width, 'x', canvas.height);

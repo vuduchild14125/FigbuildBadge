@@ -11,6 +11,12 @@ export function CompleteScreen({
   useEffect(() => {
     console.log('📄 CompleteScreen mounted');
     console.log('🖼️ Badge image:', badgeImage ? `Received (${Math.round(badgeImage.length / 1024)} KB)` : '❌ NULL');
+    console.log('🔍 badgeImage value:', badgeImage);
+    console.log('🔍 badgeImage truthy?', !!badgeImage);
+    console.log('🔍 badgeImage type:', typeof badgeImage);
+    if (badgeImage) {
+      console.log('🔍 First 100 chars:', badgeImage.substring(0, 100));
+    }
   }, [badgeImage]);
 
   const handleDownload = (aspectRatio: '3:4' | '9:16') => {
@@ -79,23 +85,44 @@ export function CompleteScreen({
         </div>
 
         {/* Right Column - Badge Preview */}
-        <div className="flex-1 flex items-center justify-center lg:justify-end max-w-2xl">
-          {badgeImage ? (
-            <div className="relative">
-              <img
-                src={badgeImage}
-                alt="Your custom badge"
-                className="w-full max-w-[350px] lg:max-w-[450px] xl:max-w-[550px] h-auto"
-                style={{ filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))' }}
-              />
-            </div>
-          ) : (
-            <div className="w-[350px] lg:w-[450px] h-[525px] lg:h-[675px] bg-white/50 rounded-lg border-2 border-dashed border-black/20 flex items-center justify-center">
-              <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-black/40">
-                Loading badge...
-              </p>
-            </div>
-          )}
+        <div
+          className="flex-1 flex items-center justify-center lg:justify-end max-w-2xl"
+          style={{
+            backgroundColor: 'yellow', // DEBUG: Make column visible
+            minHeight: '400px'
+          }}
+        >
+          {(() => {
+            console.log('🎨 Rendering badge section, badgeImage exists?', !!badgeImage);
+            return badgeImage ? (
+              <div
+                className="relative"
+                style={{
+                  backgroundColor: 'lime', // DEBUG: Make container visible
+                  padding: '20px',
+                  border: '5px solid red' // DEBUG: Make boundary visible
+                }}
+              >
+                <img
+                  src={badgeImage}
+                  alt="Your custom badge"
+                  className="w-full max-w-[350px] lg:max-w-[450px] xl:max-w-[550px] h-auto"
+                  style={{
+                    filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))',
+                    border: '3px solid blue' // DEBUG: Make image visible
+                  }}
+                  onLoad={() => console.log('✅ Image loaded successfully')}
+                  onError={(e) => console.error('❌ Image failed to load:', e)}
+                />
+              </div>
+            ) : (
+              <div className="w-[350px] lg:w-[450px] h-[525px] lg:h-[675px] bg-white/50 rounded-lg border-2 border-dashed border-black/20 flex items-center justify-center">
+                <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-black/40">
+                  Loading badge...
+                </p>
+              </div>
+            );
+          })()}
         </div>
       </div>
 
