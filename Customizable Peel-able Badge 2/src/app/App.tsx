@@ -377,12 +377,12 @@ export default function App() {
               {/* Stickers tab */}
               {mobileTab === 'stickers' && (
                 <div>
-                  <div className="flex gap-3 mb-3 justify-center">
+                  <div className="flex flex-wrap gap-2 mb-3">
                     {(['year', 'pronouns', 'about', 'goals', 'time', 'role'] as const).map((tab) => (
                       <button
                         key={tab}
                         onClick={() => handleMobileStickerTabChange(tab)}
-                        className={`px-1 py-1 rounded text-[14px] uppercase font-['Fragment_Mono:Regular',sans-serif] leading-[1.2] transition-colors ${
+                        className={`px-3 py-1.5 rounded text-[13px] uppercase font-['Fragment_Mono:Regular',sans-serif] leading-[1.2] transition-colors whitespace-nowrap ${
                           mobileStickerTab === tab ? 'bg-[#c4baff] text-[#4d49fc]' : 'text-black'
                         }`}
                       >
