@@ -10,7 +10,7 @@ import { CompleteScreen } from '../components/CompleteScreen';
 import { BadgePreview } from '../components/BadgePreview';
 import { BorderSelector } from '../components/BorderSelector';
 import { DrawTools, CordsPanel, BackgroundPanel, PatternPreview } from '../components/Panels';
-import { StickersPanel, FunStickersSheet } from '../components/StickersPanel';
+import { StickersPanel } from '../components/StickersPanel';
 import { StickerRoll, PronounStickerRoll, AboutStickerRoll, GoalStickerRoll, TimeStickerRoll, RoleStickerRoll } from '../components/StickerRolls';
 import { DecorativeElements } from '../components/DecorativeElements';
 
@@ -133,7 +133,7 @@ export default function App() {
             {/* Right Column - Badge Preview */}
             <div className="flex-1 flex flex-col items-center gap-[36px] justify-start pt-[140px] min-w-0">
               <div className="w-full flex justify-center">
-                <div className="lg:scale-[0.52] xl:scale-[0.68] 2xl:scale-[0.8] origin-top">
+                <div className="lg:scale-[0.45] xl:scale-[0.55] 2xl:scale-[0.65] origin-top">
                   <BadgePreview
                     ref={badgeRef}
                     borderStyle={borderStyle}
@@ -189,19 +189,19 @@ export default function App() {
           {/* Badge + Lanyard area */}
           <div className="flex-1 flex items-end justify-center overflow-hidden min-h-0">
             <div style={{
-              width: '273px',
-              height: '385px',
+              width: '362px',
+              height: '511px',
               position: 'relative',
               overflow: 'visible',
               marginBottom: '8px'
             }}>
               <div style={{
-                transform: 'scale(0.452)',
+                transform: 'scale(0.5)',
                 transformOrigin: 'top left',
                 width: '483px',
                 position: 'absolute',
                 top: 0,
-                left: 0
+                left: 65,
               }}>
                 <BadgePreview
                   ref={mobileBadgeRef}
@@ -217,7 +217,7 @@ export default function App() {
                   currentPath={currentPath}
                   setCurrentPath={setCurrentPath}
                   setDrawPaths={setDrawPaths}
-                  scale={0.565}
+                  scale={1.4}
                 />
               </div>
             </div>
@@ -367,7 +367,7 @@ export default function App() {
                       </button>
                     ))}
                   </div>
-                  <div className="relative h-[130px] overflow-hidden">
+                  <div className="relative h-[130px] overflow-hidden flex items-center justify-center">
                     {mobileStickerTab === 'year' && <StickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'pronouns' && <PronounStickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'about' && <AboutStickerRoll isAnimating={isMobileStickerAnimating} />}
@@ -375,7 +375,6 @@ export default function App() {
                     {mobileStickerTab === 'time' && <TimeStickerRoll isAnimating={isMobileStickerAnimating} />}
                     {mobileStickerTab === 'role' && <RoleStickerRoll isAnimating={isMobileStickerAnimating} />}
                   </div>
-                  <FunStickersSheet />
                 </div>
               )}
 

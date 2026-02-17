@@ -41,29 +41,38 @@ export const TIME_STICKER_TYPES = [
 ];
 
 export const FUN_STICKERS = [
-  { id: 'figma-edu-green', type: 'text', label: 'Figma for Edu', bg: '#24CB71', textColor: '#000000' },
+  // Figma logos with blobs
+  { id: 'figma-logo-black', type: 'figma-logo', blobSrc: '/stickers/fun-figma-blob-black.svg', iconSrc: '/stickers/fun-figma-icon-black.svg' },
+  { id: 'figma-logo-lavender', type: 'figma-logo', blobSrc: '/stickers/fun-figma-blob-lavender.svg', iconSrc: '/stickers/fun-figma-icon-lavender.svg' },
+  { id: 'figma-logo-blue', type: 'figma-logo', blobSrc: '/stickers/fun-figma-blob-blue.svg', iconSrc: '/stickers/fun-figma-icon-black.svg' },
+
+  // Text labels - FigBuild 2026
+  { id: 'figbuild', type: 'text', label: 'FigBuild', bg: '#000000', textColor: '#FFFFFF' },
+  { id: 'figbuild-2026-large', type: 'text-horizontal', label1: 'FigBuild', label2: '2026', bg: '#000000', textColor: '#FFFFFF' },
+  { id: 'figbuild-2026-small', type: 'text-horizontal-small', label1: 'FigBuild', label2: '2026', bg: '#000000', textColor: '#FFFFFF' },
+
+  // Figma for Edu labels
   { id: 'figma-edu-blue', type: 'text', label: 'Figma for Edu', bg: '#4D49FC', textColor: '#FFFFFF' },
-  { id: 'figma-edu-pink', type: 'text', label: 'Figma for Edu', bg: '#FF01E5', textColor: '#FFFFFF' },
-  { id: 'figbuild-2026', type: 'text-stacked', label1: 'FigBuild', label2: '2026', bg: '#000000', textColor: '#FFFFFF' },
-  { id: 'figbuild-2026-h', type: 'text-horizontal', label1: 'FigBuild', label2: '2026', bg: '#000000', textColor: '#FFFFFF' },
-  { id: 'figbuild-2026-purple', type: 'text-stacked', label1: 'FigBuild', label2: '2026', bg: '#4D49FC', textColor: '#FFFFFF' },
-  { id: 'component-icon', type: 'svg', src: '/stickers/component-icon.svg' },
-  { id: 'comp1-group', type: 'svg', src: '/stickers/comp1-group.svg' },
-  { id: 'comp1-subtract', type: 'svg', src: '/stickers/comp1-subtract.svg' },
-  { id: 'comp2-frame', type: 'svg', src: '/stickers/comp2-frame.svg' },
-  { id: 'comp2-vector', type: 'svg', src: '/stickers/comp2-vector.svg' },
-  { id: 'comp3-union', type: 'svg', src: '/stickers/comp3-union.svg' },
-  { id: 'comp4-frame', type: 'svg', src: '/stickers/comp4-frame.svg' },
-  { id: 'flower-shape', type: 'svg-bg', src: '/stickers/flower-shape.svg', bg: '#FFC9C1' },
-  { id: 'u-hook', type: 'svg-bg', src: '/stickers/u-hook.svg', bg: '#E4FF97' },
-  { id: 'checkerboard', type: 'checkerboard' },
-  { id: 'blob-star', type: 'svg-bg', src: '/stickers/blob-star.svg', bg: '#4D49FC' },
-  { id: 'clover', type: 'svg-bg', src: '/stickers/clover.svg', bg: '#24CB71' },
-  { id: 'diamond-donut', type: 'svg-bg', src: '/stickers/diamond-donut.svg', bg: '#E4FF97' },
-  { id: 'sunburst', type: 'svg-bg', src: '/stickers/sunburst.svg', bg: '#FF01E5' },
-  { id: 'mini-shapes', type: 'svg', src: '/stickers/mini-shapes.svg' },
-  { id: 'figma-logo-black', type: 'figma-logo', blobSrc: '/stickers/figma-blob-black.svg', iconSrc: '/stickers/figma-icon-bw.svg' },
-  { id: 'figma-logo-lavender', type: 'figma-logo', blobSrc: '/stickers/figma-blob-lavender.svg', iconSrc: '/stickers/figma-icon-lavender.svg' },
-  { id: 'figma-logo-blue', type: 'figma-logo', blobSrc: '/stickers/figma-blob-blue.svg', iconSrc: '/stickers/figma-icon-bw.svg' },
-  { id: 'u-hook-pink', type: 'svg-bg', src: '/stickers/u-hook.svg', bg: '#FFC9C1' },
+  { id: 'figma-edu-green', type: 'text', label: 'Figma for Edu', bg: '#24CB71', textColor: '#000000' },
+
+  // Geometric compositions
+  { id: 'comp-blue-green-split', type: 'svg', src: '/stickers/fun-comp-subtract-blue.svg' },
+  { id: 'comp-periwinkle', type: 'svg', src: '/stickers/fun-comp-periwinkle.svg' },
+  { id: 'comp-blue-union', type: 'svg', src: '/stickers/fun-comp-blue-union.svg' },
+  { id: 'element-31', type: 'svg', src: '/stickers/fun-element-31.svg' },
+  { id: 'element-49-pink', type: 'svg', src: '/stickers/fun-element-49-pink.svg' },
+  { id: 'element-50-lime', type: 'svg', src: '/stickers/fun-element-50-lime.svg' },
+  { id: 'element-47-green', type: 'svg', src: '/stickers/fun-element-47-green.svg' },
+  { id: 'element-46-blue', type: 'svg', src: '/stickers/fun-element-46-blue.svg' },
+  { id: 'higher-ed-element', type: 'svg', src: '/stickers/fun-higher-ed-element.svg' },
+  { id: 'element-54-peach', type: 'svg', src: '/stickers/fun-element-54-peach.svg' },
+  { id: 'element-56-lime', type: 'svg', src: '/stickers/fun-element-56-lime.svg' },
+
+  // Flowers
+  { id: 'flower-pink', type: 'svg', src: '/stickers/fun-flower-pink.svg' },
+  { id: 'flower-orange', type: 'svg', src: '/stickers/fun-flower-orange.svg' },
+  { id: 'flower-lavender', type: 'svg', src: '/stickers/fun-flower-lavender.svg' },
+  { id: 'flower-blue', type: 'svg', src: '/stickers/fun-flower-blue.svg' },
+  { id: 'flower-lime', type: 'svg', src: '/stickers/fun-flower-lime.svg' },
+  { id: 'flower-green', type: 'svg', src: '/stickers/fun-flower-green.svg' },
 ];
