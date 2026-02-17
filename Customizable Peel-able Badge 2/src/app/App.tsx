@@ -186,68 +186,73 @@ export default function App() {
             </button>
           </div>
 
-          {/* Badge + Lanyard area */}
-          <div className="flex-1 flex items-end justify-center overflow-hidden min-h-0">
-            <div style={{
-              width: '362px',
-              height: '511px',
-              position: 'relative',
-              overflow: 'visible',
-              marginBottom: '8px'
-            }}>
+          {/* Centered container for badge and buttons */}
+          <div className="flex-1 flex flex-col items-center overflow-hidden min-h-0">
+            {/* Badge + Lanyard area */}
+            <div className="flex-1 flex items-end justify-center overflow-hidden min-h-0 w-full">
               <div style={{
-                transform: 'scale(0.5)',
-                transformOrigin: 'top left',
-                width: '483px',
-                position: 'absolute',
-                top: 0,
-                left: 65,
+                width: '362px',
+                height: '511px',
+                position: 'relative',
+                overflow: 'visible',
+                marginBottom: '8px'
               }}>
-                <BadgePreview
-                  ref={mobileBadgeRef}
-                  borderStyle={borderStyle}
-                  cordColor={cordColor}
-                  background={background}
-                  drawSize={drawSize}
-                  placedStickers={placedStickers}
-                  setPlacedStickers={setPlacedStickers}
-                  drawPaths={drawPaths}
-                  isDrawing={isDrawing}
-                  setIsDrawing={setIsDrawing}
-                  currentPath={currentPath}
-                  setCurrentPath={setCurrentPath}
-                  setDrawPaths={setDrawPaths}
-                  scale={1.4}
-                />
+                <div style={{
+                  transform: 'scale(0.5)',
+                  transformOrigin: 'top left',
+                  width: '483px',
+                  position: 'absolute',
+                  top: 0,
+                  left: 65,
+                }}>
+                  <BadgePreview
+                    ref={mobileBadgeRef}
+                    borderStyle={borderStyle}
+                    cordColor={cordColor}
+                    background={background}
+                    drawSize={drawSize}
+                    placedStickers={placedStickers}
+                    setPlacedStickers={setPlacedStickers}
+                    drawPaths={drawPaths}
+                    isDrawing={isDrawing}
+                    setIsDrawing={setIsDrawing}
+                    currentPath={currentPath}
+                    setCurrentPath={setCurrentPath}
+                    setDrawPaths={setDrawPaths}
+                    scale={1.4}
+                  />
+                </div>
               </div>
+            </div>
+
+            {/* Undo / Clear buttons */}
+            <div className="flex justify-center gap-3 py-2 flex-shrink-0 -mt-[20px] w-full">
+              <button
+                onClick={handleUndo}
+                className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+              >
+                Undo
+              </button>
+              <button
+                onClick={handleClear}
+                className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+              >
+                Clear
+              </button>
             </div>
           </div>
 
-          {/* Undo / Clear buttons */}
-          <div className="flex justify-center gap-3 py-2 flex-shrink-0 -mt-[20px]">
-            <button
-              onClick={handleUndo}
-              className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
-            >
-              Undo
-            </button>
-            <button
-              onClick={handleClear}
-              className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
-            >
-              Clear
-            </button>
-          </div>
-
           {/* Bottom panel */}
-          <div className="bg-[#ececec] rounded-t-[20px] flex-shrink-0">
-            {/* Tab bar */}
-            <div className="flex gap-2 px-4 pt-4 pb-3 border-b border-[#cfcfcf] overflow-x-auto">
+          <div className="bg-[#ececec] rounded-t-[20px] flex-shrink-0 flex flex-col items-center">
+            {/* Tab bar container */}
+            <div className="w-full max-w-[362px]">
+              {/* Tab bar */}
+              <div className="flex gap-1 px-2 pt-4 pb-3 overflow-x-auto translate-x-[15px]">
               {(['background', 'cord', 'stickers', 'draw'] as MobileTab[]).map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setMobileTab(tab)}
-                  className={`px-[16px] py-[12px] rounded-[9px] text-[16px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] capitalize ${
+                  className={`px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] capitalize ${
                     mobileTab === tab ? 'bg-[#4d49fc]' : 'bg-[#171717]'
                   }`}
                 >
@@ -256,14 +261,15 @@ export default function App() {
               ))}
               <button
                 onClick={handleDone}
-                className="px-[16px] py-[12px] rounded-[9px] text-[16px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717]"
+                className="px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717]"
               >
                 Done!
               </button>
             </div>
+            </div>
 
             {/* Tab content */}
-            <div className="p-4 min-h-[180px]">
+            <div className="p-4 min-h-[180px] w-full max-w-[362px]">
               {/* Background tab */}
               {mobileTab === 'background' && (
                 <div>

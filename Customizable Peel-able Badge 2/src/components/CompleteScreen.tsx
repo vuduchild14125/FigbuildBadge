@@ -17,8 +17,8 @@ const BADGE_SCALE = 0.5; // matches on-screen scale-[0.50]
 const BADGE_TRANSLATE_Y = -80; // matches on-screen -translate-y-[80px]
 
 const BG_DIMS = {
-  story: { width: 600, height: 1177, src: photoBackgroundStory },
-  grid: { width: 574, height: 718, src: photoBackgroundGrid },
+  story: { width: 2400, height: 4708, src: photoBackgroundStory },
+  grid: { width: 2296, height: 2872, src: photoBackgroundGrid },
 } as const;
 
 function loadImage(src: string): Promise<HTMLImageElement> {
@@ -67,8 +67,8 @@ export function CompleteScreen({
 
       // html-to-image can produce incomplete results on first call
       // due to resource loading. Call twice — first warms up, second captures.
-      try { await toPng(target, { pixelRatio: 2 }); } catch { /* warm-up */ }
-      const dataUrl = await toPng(target, { pixelRatio: 2 });
+      try { await toPng(target, { pixelRatio: 8 }); } catch { /* warm-up */ }
+      const dataUrl = await toPng(target, { pixelRatio: 8 });
       setBadgeDataUrl(dataUrl);
     };
     const timer = setTimeout(rasterize, 500);
@@ -125,8 +125,8 @@ export function CompleteScreen({
     ctx.drawImage(badgeImg, drawX, drawY, drawWidth, drawHeight);
 
     const link = document.createElement('a');
-    link.download = aspectRatio === '9:16' ? 'FigBuild2026_Story.jpg' : 'FigBuild2026_Grid.jpg';
-    link.href = canvas.toDataURL('image/jpeg', 0.95);
+    link.download = aspectRatio === '9:16' ? 'FigBuild2026_Story.png' : 'FigBuild2026_Grid.png';
+    link.href = canvas.toDataURL('image/png');
     link.click();
   };
 
