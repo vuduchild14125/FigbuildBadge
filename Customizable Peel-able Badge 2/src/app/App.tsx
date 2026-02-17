@@ -342,7 +342,31 @@ export default function App() {
                             <div className="absolute border-2 border-black border-dashed inset-0 pointer-events-none" />
                           )}
                           {border === 'wiggly' && (
-                            <div className="absolute inset-0 pointer-events-none" style={{ border: '2px wiggly black' }} />
+                            <svg
+                              className="absolute inset-0 pointer-events-none"
+                              width="64"
+                              height="32"
+                              viewBox="0 0 64 32"
+                              fill="none"
+                              preserveAspectRatio="none"
+                            >
+                              <rect
+                                x="1"
+                                y="1"
+                                width="62"
+                                height="30"
+                                fill="none"
+                                stroke="black"
+                                strokeWidth="2"
+                                style={{ filter: 'url(#wiggle-thumb)' }}
+                              />
+                              <defs>
+                                <filter id="wiggle-thumb">
+                                  <feTurbulence baseFrequency="0.2" numOctaves="0.1" result="turbulence" seed="2" />
+                                  <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="1" xChannelSelector="R" yChannelSelector="G" />
+                                </filter>
+                              </defs>
+                            </svg>
                           )}
                         </div>
                         <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50 capitalize">{border}</span>

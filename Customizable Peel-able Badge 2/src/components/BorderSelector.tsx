@@ -41,7 +41,31 @@ export function BorderSelector({ borderStyle, setBorderStyle }: { borderStyle: B
         >
           <div className={`absolute inset-0 pointer-events-none rounded-[2px] ${borderStyle === 'wiggly' ? 'border border-[#4d49fc] border-solid' : ''}`} />
           <div className="bg-white relative size-[66px]">
-            <div className="absolute inset-0 pointer-events-none" style={{ border: '3px wiggly black' }} />
+            <svg
+              className="absolute inset-0 pointer-events-none"
+              width="66"
+              height="66"
+              viewBox="0 0 66 66"
+              fill="none"
+              preserveAspectRatio="none"
+            >
+              <rect
+                x="1.5"
+                y="1.5"
+                width="63"
+                height="63"
+                fill="none"
+                stroke="black"
+                strokeWidth="3"
+                style={{ filter: 'url(#wiggle-desktop)' }}
+              />
+              <defs>
+                <filter id="wiggle-desktop">
+                  <feTurbulence baseFrequency="0.2" numOctaves="0.1" result="turbulence" seed="2" />
+                  <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
+                </filter>
+              </defs>
+            </svg>
           </div>
           <div className="-translate-y-1/2 absolute flex flex-col font-['Figma_Sans_VF:Regular',sans-serif] justify-center leading-[0] left-[4px] not-italic opacity-50 text-[14px] text-black top-[86px] tracking-[-0.42px] whitespace-nowrap" style={{ fontVariationSettings: "'wdth' 100" }}>
             <p className="leading-[0.95]">Wiggly</p>
