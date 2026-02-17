@@ -223,7 +223,10 @@ export default function App() {
                 height: '511px',
                 position: 'relative',
                 overflow: 'visible',
-                marginBottom: '8px'
+                marginBottom: '8px',
+                transform: mobileTab === 'cord' ? 'scale(0.7)' : 'scale(1)',
+                transformOrigin: 'bottom center',
+                transition: 'transform 0.4s ease-in-out',
               }}>
                 <div style={{
                   transform: 'scale(0.5)',
