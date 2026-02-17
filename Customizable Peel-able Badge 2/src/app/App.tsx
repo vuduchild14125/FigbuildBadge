@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { HTML5toTouch } from 'rdndmb-html5-to-touch';
+import { MultiBackend } from 'react-dnd-multi-backend';
 
 import type { BorderStyle, CordColor, Background, DrawSize, MobileTab, Screen, StickerTab, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
@@ -96,7 +97,7 @@ export default function App() {
   }
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
       <div className="size-full bg-[#F5F5F5] overflow-hidden relative">
         <div className="hidden lg:flex h-screen overflow-hidden">
           <div className="flex gap-4 xl:gap-6 items-start w-full px-6 xl:px-[80px] pt-[48px]">
