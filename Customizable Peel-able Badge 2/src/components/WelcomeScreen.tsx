@@ -6,11 +6,11 @@ export function WelcomeScreen({ onStart, onGallery }: { onStart: () => void; onG
   return (
     <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-6 sm:gap-8 lg:gap-16 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <div className="relative flex-shrink-0 lg:self-start lg:-mt-[420px]">
+        <div className="relative flex-shrink-0 -mt-[500px] sm:-mt-[100px] lg:self-start lg:-mt-[420px]">
           <img
             src={lanyardWholeExample}
             alt="Example FigBuild badge"
-            className="w-[220px] sm:w-[280px] lg:w-[340px] xl:w-[380px] h-auto"
+            className="w-[300px] sm:w-[320px] lg:w-[340px] xl:w-[380px] h-auto"
           />
         </div>
 
@@ -35,7 +35,7 @@ export function WelcomeScreen({ onStart, onGallery }: { onStart: () => void; onG
           <p className="font-['Figma_Sans_VF:Medium',sans-serif] text-[20px] sm:text-[24px] lg:text-[30px] xl:text-[36px] text-black text-center max-w-[260px] sm:max-w-[300px] lg:max-w-[381px] leading-normal">
             Start your journey with a FigBuild Badge!
           </p>
-          <div className="flex flex-col gap-[16px] sm:gap-[23px] w-[220px] sm:w-[245px]">
+          <div className="flex flex-col gap-[16px] sm:gap-[23px] w-[300px] sm:w-[320px]">
             <button
               onClick={onStart}
               className="bg-[#4d49fc] w-full px-[16px] sm:px-[19px] py-[12px] sm:py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] sm:text-[21px] text-center text-white leading-[1.45] tracking-[-0.1px] hover:bg-[#3d39ec] transition-colors"

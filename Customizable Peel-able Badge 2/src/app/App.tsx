@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -13,6 +13,8 @@ import { DrawTools, CordsPanel, BackgroundPanel, PatternPreview } from '../compo
 import { StickersPanel } from '../components/StickersPanel';
 import { StickerRoll, PronounStickerRoll, AboutStickerRoll, GoalStickerRoll, TimeStickerRoll, RoleStickerRoll } from '../components/StickerRolls';
 import { DecorativeElements } from '../components/DecorativeElements';
+import { TouchDragPreview } from '../components/TouchDragPreview';
+import { TouchDragProvider } from '../components/TouchDragContext';
 
 import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
 import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
@@ -30,6 +32,8 @@ export default function App() {
   const [currentPath, setCurrentPath] = useState<DrawPoint[]>([]);
   const badgeRef = useRef<HTMLDivElement>(null);
   const mobileBadgeRef = useRef<HTMLDivElement>(null);
+  const tabBarRef = useRef<HTMLDivElement>(null);
+  const doneButtonRef = useRef<HTMLButtonElement>(null);
   const [mobileTab, setMobileTab] = useState<MobileTab>('background');
   const [mobileStickerTab, setMobileStickerTab] = useState<StickerTab>('year');
   const [isMobileStickerAnimating, setIsMobileStickerAnimating] = useState(false);
@@ -60,6 +64,25 @@ export default function App() {
       }, 300);
     }
   };
+
+  const handleTouchDrop = useCallback((item: any, x: number, y: number) => {
+    const rotation = Math.random() * 30 - 15;
+    if (item.stickerType !== undefined) {
+      setPlacedStickers(prev => [...prev, { id: `sticker-${Date.now()}`, type: item.stickerType, x, y, rotation }]);
+    } else if (item.goalId) {
+      setPlacedStickers(prev => [...prev, { id: `goal-${Date.now()}`, type: 0, x, y, rotation, pronounText: item.label, goalColor: item.color }]);
+    } else if (item.aboutId) {
+      setPlacedStickers(prev => [...prev, { id: `about-${Date.now()}`, type: 0, x, y, rotation, pronounText: item.label, aboutColor: item.color }]);
+    } else if (item.text) {
+      setPlacedStickers(prev => [...prev, { id: `pronoun-${Date.now()}`, type: 0, x, y, rotation, pronounText: item.text }]);
+    } else if (item.funStickerId) {
+      setPlacedStickers(prev => [...prev, { id: `fun-${Date.now()}`, type: 0, x, y, rotation, funStickerId: item.funStickerId }]);
+    } else if (item.roleId) {
+      setPlacedStickers(prev => [...prev, { id: `role-${Date.now()}`, type: 0, x, y, rotation, roleColor: item.color, roleLabel: item.label }]);
+    } else if (item.timeId) {
+      setPlacedStickers(prev => [...prev, { id: `time-${Date.now()}`, type: 0, x, y, rotation, timeId: item.timeId }]);
+    }
+  }, []);
 
   if (currentScreen === 'welcome') {
     return (
@@ -178,7 +201,9 @@ export default function App() {
         </div>
 
         {/* Mobile/Tablet Layout */}
+        <TouchDragProvider badgeRef={mobileBadgeRef} onDrop={handleTouchDrop}>
         <div className="flex lg:hidden flex-col h-screen">
+          <TouchDragPreview />
           {/* Back button */}
           <div className="px-4 pt-4 pb-2 flex-shrink-0">
             <button onClick={() => setCurrentScreen('welcome')} className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] tracking-[-0.42px] text-black/50">
@@ -245,14 +270,28 @@ export default function App() {
           {/* Bottom panel */}
           <div className="bg-[#ececec] rounded-t-[20px] flex-shrink-0 flex flex-col items-center">
             {/* Tab bar container */}
-            <div className="w-full max-w-[362px]">
+            <div className="w-full border-b border-[#CFCFCF]">
               {/* Tab bar */}
-              <div className="flex gap-1 px-2 pt-4 pb-3 overflow-x-auto translate-x-[15px]">
+              <div ref={tabBarRef} className="flex gap-2 pl-4 pr-8 pt-4 pb-3 overflow-x-auto scroll-smooth">
               {(['background', 'cord', 'stickers', 'draw'] as MobileTab[]).map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => setMobileTab(tab)}
-                  className={`px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] capitalize ${
+                  onClick={() => {
+                    setMobileTab(tab);
+                    if (tab === 'stickers' && tabBarRef.current && doneButtonRef.current) {
+                      requestAnimationFrame(() => {
+                        const container = tabBarRef.current!;
+                        const done = doneButtonRef.current!;
+                        const containerRect = container.getBoundingClientRect();
+                        const doneRect = done.getBoundingClientRect();
+                        const scrollTarget = container.scrollLeft + (doneRect.right - containerRect.right) + 40;
+                        container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
+                      });
+                    } else if ((tab === 'background' || tab === 'cord') && tabBarRef.current) {
+                      tabBarRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+                    }
+                  }}
+                  className={`px-[16px] py-[12px] rounded-[9px] text-[16px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] capitalize flex-shrink-0 ${
                     mobileTab === tab ? 'bg-[#4d49fc]' : 'bg-[#171717]'
                   }`}
                 >
@@ -260,8 +299,9 @@ export default function App() {
                 </button>
               ))}
               <button
+                ref={doneButtonRef}
                 onClick={handleDone}
-                className="px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717]"
+                className="px-[16px] py-[12px] rounded-[9px] text-[16px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717] flex-shrink-0"
               >
                 Done!
               </button>
@@ -269,7 +309,7 @@ export default function App() {
             </div>
 
             {/* Tab content */}
-            <div className="p-4 min-h-[180px] w-full max-w-[362px]">
+            <div className="p-4 h-[220px] w-full max-w-[362px] overflow-hidden">
               {/* Background tab */}
               {mobileTab === 'background' && (
                 <div>
@@ -360,12 +400,12 @@ export default function App() {
               {/* Stickers tab */}
               {mobileTab === 'stickers' && (
                 <div>
-                  <div className="flex gap-3 mb-3 justify-center">
+                  <div className="flex flex-wrap gap-2 mb-3">
                     {(['year', 'pronouns', 'about', 'goals', 'time', 'role'] as const).map((tab) => (
                       <button
                         key={tab}
                         onClick={() => handleMobileStickerTabChange(tab)}
-                        className={`px-1 py-1 rounded text-[14px] uppercase font-['Fragment_Mono:Regular',sans-serif] leading-[1.2] transition-colors ${
+                        className={`px-3 py-1.5 rounded text-[13px] uppercase font-['Fragment_Mono:Regular',sans-serif] leading-[1.2] transition-colors whitespace-nowrap ${
                           mobileStickerTab === tab ? 'bg-[#c4baff] text-[#4d49fc]' : 'text-black'
                         }`}
                       >
@@ -405,6 +445,7 @@ export default function App() {
             </div>
           </div>
         </div>
+        </TouchDragProvider>
 
         {/* Decorative Elements at Bottom */}
         <DecorativeElements />

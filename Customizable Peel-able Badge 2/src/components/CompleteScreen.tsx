@@ -183,8 +183,8 @@ export function CompleteScreen({
 
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-4 lg:gap-6 px-4 sm:px-6 lg:px-20 py-8 lg:py-0">
         {/* Left Column - Text Content */}
-        <div className="flex flex-col items-start gap-8 max-w-xl">
-          <div className="flex">
+        <div className="flex flex-col items-start max-w-xl order-last lg:order-first">
+          <div className="flex mb-10">
             <div className="bg-black px-5 py-3 flex items-center justify-center">
               <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[48px] lg:text-[58px] leading-[0.95] tracking-[-1.74px]">
                 FigBuild
@@ -197,11 +197,11 @@ export function CompleteScreen({
             </div>
           </div>
 
-         <h1 className="font-['Figma_Sans_VF:Medium',sans-serif] text-[36px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-tight">
+         <h1 className="mb-4 font-['Figma_Sans_VF:Medium',sans-serif] text-[36px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-tight">
   Get hyped, <br /> you're competing in FigBuild 2026!
 </h1>
 
-<p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[36px] lg:text-[36px] text-black/70 text-left leading-tight">
+<p className="mb-10 font-['Figma_Sans_VF:Regular',sans-serif] text-[36px] lg:text-[36px] text-black/70 text-left leading-tight">
   Share your journey <br />with #FigBuild2026 <br />on LinkedIn or IG!
 </p>
 
@@ -213,7 +213,9 @@ export function CompleteScreen({
               className="group w-full px-6 py-4 bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
             >
               <span className="inline-flex items-center justify-center gap-2">
-                <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[1.5em] transition-all duration-300 ease-in-out">↓</span>
+                <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[28px] transition-all duration-300 ease-in-out">
+                  <img src="/Icon-Download.svg" alt="" className="w-5 h-5 shrink-0" />
+                </span>
                 {downloadingFormat === '9:16' ? 'Preparing Download...' : 'Download 9:16 (Story)'}
               </span>
             </button>
@@ -224,15 +226,13 @@ export function CompleteScreen({
               className="group w-full px-6 py-4 bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
             >
               <span className="inline-flex items-center justify-center gap-2">
-                <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[1.5em] transition-all duration-300 ease-in-out">↓</span>
+                <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[28px] transition-all duration-300 ease-in-out">
+                  <img src="/Icon-Download.svg" alt="" className="w-5 h-5 shrink-0" />
+                </span>
                 {downloadingFormat === '3:4' ? 'Preparing Download...' : 'Download 3:4 (Grid)'}
               </span>
             </button>
           </div>
-
-          <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/40 text-left">
-            See you at FigBuild 2026!
-          </p>
         </div>
 
         {/* Right Column - Badge Preview with Background (on-screen only) */}
