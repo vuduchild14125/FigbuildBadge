@@ -179,7 +179,7 @@ export default function App() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 items-center -mt-[170px]">
+              <div className="flex gap-3 items-center mt-[35px]">
                 <button
                   onClick={handleUndo}
                   className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
@@ -224,16 +224,17 @@ export default function App() {
                 position: 'relative',
                 overflow: 'visible',
                 marginBottom: '8px',
+                marginTop: '40px',
                 transform: mobileTab === 'cord' ? 'scale(0.7)' : 'scale(1)',
                 transformOrigin: 'bottom center',
                 transition: 'transform 0.4s ease-in-out',
               }}>
                 <div style={{
-                  transform: 'scale(0.5)',
+                  transform: 'scale(0.45)',
                   transformOrigin: 'top left',
                   width: '483px',
                   position: 'absolute',
-                  top: 0,
+                  top: 20,
                   left: 65,
                 }}>
                   <BadgePreview
@@ -257,7 +258,7 @@ export default function App() {
             </div>
 
             {/* Undo / Clear buttons */}
-            <div className="flex justify-center gap-3 py-2 flex-shrink-0 -mt-[20px] w-full">
+            <div className="flex justify-center gap-3 py-2 flex-shrink-0 mt-[60px] w-full">
               <button
                 onClick={handleUndo}
                 className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"

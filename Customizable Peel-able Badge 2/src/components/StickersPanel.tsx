@@ -39,7 +39,7 @@ export function StickersPanel() {
       </div>
 
       {/* Content Area */}
-      <div className="relative h-[111px] overflow-hidden flex items-center justify-center">
+      <div className="relative h-[111px] overflow-hidden flex items-center justify-center xl:scale-[1] lg:scale-[1]">
         {activeTab === 'year' && <StickerRoll isAnimating={isAnimating} />}
         {activeTab === 'pronouns' && <PronounStickerRoll isAnimating={isAnimating} />}
         {activeTab === 'about' && <AboutStickerRoll isAnimating={isAnimating} />}
