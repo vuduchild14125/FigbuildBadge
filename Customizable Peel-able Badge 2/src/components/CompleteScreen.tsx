@@ -181,16 +181,24 @@ export function CompleteScreen({
         </div>
       </div>
 
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-4 lg:gap-6 px-4 sm:px-6 lg:px-20 py-8 lg:py-0">
+      {/* Start Over - top left */}
+      <button
+        onClick={onRestart}
+        className="absolute top-6 left-6 z-20 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-black/40 hover:text-black/60 transition-colors"
+      >
+        &lt; Start Over
+      </button>
+
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-evenly min-h-screen gap-4 lg:gap-6 px-4 sm:px-6 lg:px-20 py-8 lg:py-0">
         {/* Left Column - Text Content */}
         <div className="flex flex-col items-start max-w-xl order-last lg:order-first">
-         <h1 className="mb-4 font-['Figma_Sans_VF:Medium',sans-serif] text-[32px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-tight">
-  Get ready for FigBuild!
-</h1>
+          <h1 className="mb-1 font-['Figma_Sans_VF:Medium',sans-serif] text-[32px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-tight">
+            Get ready for FigBuild!
+          </h1>
 
-<p className="mb-10 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] lg:text-[36px] text-black/70 text-left leading-tight">
-  Share your journey with #FigBuild2026 <br />on LinkedIn or IG!
-</p>
+          <p className="mb-4 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] lg:text-[36px] text-black/70 text-left leading-tight">
+            Share your journey with #FigBuild2026 <br />on LinkedIn or IG!
+          </p>
 
           {/* Action Buttons */}
           <div className="flex flex-col gap-2 w-full max-w-md">
@@ -220,10 +228,11 @@ export function CompleteScreen({
               </span>
             </button>
           </div>
+
         </div>
 
         {/* Right Column - Badge Preview with Background (on-screen only) */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center" style={{ filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.2))' }}>
           <div ref={previewContainerRef} className="relative w-fit overflow-hidden">
             {/* Background Image - Full width and height */}
             <img
