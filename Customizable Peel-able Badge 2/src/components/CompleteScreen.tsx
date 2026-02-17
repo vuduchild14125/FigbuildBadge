@@ -210,17 +210,23 @@ export function CompleteScreen({
             <button
               onClick={() => handleDownload('9:16')}
               disabled={downloadingFormat !== null}
-              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
+              className="group w-full px-6 py-4 bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
             >
-              {downloadingFormat === '9:16' ? 'Preparing Download...' : 'Download 9:16 (Story)'}
+              <span className="inline-flex items-center justify-center gap-2">
+                <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[1.5em] transition-all duration-300 ease-in-out">↓</span>
+                {downloadingFormat === '9:16' ? 'Preparing Download...' : 'Download 9:16 (Story)'}
+              </span>
             </button>
 
             <button
               onClick={() => handleDownload('3:4')}
               disabled={downloadingFormat !== null}
-              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
+              className="group w-full px-6 py-4 bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
             >
-              {downloadingFormat === '3:4' ? 'Preparing Download...' : 'Download 3:4 (Grid)'}
+              <span className="inline-flex items-center justify-center gap-2">
+                <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[1.5em] transition-all duration-300 ease-in-out">↓</span>
+                {downloadingFormat === '3:4' ? 'Preparing Download...' : 'Download 3:4 (Grid)'}
+              </span>
             </button>
           </div>
 
