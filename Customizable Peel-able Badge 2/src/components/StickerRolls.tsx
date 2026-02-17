@@ -85,7 +85,7 @@ export function GoalStickerRoll({ isAnimating }: { isAnimating: boolean }) {
         <div className={`relative bg-white h-[80px] overflow-hidden rounded-tr-[20px] w-[64px] ${
           isAnimating ? 'animate-roll-collapse' : 'animate-roll-expand'
         }`}>
-          <div className="absolute left-[8px] top-[2px] h-[56px] w-[900px]">
+          <div className="absolute left-[8px] top-[8px] h-[56px] w-[900px]">
             <div className="flex gap-3 py-1 items-center">
               {extendedStickers.map((sticker, idx) => (
                 <DraggableGoalSticker key={`goal-${idx}`} goalId={sticker.id} label={sticker.label} color={sticker.color} />
@@ -109,7 +109,7 @@ export function RoleStickerRoll({ isAnimating }: { isAnimating: boolean }) {
         <div className={`relative bg-white h-[80px] overflow-hidden rounded-tr-[20px] w-[64px] ${
           isAnimating ? 'animate-roll-collapse' : 'animate-roll-expand'
         }`}>
-          <div className="absolute left-[8px] top-[2px] h-[56px] w-[900px]">
+          <div className="absolute left-[8px] top-[9px] h-[56px] w-[900px]">
             <div className="flex gap-3 py-1 items-center">
               {extendedStickers.map((sticker, idx) => (
                 <DraggableRoleSticker key={`role-${idx}`} roleId={sticker.id} label={sticker.label} color={sticker.color} textColor={sticker.textColor} />

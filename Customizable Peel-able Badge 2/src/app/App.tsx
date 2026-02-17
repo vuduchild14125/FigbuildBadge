@@ -153,16 +153,16 @@ export default function App() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 items-center -mt-[150px]">
+              <div className="flex gap-3 items-center -mt-[170px]">
                 <button
                   onClick={handleUndo}
-                  className="px-[8px] py-[12px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+                  className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
                 >
                   Undo
                 </button>
                 <button
                   onClick={handleClear}
-                  className="px-[8px] py-[12px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+                  className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
                 >
                   Clear
                 </button>
@@ -224,16 +224,16 @@ export default function App() {
           </div>
 
           {/* Undo / Clear buttons */}
-          <div className="flex justify-center gap-3 py-2 flex-shrink-0">
+          <div className="flex justify-center gap-3 py-2 flex-shrink-0 -mt-[20px]">
             <button
               onClick={handleUndo}
-              className="bg-[#171717] text-[#f5f5f5] px-4 py-3 rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px]"
+              className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
             >
               Undo
             </button>
             <button
               onClick={handleClear}
-              className="bg-[#171717] text-[#f5f5f5] px-4 py-3 rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px]"
+              className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
             >
               Clear
             </button>
@@ -337,11 +337,11 @@ export default function App() {
                     };
                     return (
                       <button key={color} onClick={() => setCordColor(color)} className="flex flex-col items-center gap-2">
-                        <div className={`w-[80px] h-[80px] bg-white rounded overflow-hidden flex items-center justify-center ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
+                        <div className={`w-[95px] h-[95px] bg-white rounded overflow-hidden flex items-center justify-center ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
                           <img
                             src={lanyardImages[color]}
                             alt={`${color} lanyard cord`}
-                            className="w-full h-full object-contain scale-[0.08]"
+                            className="w-full h-full object-contain scale-[2] translate-y-[30px]"
                           />
                         </div>
                         <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50 capitalize">{color}</span>
@@ -354,7 +354,7 @@ export default function App() {
               {/* Stickers tab */}
               {mobileTab === 'stickers' && (
                 <div>
-                  <div className="flex gap-3 mb-3">
+                  <div className="flex gap-3 mb-3 justify-center">
                     {(['year', 'pronouns', 'about', 'goals', 'time', 'role'] as const).map((tab) => (
                       <button
                         key={tab}

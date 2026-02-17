@@ -19,7 +19,7 @@ export function StickersPanel() {
   };
 
   return (
-    <div className="bg-[#ececec] rounded-[12px] pt-[20px] pb-[24px] px-[20px] w-full relative shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+    <div className="bg-[#ececec] rounded-[12px] pt-[20px] pb-[24px] px-[20px] w-full relative">
       {/* Header */}
       <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-4">Stickers</h2>
 
@@ -57,7 +57,7 @@ export function StickersPanel() {
 
 export function FunStickersSheet() {
   return (
-    <div className="bg-white rounded-[8px] p-4 min-h-[180px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+    <div className="bg-white rounded-[8px] p-4 min-h-[180px]">
       <div className="max-h-[300px] overflow-auto pr-1">
         <div className="grid grid-cols-6 gap-3">
           {FUN_STICKERS.map((sticker) => (
