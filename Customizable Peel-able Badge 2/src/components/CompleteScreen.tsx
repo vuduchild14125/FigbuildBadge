@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { DecorativeElements } from './DecorativeElements';
 
 export function CompleteScreen({
@@ -7,8 +8,17 @@ export function CompleteScreen({
   onRestart: () => void;
   badgeImage: string | null;
 }) {
+  useEffect(() => {
+    console.log('📄 CompleteScreen mounted');
+    console.log('🖼️ Badge image:', badgeImage ? `Received (${Math.round(badgeImage.length / 1024)} KB)` : '❌ NULL');
+  }, [badgeImage]);
+
   const handleDownload = (aspectRatio: '3:4' | '9:16') => {
-    if (!badgeImage) return;
+    if (!badgeImage) {
+      console.log('⚠️ Cannot download: badge image is null');
+      return;
+    }
+    console.log('💾 Downloading badge as', aspectRatio);
 
     const link = document.createElement('a');
     link.href = badgeImage;

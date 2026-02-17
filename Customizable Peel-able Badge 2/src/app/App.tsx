@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import html2canvas from 'html2canvas';
 
 import type { BorderStyle, CordColor, Background, DrawSize, MobileTab, Screen, StickerTab, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
@@ -33,6 +34,7 @@ export default function App() {
   const [mobileTab, setMobileTab] = useState<MobileTab>('background');
   const [mobileStickerTab, setMobileStickerTab] = useState<StickerTab>('year');
   const [isMobileStickerAnimating, setIsMobileStickerAnimating] = useState(false);
+  const [savedBadgeImage, setSavedBadgeImage] = useState<string | null>(null);
 
   const handleUndo = () => {
     if (drawPaths.length > 0) {
@@ -47,7 +49,61 @@ export default function App() {
     setPlacedStickers([]);
   };
 
-  const handleDone = () => {
+  const handleDone = async () => {
+    console.log('🎨 Starting badge capture...');
+
+    // Select the correct ref based on screen size
+    const ref = window.innerWidth < 1024 ? mobileBadgeRef : badgeRef;
+    console.log('📱 Using', window.innerWidth < 1024 ? 'mobile' : 'desktop', 'ref');
+
+    if (ref.current) {
+      try {
+        console.log('📐 Element size:', ref.current.offsetWidth, 'x', ref.current.offsetHeight);
+
+        // Capture badge with html2canvas
+        const canvas = await html2canvas(ref.current, {
+          backgroundColor: '#ffffff',
+          scale: 2, // 2x resolution for quality
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          width: ref.current.offsetWidth,
+          height: ref.current.offsetHeight,
+          onclone: (clonedDoc) => {
+            // FIX: Convert OkLch colors to RGB (html2canvas doesn't support oklch)
+            const allElements = clonedDoc.querySelectorAll('*');
+            allElements.forEach((el: Element) => {
+              const htmlEl = el as HTMLElement;
+              const computedStyle = window.getComputedStyle(el);
+
+              // Replace oklch colors with computed RGB values
+              if (computedStyle.color) htmlEl.style.color = computedStyle.color;
+              if (computedStyle.backgroundColor) htmlEl.style.backgroundColor = computedStyle.backgroundColor;
+              if (computedStyle.borderColor) htmlEl.style.borderColor = computedStyle.borderColor;
+            });
+            console.log('✅ Fixed OkLch colors in cloned DOM');
+          },
+        });
+
+        console.log('🖼️ Canvas created:', canvas.width, 'x', canvas.height);
+
+        // Convert to PNG
+        const imageData = canvas.toDataURL('image/png');
+        console.log('✅ PNG created, size:', Math.round(imageData.length / 1024), 'KB');
+
+        // Save to state
+        setSavedBadgeImage(imageData);
+        console.log('💾 Badge saved to state');
+
+        // Wait for state to update
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (error) {
+        console.error('❌ Capture failed:', error);
+      }
+    } else {
+      console.error('❌ Badge ref is null');
+    }
+
     setCurrentScreen('complete');
   };
 
@@ -80,7 +136,15 @@ export default function App() {
   }
 
   if (currentScreen === 'complete') {
-    return <CompleteScreen onRestart={() => setCurrentScreen('welcome')} />;
+    return (
+      <CompleteScreen
+        onRestart={() => {
+          setCurrentScreen('welcome');
+          setSavedBadgeImage(null);
+        }}
+        badgeImage={savedBadgeImage}
+      />
+    );
   }
 
   return (
