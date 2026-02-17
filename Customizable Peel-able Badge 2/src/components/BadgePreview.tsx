@@ -190,11 +190,43 @@ export const BadgePreview = React.forwardRef<
         onMouseLeave={handleMouseUp}
       >
         {/* Border */}
-        {borderStyle !== 'none' && (
+        {borderStyle === 'dashed' && (
           <div
-            className="absolute pointer-events-none"
-            style={{ inset: '12px', border: `3px ${borderStyle} black` }}
+            className="absolute pointer-events-none border-[3px] border-black border-dashed"
+            style={{ inset: '12px' }}
           />
+        )}
+        {borderStyle === 'wiggly' && (
+          <svg
+            className="absolute pointer-events-none"
+            style={{ inset: '12px' }}
+            width="459"
+            height="658"
+            viewBox="0 0 459 658"
+            fill="none"
+            preserveAspectRatio="none"
+          >
+            <rect
+              x="1.5"
+              y="1.5"
+              width="456"
+              height="655"
+              fill="none"
+              stroke="black"
+              strokeWidth="3"
+              strokeDasharray="8 4"
+              strokeLinecap="round"
+              style={{
+                filter: 'url(#wiggle)',
+              }}
+            />
+            <defs>
+              <filter id="wiggle">
+                <feTurbulence baseFrequency="0.02" numOctaves="3" result="turbulence" seed="2" />
+                <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="2" xChannelSelector="R" yChannelSelector="G" />
+              </filter>
+            </defs>
+          </svg>
         )}
 
         {/* Background Pattern */}
