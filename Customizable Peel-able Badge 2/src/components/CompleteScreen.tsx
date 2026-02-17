@@ -5,6 +5,9 @@ import { DecorativeElements } from './DecorativeElements';
 import { BadgePreview } from './BadgePreview';
 import type { BorderStyle, CordColor, Background, DrawSize, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
+import photoBackgroundGrid from '../assets/PhotoBackground_Grid.jpg';
+import photoBackgroundStory from '../assets/PhotoBackground_Story.jpg';
+
 export function CompleteScreen({
   onRestart,
   borderStyle,
@@ -25,9 +28,20 @@ export function CompleteScreen({
   const staticBadgeRef = useRef<HTMLDivElement>(null);
   const [isDrawing] = useState(false);
   const [currentPath] = useState<DrawPoint[]>([]);
+  const [layoutType, setLayoutType] = useState<'story' | 'grid'>('story'); // Default to story
+
   const handleDownload = (aspectRatio: '3:4' | '9:16') => {
-    console.log('💾 Download requested:', aspectRatio);
-    alert('Download feature coming soon! Take a screenshot for now.');
+    // Switch layout based on aspect ratio
+    if (aspectRatio === '3:4') {
+      setLayoutType('grid');
+    } else {
+      setLayoutType('story');
+    }
+    console.log('💾 Switching to', aspectRatio === '3:4' ? 'grid' : 'story', 'layout');
+    // User can take screenshot after layout changes
+    setTimeout(() => {
+      alert('Layout ready! Take a screenshot now (Cmd+Shift+4 on Mac)');
+    }, 100);
   };
 
   return (
@@ -78,27 +92,41 @@ export function CompleteScreen({
           </p>
         </div>
 
-        {/* Right Column - Badge Preview */}
+        {/* Right Column - Badge Preview with Background */}
         <div className="flex-1 flex items-center justify-center lg:justify-end">
-          <DndProvider backend={HTML5Backend}>
-            <div className="scale-[0.5] origin-center">
-              <BadgePreview
-                ref={staticBadgeRef}
-                borderStyle={borderStyle}
-                cordColor={cordColor}
-                background={background}
-                drawSize={drawSize}
-                placedStickers={placedStickers}
-                setPlacedStickers={() => {}}
-                drawPaths={drawPaths}
-                isDrawing={isDrawing}
-                setIsDrawing={() => {}}
-                currentPath={currentPath}
-                setCurrentPath={() => {}}
-                setDrawPaths={() => {}}
-              />
+          <div className="relative w-full h-full overflow-hidden">
+            {/* Background Image - Full width and height */}
+            <img
+              src={layoutType === 'story' ? photoBackgroundStory : photoBackgroundGrid}
+              alt="Background"
+              className="w-[40%] h-auto object-contain mx-auto"
+
+            />
+
+            {/* Badge on top of background - centered and clipped */}
+            <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+              <DndProvider backend={HTML5Backend}>
+                
+<div className="scale-[0.55] origin-center -translate-y-[80px]">
+                  <BadgePreview
+                    ref={staticBadgeRef}
+                    borderStyle={borderStyle}
+                    cordColor={cordColor}
+                    background={background}
+                    drawSize={drawSize}
+                    placedStickers={placedStickers}
+                    setPlacedStickers={() => {}}
+                    drawPaths={drawPaths}
+                    isDrawing={isDrawing}
+                    setIsDrawing={() => {}}
+                    currentPath={currentPath}
+                    setCurrentPath={() => {}}
+                    setDrawPaths={() => {}}
+                  />
+                </div>
+              </DndProvider>
             </div>
-          </DndProvider>
+          </div>
         </div>
       </div>
 
