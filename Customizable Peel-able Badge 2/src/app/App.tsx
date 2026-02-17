@@ -19,6 +19,9 @@ import { TouchDragProvider } from '../components/TouchDragContext';
 import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
 import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
 import lanyardCordPeriwinkle from '../assets/LanyardCord-Periwinkle.svg';
+import filbuttonCordBlack from '../assets/filbutton-cordblack.svg';
+import filbuttonCordBlue from '../assets/filbutton-cordblue.svg';
+import filbuttonCordPeriwinkle from '../assets/filbutton-cordperiwinkle.svg';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
@@ -220,7 +223,10 @@ export default function App() {
                 height: '511px',
                 position: 'relative',
                 overflow: 'visible',
-                marginBottom: '8px'
+                marginBottom: '8px',
+                transform: mobileTab === 'cord' ? 'scale(0.7)' : 'scale(1)',
+                transformOrigin: 'bottom center',
+                transition: 'transform 0.4s ease-in-out',
               }}>
                 <div style={{
                   transform: 'scale(0.5)',
@@ -302,32 +308,30 @@ export default function App() {
                   <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] tracking-[-0.42px] text-black/50 mb-3">
                     Patterns and Borders
                   </p>
-                  <div className="flex gap-3 mb-4">
+                  <div className="flex gap-4 mb-4">
                     {([
                       { id: 'swag' as Background, label: 'Swag', p: '#4d49fc', s: '#24cb71' },
                       { id: 'creative' as Background, label: 'Creative', p: '#ff00e5', s: '#c4baff' },
                       { id: 'playful' as Background, label: 'Playful', p: '#ff7238', s: '#e4ff97' },
                     ]).map(({ id, label, p, s }) => (
-                      <button key={id} onClick={() => setBackground(id)} className="flex flex-col items-center gap-1">
-                        <div className={`w-[90px] h-[37px] bg-white rounded overflow-hidden ${background === id ? 'ring-2 ring-[#4d49fc]' : ''}`}>
+                      <button key={id} onClick={() => setBackground(id)} className="flex-1 flex flex-col items-center gap-1">
+                        <div className={`w-full h-[44px] bg-white rounded overflow-hidden ${background === id ? 'ring-2 ring-[#4d49fc]' : ''}`}>
                           <PatternPreview pattern={{ primary: p, secondary: s }} />
                         </div>
                         <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50">{label}</span>
                       </button>
                     ))}
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-4">
                     {(['none', 'dashed', 'wiggly'] as BorderStyle[]).map((border) => (
-                      <button key={border} onClick={() => setBorderStyle(border)} className="flex flex-col items-center gap-1">
-                        <div className={`w-[64px] h-[32px] bg-white rounded relative ${borderStyle === border ? 'ring-2 ring-[#4d49fc]' : ''}`}>
+                      <button key={border} onClick={() => setBorderStyle(border)} className="flex-1 flex flex-col items-center gap-1">
+                        <div className={`w-full h-[32px] bg-white rounded relative ${borderStyle === border ? 'ring-2 ring-[#4d49fc]' : ''}`}>
                           {border === 'dashed' && (
                             <div className="absolute border-2 border-black border-dashed inset-0 pointer-events-none" />
                           )}
                           {border === 'wiggly' && (
                             <svg
-                              className="absolute inset-0 pointer-events-none"
-                              width="64"
-                              height="32"
+                              className="absolute inset-0 w-full h-full pointer-events-none"
                               viewBox="0 0 64 32"
                               fill="none"
                               preserveAspectRatio="none"
@@ -360,20 +364,20 @@ export default function App() {
 
               {/* Cord tab */}
               {mobileTab === 'cord' && (
-                <div className="flex gap-3">
+                <div className="flex gap-4 justify-center">
                   {(['black', 'periwinkle', 'blue'] as CordColor[]).map((color) => {
-                    const lanyardImages = {
-                      black: lanyardCordBlack,
-                      periwinkle: lanyardCordPeriwinkle,
-                      blue: lanyardCordBlue
+                    const buttonImages = {
+                      black: filbuttonCordBlack,
+                      periwinkle: filbuttonCordPeriwinkle,
+                      blue: filbuttonCordBlue,
                     };
                     return (
-                      <button key={color} onClick={() => setCordColor(color)} className="flex flex-col items-center gap-2">
-                        <div className={`w-[95px] h-[95px] bg-white rounded overflow-hidden flex items-center justify-center ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
+                      <button key={color} onClick={() => setCordColor(color)} className="flex-1 flex flex-col items-center gap-2">
+                        <div className={`w-full aspect-square bg-white rounded overflow-hidden ${cordColor === color ? 'ring-2 ring-[#4d49fc]' : ''}`}>
                           <img
-                            src={lanyardImages[color]}
+                            src={buttonImages[color]}
                             alt={`${color} lanyard cord`}
-                            className="w-full h-full object-contain scale-[2] translate-y-[30px]"
+                            className="w-full h-full object-contain"
                           />
                         </div>
                         <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-[12px] text-black/50 capitalize">{color}</span>

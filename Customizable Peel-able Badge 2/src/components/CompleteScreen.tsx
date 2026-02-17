@@ -125,7 +125,7 @@ export function CompleteScreen({
     // For the 3:4 grid export, scale the badge slightly smaller and lower it
     if (aspectRatio === '3:4') {
       const gridScaleFactor = 0.75;
-      const gridOffsetY = 70;
+      const gridOffsetY = 320;
       const scaledWidth = drawWidth * gridScaleFactor;
       const scaledHeight = drawHeight * gridScaleFactor;
       const centeredX = drawX + (drawWidth - scaledWidth) / 2;
@@ -181,36 +181,31 @@ export function CompleteScreen({
         </div>
       </div>
 
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-4 lg:gap-6 px-4 sm:px-6 lg:px-20 py-8 lg:py-0">
+      {/* Start Over - top left */}
+      <button
+        onClick={onRestart}
+        className="absolute top-6 left-6 z-20 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-black/40 hover:text-black/60 transition-colors"
+      >
+        &lt; Start Over
+      </button>
+
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-8 lg:gap-20 px-10 sm:px-12 lg:px-10 py-8 lg:py-0">
         {/* Left Column - Text Content */}
         <div className="flex flex-col items-start max-w-xl order-last lg:order-first">
-          <div className="flex mb-10">
-            <div className="bg-black px-5 py-3 flex items-center justify-center">
-              <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[48px] lg:text-[58px] leading-[0.95] tracking-[-1.74px]">
-                FigBuild
-              </span>
-            </div>
-            <div className="bg-black px-5 py-3 rounded-full flex items-center justify-center">
-              <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[48px] lg:text-[58px] leading-[0.95] tracking-[-1.74px]">
-                2026
-              </span>
-            </div>
-          </div>
+          <h1 className="mb-2 lg:mb-3 font-['Figma_Sans_VF:Medium',sans-serif] text-[32px] lg:text-[64px] tracking-[-1.62px] text-black text-left leading-[1.05] lg:leading-tight">
+            Get hyped, <br />you're competing in FigBuild 2026!
+          </h1>
 
-         <h1 className="mb-4 font-['Figma_Sans_VF:Medium',sans-serif] text-[36px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-tight">
-  Get hyped, <br /> you're competing in FigBuild 2026!
-</h1>
-
-<p className="mb-10 font-['Figma_Sans_VF:Regular',sans-serif] text-[36px] lg:text-[36px] text-black/70 text-left leading-tight">
-  Share your journey <br />with #FigBuild2026 <br />on LinkedIn or IG!
-</p>
+          <p className="mb-6 lg:mb-12 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] lg:text-[36px] text-black/70 text-left leading-tight">
+            Share your journey <br className="hidden lg:block" />with #FigBuild2026 <br className="hidden lg:block" />on LinkedIn or IG!
+          </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col gap-4 w-full max-w-md">
+          <div className="flex flex-col gap-2 w-full max-w-md">
             <button
               onClick={() => handleDownload('9:16')}
               disabled={downloadingFormat !== null}
-              className="group w-full px-6 py-4 bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
+              className="group w-full px-[24px] py-[12px] bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
             >
               <span className="inline-flex items-center justify-center gap-2">
                 <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[28px] transition-all duration-300 ease-in-out">
@@ -223,7 +218,7 @@ export function CompleteScreen({
             <button
               onClick={() => handleDownload('3:4')}
               disabled={downloadingFormat !== null}
-              className="group w-full px-6 py-4 bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
+              className="group w-full px-[24px] py-[12px] bg-black rounded-[9px] hover:rounded-none font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-all duration-300 ease-in-out"
             >
               <span className="inline-flex items-center justify-center gap-2">
                 <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[28px] transition-all duration-300 ease-in-out">
@@ -233,22 +228,23 @@ export function CompleteScreen({
               </span>
             </button>
           </div>
+
         </div>
 
         {/* Right Column - Badge Preview with Background (on-screen only) */}
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center" style={{ filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.2))' }}>
           <div ref={previewContainerRef} className="relative w-fit overflow-hidden">
             {/* Background Image - Full width and height */}
             <img
               src={photoBackgroundStory}
               alt="Background"
-              className="h-[85vh] w-auto object-contain"
+              className="h-[50vh] lg:h-[85vh] w-auto object-contain"
             />
 
             {/* Badge on top of background - centered and clipped */}
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
               <DndProvider backend={HTML5Backend}>
-                <div ref={onScreenBadgeWrapperRef} className="scale-[0.50] origin-center -translate-y-[80px]">
+                <div ref={onScreenBadgeWrapperRef} className="scale-[0.29] lg:scale-[0.50] origin-center -translate-y-[50px] lg:-translate-y-[80px]">
                   <BadgePreview
                     ref={staticBadgeRef}
                     borderStyle={borderStyle}
