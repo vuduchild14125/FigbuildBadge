@@ -100,7 +100,8 @@ export function CompleteScreen({
                 style={{
                   backgroundColor: 'lime', // DEBUG: Make container visible
                   padding: '20px',
-                  border: '5px solid red' // DEBUG: Make boundary visible
+                  border: '5px solid red', // DEBUG: Make boundary visible
+                  zIndex: 9999 // DEBUG: Make sure it's on top
                 }}
               >
                 <img
@@ -111,7 +112,13 @@ export function CompleteScreen({
                     filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))',
                     border: '3px solid blue' // DEBUG: Make image visible
                   }}
-                  onLoad={() => console.log('✅ Image loaded successfully')}
+                  onLoad={(e) => {
+                    const img = e.currentTarget;
+                    console.log('✅ Image loaded successfully');
+                    console.log('📏 Natural dimensions:', img.naturalWidth, 'x', img.naturalHeight);
+                    console.log('📏 Rendered dimensions:', img.width, 'x', img.height);
+                    console.log('📏 Computed style:', window.getComputedStyle(img).width, 'x', window.getComputedStyle(img).height);
+                  }}
                   onError={(e) => console.error('❌ Image failed to load:', e)}
                 />
               </div>
@@ -126,7 +133,8 @@ export function CompleteScreen({
         </div>
       </div>
 
-      <DecorativeElements />
+      {/* DEBUG: Disabled DecorativeElements to check if it's covering the badge */}
+      {/* <DecorativeElements /> */}
     </div>
   );
 }

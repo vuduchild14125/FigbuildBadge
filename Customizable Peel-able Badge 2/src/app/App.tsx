@@ -58,17 +58,27 @@ export default function App() {
 
     if (ref.current) {
       try {
-        console.log('📐 Element size:', ref.current.offsetWidth, 'x', ref.current.offsetHeight);
+        // Capture the PARENT element that includes both lanyard and badge
+        const parentElement = ref.current.parentElement;
+        if (!parentElement) {
+          console.error('No parent element found');
+          setCurrentScreen('complete');
+          return;
+        }
 
-        // Capture badge with html2canvas using foreignObject rendering
-        // This bypasses CSS parsing and uses browser's native rendering
-        const canvas = await html2canvas(ref.current, {
-          backgroundColor: '#ffffff',
+        console.log('📐 Badge size:', ref.current.offsetWidth, 'x', ref.current.offsetHeight);
+        console.log('📐 Parent size (with lanyard):', parentElement.offsetWidth, 'x', parentElement.offsetHeight);
+
+        // Capture the parent element which includes the lanyard (positioned 736px above)
+        const canvas = await html2canvas(parentElement, {
+          backgroundColor: null, // Transparent background to see lanyard
           scale: 2,
           useCORS: true,
           allowTaint: true,
           logging: true,
-          foreignObjectRendering: true, // Use SVG foreignObject (handles modern CSS)
+          foreignObjectRendering: true,
+          y: -736, // Include the lanyard which is 736px above
+          height: 736 + ref.current.offsetHeight, // Total height: lanyard (736) + badge (682)
         });
 
         console.log('🖼️ Canvas created:', canvas.width, 'x', canvas.height);
