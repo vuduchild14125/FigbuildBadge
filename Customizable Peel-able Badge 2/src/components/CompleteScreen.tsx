@@ -189,9 +189,9 @@ export function CompleteScreen({
         &lt; Start Over
       </button>
 
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-8 lg:gap-20 px-10 sm:px-12 lg:px-10 py-8 lg:py-0">
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-8 lg:gap-20 px-4 sm:px-8 lg:px-16 xl:px-20 py-12 lg:py-16 max-w-[1800px] mx-auto">
         {/* Left Column - Text Content */}
-        <div className="flex flex-col items-start max-w-xl order-last lg:order-first">
+        <div className="flex flex-col items-start max-w-xl order-last lg:order-first flex-shrink-0">
           <h1 className="mb-2 lg:mb-3 font-['Figma_Sans_VF:Medium',sans-serif] text-[32px] lg:text-[64px] tracking-[-1.62px] text-black text-left leading-[1.05] lg:leading-tight">
             Get hyped, <br />you're competing in FigBuild 2026!
           </h1>
@@ -232,13 +232,13 @@ export function CompleteScreen({
         </div>
 
         {/* Right Column - Badge Preview with Background (on-screen only) */}
-        <div className="flex items-center justify-center" style={{ filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.2))' }}>
-          <div ref={previewContainerRef} className="relative w-fit overflow-hidden">
+        <div className="flex items-center justify-center flex-shrink-0 max-w-full" style={{ filter: 'drop-shadow(0 4px 20px rgba(0, 0, 0, 0.2))' }}>
+          <div ref={previewContainerRef} className="relative w-fit overflow-hidden max-w-[90vw] lg:max-w-none">
             {/* Background Image - Full width and height */}
             <img
               src={photoBackgroundStory}
               alt="Background"
-              className="h-[50vh] lg:h-[85vh] w-auto object-contain"
+              className="h-[45vh] sm:h-[50vh] lg:h-[75vh] xl:h-[80vh] 2xl:h-[85vh] w-auto object-contain"
             />
 
             {/* Badge on top of background - centered and clipped */}

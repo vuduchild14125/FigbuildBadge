@@ -18,8 +18,8 @@ function StickerPreview({ item }: { item: any }) {
         {sticker.label && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span
-              className="text-[10px] font-bold uppercase leading-[1.2] text-center whitespace-pre-line"
-              style={{ color: sticker.textColor || '#000000', fontFamily: "'Figma Mono VF:Regular', monospace" }}
+              className="text-[10px] font-normal uppercase leading-[1.2] text-center whitespace-pre-line"
+              style={{ color: sticker.textColor || '#000000', fontFamily: "'Figma Mono VF:Regular', monospace", fontWeight: 400 }}
             >
               {sticker.label}
             </span>

@@ -442,8 +442,8 @@ export const BadgePreview = React.forwardRef<
                 </div>
                 {StickerType?.label && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-[10px] font-bold uppercase leading-[1.2] text-center whitespace-pre-line"
-                      style={{ color: StickerType.textColor || '#000000', fontFamily: "'Figma Mono VF:Regular', monospace" }}>
+                    <span className="text-[10px] uppercase leading-[1.2] text-center whitespace-pre-line font-normal"
+                      style={{ color: StickerType.textColor || '#000000', fontFamily: "'Figma Mono VF:Regular', monospace", fontWeight: 400 }}>
                       {StickerType.label}
                     </span>
                   </div>
