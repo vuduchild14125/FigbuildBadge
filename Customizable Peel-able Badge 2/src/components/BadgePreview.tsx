@@ -141,6 +141,35 @@ export const BadgePreview = React.forwardRef<
     }
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((touch.clientX - rect.left) / rect.width) * 483;
+    const y = ((touch.clientY - rect.top) / rect.height) * 682;
+    setIsDrawing(true);
+    setCurrentPath([{ x, y, size: drawSize }]);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (isDrawing) {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = ((touch.clientX - rect.left) / rect.width) * 483;
+      const y = ((touch.clientY - rect.top) / rect.height) * 682;
+      setCurrentPath(prev => [...prev, { x, y, size: drawSize }]);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (isDrawing && currentPath.length > 0) {
+      setDrawPaths(prev => [...prev, { points: currentPath }]);
+      setCurrentPath([]);
+      setIsDrawing(false);
+    }
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -187,11 +216,15 @@ export const BadgePreview = React.forwardRef<
           drop(node);
         }}
         className="bg-white w-[483px] h-[682px] overflow-hidden cursor-crosshair relative border border-black"
-        style={{ background: isOver ? '#f9f9f9' : 'white' }}
+        style={{ background: isOver ? '#f9f9f9' : 'white', touchAction: 'none' }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
       >
         {/* Border */}
         {borderStyle === 'dashed' && (
