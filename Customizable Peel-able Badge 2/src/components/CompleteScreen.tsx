@@ -50,6 +50,8 @@ export function CompleteScreen({
   const staticBadgeRef = useRef<HTMLDivElement>(null);
   const hiddenBadgeWrapperRef = useRef<HTMLDivElement>(null);
   const hiddenBadgeRef = useRef<HTMLDivElement>(null);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+  const onScreenBadgeWrapperRef = useRef<HTMLDivElement>(null);
   const [isDrawing] = useState(false);
   const [currentPath] = useState<DrawPoint[]>([]);
   const [downloadingFormat, setDownloadingFormat] = useState<'3:4' | '9:16' | null>(null);
@@ -75,6 +77,9 @@ export function CompleteScreen({
     if (!badgeDataUrl) return;
 
     const bg = aspectRatio === '9:16' ? BG_DIMS.story : BG_DIMS.grid;
+    const containerEl = previewContainerRef.current;
+    const badgeWrapperEl = onScreenBadgeWrapperRef.current;
+    if (!containerEl || !badgeWrapperEl) return;
 
     const [bgImg, badgeImg] = await Promise.all([
       loadImage(bg.src),
@@ -90,26 +95,30 @@ export function CompleteScreen({
     // Draw background
     ctx.drawImage(bgImg, 0, 0, bg.width, bg.height);
 
-    // Match on-screen CSS exactly:
-    //   CSS transform order (Tailwind): translate first, then scale
-    //   So: scale(0.5) around element center, then translateY(-80px)
-    //
-    // The badge root div (483×682, no lanyard) is flex-centered in the container.
-    // After scale(0.5) from center, the visual center stays the same.
-    // After translateY(-80px), the center shifts up 80px.
-    //
-    // Visual center of badge root = (bg.width/2, bg.height/2 - 80)
-    //
-    // The rasterized image includes the lanyard (736px above badge root).
-    // Its top-left in canvas coords:
-    const drawWidth = BADGE_NATIVE_WIDTH * BADGE_SCALE;
-    const drawHeight = BADGE_NATIVE_HEIGHT * BADGE_SCALE;
-    const drawX = (bg.width - drawWidth) / 2;
-    // Badge root center should be at bg.height/2 + BADGE_TRANSLATE_Y
-    // In the rasterized image, badge root center is at y = LANYARD_HEIGHT + BADGE_ROOT_HEIGHT/2
-    // After scaling, that offset from drawY is (LANYARD_HEIGHT + BADGE_ROOT_HEIGHT/2) * BADGE_SCALE
-    // So: drawY + (LANYARD_HEIGHT + BADGE_ROOT_HEIGHT/2) * BADGE_SCALE = bg.height/2 + BADGE_TRANSLATE_Y
-    const drawY = bg.height / 2 + BADGE_TRANSLATE_Y - (LANYARD_HEIGHT + BADGE_ROOT_HEIGHT / 2) * BADGE_SCALE;
+    // Measure the on-screen badge position relative to the preview container.
+    // This captures the exact result of CSS flexbox centering + scale + translate,
+    // regardless of viewport size.
+    const containerRect = containerEl.getBoundingClientRect();
+    const badgeRect = badgeWrapperEl.getBoundingClientRect();
+
+    // Badge visual center as a proportion of the container (0–1)
+    const relCenterX = (badgeRect.left + badgeRect.width / 2 - containerRect.left) / containerRect.width;
+    const relCenterY = (badgeRect.top + badgeRect.height / 2 - containerRect.top) / containerRect.height;
+
+    // The on-screen badgeRect is the badge ROOT (483×682 after scale-0.5 → 241.5×341 visual).
+    // The rasterized image also includes the lanyard above it.
+    // Scale the rasterized image so the badge-body portion matches the on-screen visual size.
+    const onScreenScale = badgeRect.width / BADGE_NATIVE_WIDTH; // effective CSS scale
+    const downloadScale = onScreenScale * (bg.width / containerRect.width);
+
+    const drawWidth = BADGE_NATIVE_WIDTH * downloadScale;
+    const drawHeight = BADGE_NATIVE_HEIGHT * downloadScale;
+
+    // Position: the badge root center (not lanyard) should be at relCenter * bg dimensions.
+    // In the rasterized image, badge root center is at (width/2, LANYARD_HEIGHT + BADGE_ROOT_HEIGHT/2).
+    const badgeRootCenterInImage = LANYARD_HEIGHT + BADGE_ROOT_HEIGHT / 2;
+    const drawX = relCenterX * bg.width - drawWidth / 2;
+    const drawY = relCenterY * bg.height - badgeRootCenterInImage * downloadScale;
 
     ctx.drawImage(badgeImg, drawX, drawY, drawWidth, drawHeight);
 
@@ -209,7 +218,7 @@ export function CompleteScreen({
 
         {/* Right Column - Badge Preview with Background (on-screen only) */}
         <div className="flex items-center justify-center">
-          <div className="relative w-fit overflow-hidden">
+          <div ref={previewContainerRef} className="relative w-fit overflow-hidden">
             {/* Background Image - Full width and height */}
             <img
               src={photoBackgroundStory}
@@ -220,7 +229,7 @@ export function CompleteScreen({
             {/* Badge on top of background - centered and clipped */}
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
               <DndProvider backend={HTML5Backend}>
-                <div className="scale-[0.50] origin-center -translate-y-[80px]">
+                <div ref={onScreenBadgeWrapperRef} className="scale-[0.50] origin-center -translate-y-[80px]">
                   <BadgePreview
                     ref={staticBadgeRef}
                     borderStyle={borderStyle}
