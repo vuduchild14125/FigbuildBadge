@@ -122,7 +122,18 @@ export function CompleteScreen({
     const drawX = relCenterX * bg.width - drawWidth / 2;
     const drawY = relCenterY * bg.height - badgeRootCenterInImage * downloadScale;
 
-    ctx.drawImage(badgeImg, drawX, drawY, drawWidth, drawHeight);
+    // For the 3:4 grid export, scale the badge slightly smaller and lower it
+    if (aspectRatio === '3:4') {
+      const gridScaleFactor = 0.75;
+      const gridOffsetY = 70;
+      const scaledWidth = drawWidth * gridScaleFactor;
+      const scaledHeight = drawHeight * gridScaleFactor;
+      const centeredX = drawX + (drawWidth - scaledWidth) / 2;
+      const centeredY = drawY + (drawHeight - scaledHeight) / 2 + gridOffsetY;
+      ctx.drawImage(badgeImg, centeredX, centeredY, scaledWidth, scaledHeight);
+    } else {
+      ctx.drawImage(badgeImg, drawX, drawY, drawWidth, drawHeight);
+    }
 
     const link = document.createElement('a');
     link.download = aspectRatio === '9:16' ? 'FigBuild2026_Story.jpg' : 'FigBuild2026_Grid.jpg';
