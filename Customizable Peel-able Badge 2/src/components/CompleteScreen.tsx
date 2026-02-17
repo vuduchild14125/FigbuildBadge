@@ -6,8 +6,8 @@ import { DecorativeElements } from './DecorativeElements';
 import { BadgePreview } from './BadgePreview';
 import type { BorderStyle, CordColor, Background, DrawSize, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
-import photoBackgroundGrid from '../assets/PhotoBackground_Grid.jpg';
-import photoBackgroundStory from '../assets/PhotoBackground_Story.jpg';
+import photoBackgroundGrid from '../assets/PhotoBackground_Grid.png';
+import photoBackgroundStory from '../assets/PhotoBackground_Story.png';
 
 const BADGE_NATIVE_WIDTH = 483;
 const BADGE_NATIVE_HEIGHT = 1418; // lanyard 736 + badge 682
