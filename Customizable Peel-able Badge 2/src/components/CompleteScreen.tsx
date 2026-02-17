@@ -189,15 +189,15 @@ export function CompleteScreen({
         &lt; Start Over
       </button>
 
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-evenly min-h-screen gap-4 lg:gap-6 px-4 sm:px-6 lg:px-20 py-8 lg:py-0">
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-8 lg:gap-12 px-10 sm:px-12 lg:px-10 py-8 lg:py-0">
         {/* Left Column - Text Content */}
         <div className="flex flex-col items-start max-w-xl order-last lg:order-first">
-          <h1 className="mb-1 font-['Figma_Sans_VF:Medium',sans-serif] text-[32px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-tight">
-            Get ready for FigBuild!
+          <h1 className="mb-2 lg:mb-3 font-['Figma_Sans_VF:Medium',sans-serif] text-[32px] lg:text-[54px] tracking-[-1.62px] text-black text-left leading-[1.05] lg:leading-tight">
+            Get hyped, <br />you're competing in FigBuild 2026!
           </h1>
 
-          <p className="mb-4 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] lg:text-[36px] text-black/70 text-left leading-tight">
-            Share your journey with #FigBuild2026 <br />on LinkedIn or IG!
+          <p className="mb-6 lg:mb-8 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] lg:text-[36px] text-black/70 text-left leading-tight">
+            Share your journey with <br />#FigBuild2026 on LinkedIn or IG!
           </p>
 
           {/* Action Buttons */}
@@ -238,13 +238,13 @@ export function CompleteScreen({
             <img
               src={photoBackgroundStory}
               alt="Background"
-              className="h-[60vh] w-auto object-contain"
+              className="h-[50vh] lg:h-[85vh] w-auto object-contain"
             />
 
             {/* Badge on top of background - centered and clipped */}
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
               <DndProvider backend={HTML5Backend}>
-                <div ref={onScreenBadgeWrapperRef} className="scale-[0.35] origin-center -translate-y-[60px]">
+                <div ref={onScreenBadgeWrapperRef} className="scale-[0.29] lg:scale-[0.50] origin-center -translate-y-[50px] lg:-translate-y-[80px]">
                   <BadgePreview
                     ref={staticBadgeRef}
                     borderStyle={borderStyle}
