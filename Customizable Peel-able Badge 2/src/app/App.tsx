@@ -14,6 +14,7 @@ import { DrawTools, CordsPanel, BackgroundPanel, PatternPreview } from '../compo
 import { StickersPanel } from '../components/StickersPanel';
 import { StickerRoll, PronounStickerRoll, AboutStickerRoll, GoalStickerRoll, TimeStickerRoll, RoleStickerRoll } from '../components/StickerRolls';
 import { DecorativeElements } from '../components/DecorativeElements';
+import { TouchDragPreview } from '../components/TouchDragPreview';
 
 import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
 import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
@@ -182,6 +183,7 @@ export default function App() {
 
         {/* Mobile/Tablet Layout */}
         <div className="flex lg:hidden flex-col h-screen">
+          <TouchDragPreview />
           {/* Back button */}
           <div className="px-4 pt-4 pb-2 flex-shrink-0">
             <button onClick={() => setCurrentScreen('welcome')} className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] tracking-[-0.42px] text-black/50">
