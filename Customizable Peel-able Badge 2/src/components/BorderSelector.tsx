@@ -61,7 +61,7 @@ export function BorderSelector({ borderStyle, setBorderStyle }: { borderStyle: B
               />
               <defs>
                 <filter id="wiggle-desktop">
-                  <feTurbulence baseFrequency="0.2" numOctaves="0.1" result="turbulence" seed="2" />
+                  <feTurbulence baseFrequency="0.2" numOctaves="1" result="turbulence" seed="2" />
                   <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
                 </filter>
               </defs>

@@ -220,7 +220,7 @@ export const BadgePreview = React.forwardRef<
             />
             <defs>
               <filter id="wiggle">
-                <feTurbulence baseFrequency="0.2" numOctaves="0.1" result="turbulence" seed="2" />
+                <feTurbulence baseFrequency="0.2" numOctaves="1" result="turbulence" seed="2" />
                 <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="2" xChannelSelector="" yChannelSelector="G" />
               </filter>
             </defs>

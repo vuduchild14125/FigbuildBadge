@@ -1,4 +1,6 @@
 import { useRef, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DecorativeElements } from './DecorativeElements';
 import { BadgePreview } from './BadgePreview';
 import type { BorderStyle, CordColor, Background, DrawSize, PlacedSticker, DrawPath, DrawPoint } from '../types';
@@ -78,23 +80,25 @@ export function CompleteScreen({
 
         {/* Right Column - Badge Preview */}
         <div className="flex-1 flex items-center justify-center lg:justify-end">
-          <div className="scale-[0.5] origin-center">
-            <BadgePreview
-              ref={staticBadgeRef}
-              borderStyle={borderStyle}
-              cordColor={cordColor}
-              background={background}
-              drawSize={drawSize}
-              placedStickers={placedStickers}
-              setPlacedStickers={() => {}}
-              drawPaths={drawPaths}
-              isDrawing={isDrawing}
-              setIsDrawing={() => {}}
-              currentPath={currentPath}
-              setCurrentPath={() => {}}
-              setDrawPaths={() => {}}
-            />
-          </div>
+          <DndProvider backend={HTML5Backend}>
+            <div className="scale-[0.5] origin-center">
+              <BadgePreview
+                ref={staticBadgeRef}
+                borderStyle={borderStyle}
+                cordColor={cordColor}
+                background={background}
+                drawSize={drawSize}
+                placedStickers={placedStickers}
+                setPlacedStickers={() => {}}
+                drawPaths={drawPaths}
+                isDrawing={isDrawing}
+                setIsDrawing={() => {}}
+                currentPath={currentPath}
+                setCurrentPath={() => {}}
+                setDrawPaths={() => {}}
+              />
+            </div>
+          </DndProvider>
         </div>
       </div>
 

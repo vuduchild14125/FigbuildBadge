@@ -312,7 +312,7 @@ export default function App() {
                               />
                               <defs>
                                 <filter id="wiggle-thumb">
-                                  <feTurbulence baseFrequency="0.2" numOctaves="0.1" result="turbulence" seed="2" />
+                                  <feTurbulence baseFrequency="0.2" numOctaves="1" result="turbulence" seed="2" />
                                   <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="1" xChannelSelector="R" yChannelSelector="G" />
                                 </filter>
                               </defs>
