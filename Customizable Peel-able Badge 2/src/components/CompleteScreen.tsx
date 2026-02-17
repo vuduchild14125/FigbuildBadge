@@ -37,15 +37,42 @@ export function CompleteScreen({
     const target = downloadContainerRef.current;
     if (!target) return;
 
-    const canvas = await html2canvas(target, {
+    const rawCanvas = await html2canvas(target, {
       backgroundColor: '#F5F5F5',
       useCORS: true,
       scale: 2,
     });
 
+    // Crop to the target aspect ratio
+    const targetWidth = aspectRatio === '9:16' ? 1080 : 1080;
+    const targetHeight = aspectRatio === '9:16' ? 1920 : 1440;
+    const targetRatio = targetWidth / targetHeight;
+
+    const srcW = rawCanvas.width;
+    const srcH = rawCanvas.height;
+    const srcRatio = srcW / srcH;
+
+    let cropX = 0, cropY = 0, cropW = srcW, cropH = srcH;
+    if (srcRatio > targetRatio) {
+      // Source is wider — crop sides
+      cropW = Math.round(srcH * targetRatio);
+      cropX = Math.round((srcW - cropW) / 2);
+    } else {
+      // Source is taller — crop top/bottom
+      cropH = Math.round(srcW / targetRatio);
+      cropY = Math.round((srcH - cropH) / 2);
+    }
+
+    const croppedCanvas = document.createElement('canvas');
+    croppedCanvas.width = targetWidth;
+    croppedCanvas.height = targetHeight;
+    const ctx = croppedCanvas.getContext('2d');
+    if (!ctx) return;
+    ctx.drawImage(rawCanvas, cropX, cropY, cropW, cropH, 0, 0, targetWidth, targetHeight);
+
     const link = document.createElement('a');
     link.download = `${aspectRatio === '9:16' ? 'FigBuild2026_Story' : 'FigBuild2026_Grid'}.jpg`;
-    link.href = canvas.toDataURL('image/jpeg', 0.95);
+    link.href = croppedCanvas.toDataURL('image/jpeg', 0.95);
     link.click();
   };
 
@@ -72,7 +99,7 @@ export function CompleteScreen({
 
   return (
     <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
-      <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-center min-h-screen gap-8 lg:gap-12 px-4 sm:px-6 lg:px-8 py-12 lg:py-0">
+<div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-4 lg:gap-6 px-4 sm:px-6 lg:px-20 py-8 lg:py-0">
         {/* Left Column - Text Content */}
         <div className="flex flex-col items-start gap-8 max-w-xl">
           <div className="flex">
@@ -121,14 +148,13 @@ export function CompleteScreen({
         </div>
 
         {/* Right Column - Badge Preview with Background */}
-        <div className="flex-1 flex items-center justify-center lg:justify-end">
-          <div ref={downloadContainerRef} className="relative w-full h-full overflow-hidden">
+        <div className="flex items-center justify-center">
+          <div ref={downloadContainerRef} className="relative w-fit overflow-hidden">
             {/* Background Image - Full width and height */}
             <img
               src={layoutType === 'story' ? photoBackgroundStory : photoBackgroundGrid}
               alt="Background"
-              className="w-[40%] h-auto object-contain mx-auto"
-
+              className="h-[85vh] w-auto object-contain"
             />
 
             {/* Badge on top of background - centered and clipped */}
@@ -136,7 +162,7 @@ export function CompleteScreen({
               <DndProvider backend={HTML5Backend}>
                 
                 <div
-                  className="scale-[0.55] origin-center -translate-y-[80px]"
+                  className="scale-[0.50] origin-center -translate-y-[80px]"
                 >
                   <BadgePreview
                     ref={staticBadgeRef}
