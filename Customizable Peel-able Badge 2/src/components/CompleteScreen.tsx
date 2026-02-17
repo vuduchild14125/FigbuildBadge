@@ -125,7 +125,7 @@ export function CompleteScreen({
     // For the 3:4 grid export, scale the badge slightly smaller and lower it
     if (aspectRatio === '3:4') {
       const gridScaleFactor = 0.75;
-      const gridOffsetY = 70;
+      const gridOffsetY = 320;
       const scaledWidth = drawWidth * gridScaleFactor;
       const scaledHeight = drawHeight * gridScaleFactor;
       const centeredX = drawX + (drawWidth - scaledWidth) / 2;
