@@ -197,19 +197,19 @@ export function CompleteScreen({
           {/* Action Buttons */}
           <div className="flex flex-col gap-4 w-full max-w-md">
             <button
-              onClick={() => handleDownload('3:4')}
-              disabled={downloadingFormat !== null}
-              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
-            >
-              {downloadingFormat === '3:4' ? 'Preparing Download...' : 'Download 3:4 (Grid)'}
-            </button>
-
-            <button
               onClick={() => handleDownload('9:16')}
               disabled={downloadingFormat !== null}
               className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
             >
               {downloadingFormat === '9:16' ? 'Preparing Download...' : 'Download 9:16 (Story)'}
+            </button>
+
+            <button
+              onClick={() => handleDownload('3:4')}
+              disabled={downloadingFormat !== null}
+              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
+            >
+              {downloadingFormat === '3:4' ? 'Preparing Download...' : 'Download 3:4 (Grid)'}
             </button>
           </div>
 
