@@ -57,13 +57,15 @@ export function StickersPanel() {
 
 export function FunStickersSheet() {
   return (
-    <div className="bg-white rounded-[8px] p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-      <div className="flex flex-wrap gap-3">
-        {FUN_STICKERS.map((sticker) => (
-          <div key={sticker.id} className="w-[30px] h-[30px]">
-            <DraggableFunSticker sticker={sticker} />
-          </div>
-        ))}
+    <div className="bg-white rounded-[8px] p-4 min-h-[180px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+      <div className="max-h-[300px] overflow-auto pr-1">
+        <div className="grid grid-cols-6 gap-3">
+          {FUN_STICKERS.map((sticker) => (
+            <div key={sticker.id} className="relative overflow-visible">
+              <DraggableFunSticker sticker={sticker} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

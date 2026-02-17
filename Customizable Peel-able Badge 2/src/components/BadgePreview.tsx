@@ -236,7 +236,7 @@ export const BadgePreview = React.forwardRef<
         </div>
 
         {/* Header */}
-        <div className="absolute top-[14.71%] left-[5.85%] right-[4.76%] flex gap-0">
+        <div className="absolute top-[6.91%] left-1/2 -translate-x-1/2 flex gap-0">
           <div className="bg-black px-[18px] py-[18px] flex items-center justify-center">
             <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[63px] leading-[0.95] tracking-[-1.89px]">FigBuild</span>
           </div>

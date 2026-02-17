@@ -4,7 +4,7 @@ export function SpoolGraphics({ id }: { id: string }) {
   return (
     <>
       {/* Roll cylinder */}
-      <div className="absolute h-[16px] right-0 top-[91px] w-[64px]">
+      <div className="absolute h-[16px] right-0 top-[76px] w-[64px]">
         <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 64.367 15.5321">
           <ellipse cx="32.1835" cy="7.76607" fill={`url(#radial_roll_${id})`} rx="32.1835" ry="7.76607" />
           <defs>
@@ -17,7 +17,7 @@ export function SpoolGraphics({ id }: { id: string }) {
       </div>
 
       {/* Inner spool */}
-      <div className="absolute h-[11px] right-[8px] top-[93px] w-[48px]">
+      <div className="absolute h-[11px] right-[8px] top-[78px] w-[48px]">
         <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 48.3099 10.9606">
           <ellipse cx="24.155" cy="5.48032" fill={`url(#linear_spool_${id})`} rx="24.155" ry="5.48032" />
           <defs>

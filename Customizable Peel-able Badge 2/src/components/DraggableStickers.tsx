@@ -286,12 +286,12 @@ export function DraggableTimeSticker({ timeId, label, src, textColor }: { timeId
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative">
-        <div className="w-[52px] h-[52px] relative">
-          <img src={src} alt="" className="absolute inset-0 w-full h-full" />
+        <div className="w-[40px] h-[40px] relative">
+          <img src={src} alt="" className="absolute inset-0 w-full h-full object-contain" />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span
-              className="text-[8px] uppercase leading-[1.2] text-center whitespace-nowrap"
-              style={{ color: textColor, fontFamily: "'Figma Mono VF:Regular', monospace" }}
+              className="text-[6.5px] uppercase leading-[1.2] text-center whitespace-nowrap font-['Figma_Mono_VF:Regular',monospace]"
+              style={{ color: textColor }}
             >
               {label}
             </span>
@@ -361,6 +361,22 @@ export function DraggableFunSticker({ sticker }: { sticker: typeof FUN_STICKERS[
           </div>
           <div className="px-[6px] py-[2px] rounded-[20px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
             <span className="text-[9px] tracking-[-0.3px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+              {(sticker as any).label2}
+            </span>
+          </div>
+        </div>
+      );
+    }
+    if (sticker.type === 'text-horizontal-small') {
+      return (
+        <div className="flex items-center gap-0">
+          <div className="px-[4px] py-[2px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
+            <span className="text-[7px] tracking-[-0.2px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
+              {(sticker as any).label1}
+            </span>
+          </div>
+          <div className="px-[4px] py-[2px] rounded-[15px] flex items-center justify-center" style={{ backgroundColor: (sticker as any).bg }}>
+            <span className="text-[7px] tracking-[-0.2px] whitespace-nowrap" style={{ color: (sticker as any).textColor, fontFamily: "'Figma Sans VF:Regular', sans-serif" }}>
               {(sticker as any).label2}
             </span>
           </div>
