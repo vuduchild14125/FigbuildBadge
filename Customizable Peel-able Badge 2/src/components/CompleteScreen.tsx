@@ -1,37 +1,31 @@
-import { useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { DecorativeElements } from './DecorativeElements';
+import { BadgePreview } from './BadgePreview';
+import type { BorderStyle, CordColor, Background, DrawSize, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
 export function CompleteScreen({
   onRestart,
-  badgeImage
+  borderStyle,
+  cordColor,
+  background,
+  drawSize,
+  placedStickers,
+  drawPaths,
 }: {
   onRestart: () => void;
-  badgeImage: string | null;
+  borderStyle: BorderStyle;
+  cordColor: CordColor;
+  background: Background;
+  drawSize: DrawSize;
+  placedStickers: PlacedSticker[];
+  drawPaths: DrawPath[];
 }) {
-  useEffect(() => {
-    console.log('📄 CompleteScreen mounted');
-    console.log('🖼️ Badge image:', badgeImage ? `Received (${Math.round(badgeImage.length / 1024)} KB)` : '❌ NULL');
-    console.log('🔍 badgeImage value:', badgeImage);
-    console.log('🔍 badgeImage truthy?', !!badgeImage);
-    console.log('🔍 badgeImage type:', typeof badgeImage);
-    if (badgeImage) {
-      console.log('🔍 First 100 chars:', badgeImage.substring(0, 100));
-    }
-  }, [badgeImage]);
-
+  const staticBadgeRef = useRef<HTMLDivElement>(null);
+  const [isDrawing] = useState(false);
+  const [currentPath] = useState<DrawPoint[]>([]);
   const handleDownload = (aspectRatio: '3:4' | '9:16') => {
-    if (!badgeImage) {
-      console.log('⚠️ Cannot download: badge image is null');
-      return;
-    }
-    console.log('💾 Downloading badge as', aspectRatio);
-
-    const link = document.createElement('a');
-    link.href = badgeImage;
-    link.download = `figbuild-badge-${aspectRatio}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    console.log('💾 Download requested:', aspectRatio);
+    alert('Download feature coming soon! Take a screenshot for now.');
   };
 
   return (
@@ -64,16 +58,14 @@ export function CompleteScreen({
           <div className="flex flex-col gap-4 w-full max-w-md">
             <button
               onClick={() => handleDownload('3:4')}
-              disabled={!badgeImage}
-              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
             >
               Download 3:4 (Grid)
             </button>
 
             <button
               onClick={() => handleDownload('9:16')}
-              disabled={!badgeImage}
-              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
             >
               Download 9:16 (Story)
             </button>
@@ -85,56 +77,28 @@ export function CompleteScreen({
         </div>
 
         {/* Right Column - Badge Preview */}
-        <div
-          className="flex-1 flex items-center justify-center lg:justify-end max-w-2xl"
-          style={{
-            backgroundColor: 'yellow', // DEBUG: Make column visible
-            minHeight: '400px'
-          }}
-        >
-          {(() => {
-            console.log('🎨 Rendering badge section, badgeImage exists?', !!badgeImage);
-            return badgeImage ? (
-              <div
-                className="relative"
-                style={{
-                  backgroundColor: 'lime', // DEBUG: Make container visible
-                  padding: '20px',
-                  border: '5px solid red', // DEBUG: Make boundary visible
-                  zIndex: 9999 // DEBUG: Make sure it's on top
-                }}
-              >
-                <img
-                  src={badgeImage}
-                  alt="Your custom badge"
-                  className="w-full max-w-[350px] lg:max-w-[450px] xl:max-w-[550px] h-auto"
-                  style={{
-                    filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.15))',
-                    border: '3px solid blue' // DEBUG: Make image visible
-                  }}
-                  onLoad={(e) => {
-                    const img = e.currentTarget;
-                    console.log('✅ Image loaded successfully');
-                    console.log('📏 Natural dimensions:', img.naturalWidth, 'x', img.naturalHeight);
-                    console.log('📏 Rendered dimensions:', img.width, 'x', img.height);
-                    console.log('📏 Computed style:', window.getComputedStyle(img).width, 'x', window.getComputedStyle(img).height);
-                  }}
-                  onError={(e) => console.error('❌ Image failed to load:', e)}
-                />
-              </div>
-            ) : (
-              <div className="w-[350px] lg:w-[450px] h-[525px] lg:h-[675px] bg-white/50 rounded-lg border-2 border-dashed border-black/20 flex items-center justify-center">
-                <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-black/40">
-                  Loading badge...
-                </p>
-              </div>
-            );
-          })()}
+        <div className="flex-1 flex items-center justify-center lg:justify-end">
+          <div className="scale-[0.5] origin-center">
+            <BadgePreview
+              ref={staticBadgeRef}
+              borderStyle={borderStyle}
+              cordColor={cordColor}
+              background={background}
+              drawSize={drawSize}
+              placedStickers={placedStickers}
+              setPlacedStickers={() => {}}
+              drawPaths={drawPaths}
+              isDrawing={isDrawing}
+              setIsDrawing={() => {}}
+              currentPath={currentPath}
+              setCurrentPath={() => {}}
+              setDrawPaths={() => {}}
+            />
+          </div>
         </div>
       </div>
 
-      {/* DEBUG: Disabled DecorativeElements to check if it's covering the badge */}
-      {/* <DecorativeElements /> */}
+      <DecorativeElements />
     </div>
   );
 }

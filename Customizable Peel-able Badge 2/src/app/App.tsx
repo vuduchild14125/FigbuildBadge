@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import html2canvas from 'html2canvas';
 
 import type { BorderStyle, CordColor, Background, DrawSize, MobileTab, Screen, StickerTab, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
@@ -34,7 +33,6 @@ export default function App() {
   const [mobileTab, setMobileTab] = useState<MobileTab>('background');
   const [mobileStickerTab, setMobileStickerTab] = useState<StickerTab>('year');
   const [isMobileStickerAnimating, setIsMobileStickerAnimating] = useState(false);
-  const [savedBadgeImage, setSavedBadgeImage] = useState<string | null>(null);
 
   const handleUndo = () => {
     if (drawPaths.length > 0) {
@@ -49,98 +47,7 @@ export default function App() {
     setPlacedStickers([]);
   };
 
-  const handleDone = async () => {
-    console.log('🎨 Starting badge capture...');
-
-    // Select the correct ref based on screen size
-    const ref = window.innerWidth < 1024 ? mobileBadgeRef : badgeRef;
-    console.log('📱 Using', window.innerWidth < 1024 ? 'mobile' : 'desktop', 'ref');
-
-    if (ref.current) {
-      try {
-        // Capture the PARENT element that includes both lanyard and badge
-        const parentElement = ref.current.parentElement;
-        if (!parentElement) {
-          console.error('No parent element found');
-          setCurrentScreen('complete');
-          return;
-        }
-
-        console.log('📐 Badge size:', ref.current.offsetWidth, 'x', ref.current.offsetHeight);
-        console.log('📐 Parent size (with lanyard):', parentElement.offsetWidth, 'x', parentElement.offsetHeight);
-
-        // Capture the parent element which includes the lanyard (positioned 736px above)
-        const canvas = await html2canvas(parentElement, {
-          backgroundColor: null, // Transparent background
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          logging: false,
-          foreignObjectRendering: false, // Use regular rendering
-          y: -736, // Include the lanyard which is 736px above
-          height: 736 + ref.current.offsetHeight, // Total height: lanyard (736) + badge (682)
-          onclone: (clonedDoc, clonedElement) => {
-            console.log('🔧 Pre-processing clone before html2canvas parses CSS...');
-
-            // STEP 1: Remove ALL style tags and link elements (prevent OkLch parsing)
-            const styleTags = clonedDoc.querySelectorAll('style, link[rel="stylesheet"]');
-            styleTags.forEach(tag => tag.remove());
-            console.log(`🗑️ Removed ${styleTags.length} style/link tags`);
-
-            // STEP 2: Find matching elements and apply computed styles inline
-            const originalParent = parentElement;
-            const clonedElements = Array.from(clonedDoc.body.querySelectorAll('*'));
-            const originalElements = Array.from(originalParent.querySelectorAll('*'));
-
-            clonedElements.forEach((clonedEl, index) => {
-              if (originalElements[index]) {
-                const computed = window.getComputedStyle(originalElements[index]);
-                const htmlEl = clonedEl as HTMLElement;
-
-                // Apply essential computed styles inline (in RGB format)
-                htmlEl.style.color = computed.color;
-                htmlEl.style.backgroundColor = computed.backgroundColor;
-                htmlEl.style.borderColor = computed.borderColor;
-                htmlEl.style.borderWidth = computed.borderWidth;
-                htmlEl.style.borderStyle = computed.borderStyle;
-                htmlEl.style.fontSize = computed.fontSize;
-                htmlEl.style.fontFamily = computed.fontFamily;
-                htmlEl.style.fontWeight = computed.fontWeight;
-                htmlEl.style.padding = computed.padding;
-                htmlEl.style.margin = computed.margin;
-                htmlEl.style.width = computed.width;
-                htmlEl.style.height = computed.height;
-                htmlEl.style.display = computed.display;
-                htmlEl.style.position = computed.position;
-                htmlEl.style.top = computed.top;
-                htmlEl.style.left = computed.left;
-                htmlEl.style.transform = computed.transform;
-              }
-            });
-
-            console.log(`✅ Applied inline styles to ${clonedElements.length} elements`);
-          },
-        });
-
-        console.log('🖼️ Canvas created:', canvas.width, 'x', canvas.height);
-
-        // Convert to PNG
-        const imageData = canvas.toDataURL('image/png');
-        console.log('✅ PNG created, size:', Math.round(imageData.length / 1024), 'KB');
-
-        // Save to state
-        setSavedBadgeImage(imageData);
-        console.log('💾 Badge saved to state');
-
-        // Wait for state to update
-        await new Promise(resolve => setTimeout(resolve, 100));
-      } catch (error) {
-        console.error('❌ Capture failed:', error);
-      }
-    } else {
-      console.error('❌ Badge ref is null');
-    }
-
+  const handleDone = () => {
     setCurrentScreen('complete');
   };
 
@@ -175,11 +82,13 @@ export default function App() {
   if (currentScreen === 'complete') {
     return (
       <CompleteScreen
-        onRestart={() => {
-          setCurrentScreen('welcome');
-          setSavedBadgeImage(null);
-        }}
-        badgeImage={savedBadgeImage}
+        onRestart={() => setCurrentScreen('welcome')}
+        borderStyle={borderStyle}
+        cordColor={cordColor}
+        background={background}
+        drawSize={drawSize}
+        placedStickers={placedStickers}
+        drawPaths={drawPaths}
       />
     );
   }

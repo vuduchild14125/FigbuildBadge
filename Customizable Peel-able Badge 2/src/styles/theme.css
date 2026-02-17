@@ -1,6 +1,6 @@
 :root {
   --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
+  --foreground: #252525; /* Converted from oklch(0.145 0 0) to RGB */
   --border: rgba(0, 0, 0, 0.1);
 }
 
