@@ -214,8 +214,6 @@ export const BadgePreview = React.forwardRef<
               fill="none"
               stroke="black"
               strokeWidth="3"
-              strokeDasharray="8 4"
-              strokeLinecap="round"
               style={{
                 filter: 'url(#wiggle)',
               }}
