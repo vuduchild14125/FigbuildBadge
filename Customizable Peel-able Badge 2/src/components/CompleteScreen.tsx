@@ -148,7 +148,7 @@ export function CompleteScreen({
         </div>
 
         {/* Right Column - Badge Preview with Background */}
-        <div className="flex-1 flex items-center justify-center lg:justify-end">
+        <div className="flex items-center justify-center">
           <div ref={downloadContainerRef} className="relative w-fit overflow-hidden">
             {/* Background Image - Full width and height */}
             <img
