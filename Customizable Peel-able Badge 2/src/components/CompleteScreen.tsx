@@ -183,7 +183,7 @@ export function CompleteScreen({
 
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-4 lg:gap-6 px-4 sm:px-6 lg:px-20 py-8 lg:py-0">
         {/* Left Column - Text Content */}
-        <div className="flex flex-col items-start max-w-xl">
+        <div className="flex flex-col items-start max-w-xl order-last lg:order-first">
           <div className="flex mb-10">
             <div className="bg-black px-5 py-3 flex items-center justify-center">
               <span className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[48px] lg:text-[58px] leading-[0.95] tracking-[-1.74px]">
@@ -233,10 +233,6 @@ export function CompleteScreen({
               </span>
             </button>
           </div>
-
-          <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] text-black/40 text-left">
-            See you at FigBuild 2026!
-          </p>
         </div>
 
         {/* Right Column - Badge Preview with Background (on-screen only) */}
