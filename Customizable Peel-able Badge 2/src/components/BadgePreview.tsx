@@ -58,8 +58,12 @@ export const BadgePreview = React.forwardRef<
       const badgeEl = (ref as React.RefObject<HTMLDivElement>).current;
       if (offset && badgeEl) {
         const badgeRect = badgeEl.getBoundingClientRect();
-        const x = (offset.x - badgeRect.left) / scale;
-        const y = (offset.y - badgeRect.top) / scale;
+        // Convert screen pixels to native 483×682 coordinate space
+        // using the rendered size, which accounts for all CSS transforms
+        const scaleX = badgeRect.width / 483;
+        const scaleY = badgeRect.height / 682;
+        const x = (offset.x - badgeRect.left) / scaleX;
+        const y = (offset.y - badgeRect.top) / scaleY;
 
         if (item.stickerType) {
           setPlacedStickers(prev => [...prev, {

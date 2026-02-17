@@ -1,7 +1,21 @@
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useDrag } from 'react-dnd';
 import svgPaths from '../imports/svg-fkhx66co9q';
 import { GOAL_SHAPE_PATH, FUN_STICKERS } from '../constants/stickers';
+import { useTouchDrag } from './TouchDragContext';
+
+function useTouchDragHandler(item: Record<string, any>) {
+  const ctx = useTouchDrag();
+  const itemRef = useRef(item);
+  itemRef.current = item;
+  return useCallback((e: React.TouchEvent) => {
+    if (!ctx) return;
+    // Prevent react-dnd touch backend from also handling this touch
+    e.stopPropagation();
+    const touch = e.touches[0];
+    ctx.startDrag(itemRef.current, touch.clientX, touch.clientY);
+  }, [ctx]);
+}
 
 export function DraggableSticker({ stickerType, color, label, textColor }: { stickerType: number; color: string; label?: string; textColor?: string }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -12,6 +26,7 @@ export function DraggableSticker({ stickerType, color, label, textColor }: { sti
       isDragging: monitor.isDragging(),
     }),
   }));
+  const onTouchStart = useTouchDragHandler({ stickerType });
 
   return (
     <div
@@ -23,6 +38,7 @@ export function DraggableSticker({ stickerType, color, label, textColor }: { sti
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={onTouchStart}
     >
       <div className="relative">
         <div className="w-[70px] h-[51px] relative">
@@ -71,6 +87,7 @@ export function DraggablePronounSticker({ text }: { text: string }) {
       isDragging: monitor.isDragging(),
     }),
   }));
+  const onTouchStart = useTouchDragHandler({ text });
 
   return (
     <div
@@ -82,6 +99,7 @@ export function DraggablePronounSticker({ text }: { text: string }) {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={onTouchStart}
     >
       <div className="relative">
         <div className="bg-[#e4ff97] content-start flex flex-wrap items-start px-[12.432px] py-[6.605px] relative shrink-0">
@@ -116,6 +134,7 @@ export function DraggableAboutSticker({ aboutId, label, color }: { aboutId: stri
       isDragging: monitor.isDragging(),
     }),
   }));
+  const onTouchStart = useTouchDragHandler({ aboutId, label, color });
 
   return (
     <div
@@ -127,6 +146,7 @@ export function DraggableAboutSticker({ aboutId, label, color }: { aboutId: stri
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={onTouchStart}
     >
       <div className="relative">
         <div
@@ -167,6 +187,7 @@ export function DraggableGoalSticker({ goalId, label, color }: { goalId: string;
       isDragging: monitor.isDragging(),
     }),
   }));
+  const onTouchStart = useTouchDragHandler({ goalId, label, color });
 
   return (
     <div
@@ -178,6 +199,7 @@ export function DraggableGoalSticker({ goalId, label, color }: { goalId: string;
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={onTouchStart}
     >
       <div className="relative">
         <div className="w-[75px] h-[52px] relative">
@@ -220,6 +242,7 @@ export function DraggableRoleSticker({ roleId, label, color, textColor }: { role
       isDragging: monitor.isDragging(),
     }),
   }));
+  const onTouchStart = useTouchDragHandler({ roleId, label, color });
 
   return (
     <div
@@ -231,6 +254,7 @@ export function DraggableRoleSticker({ roleId, label, color, textColor }: { role
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={onTouchStart}
     >
       <div className="relative">
         <div className="w-[75px] h-[52px] relative">
@@ -273,6 +297,7 @@ export function DraggableTimeSticker({ timeId, label, src, textColor }: { timeId
       isDragging: monitor.isDragging(),
     }),
   }));
+  const onTouchStart = useTouchDragHandler({ timeId, label, src });
 
   return (
     <div
@@ -284,6 +309,7 @@ export function DraggableTimeSticker({ timeId, label, src, textColor }: { timeId
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={onTouchStart}
     >
       <div className="relative">
         <div className="w-[40px] h-[40px] relative">
@@ -324,6 +350,7 @@ export function DraggableFunSticker({ sticker }: { sticker: typeof FUN_STICKERS[
       isDragging: monitor.isDragging(),
     }),
   }));
+  const onTouchStart = useTouchDragHandler({ funStickerId: sticker.id });
 
   const renderContent = () => {
     if (sticker.type === 'text') {
@@ -425,6 +452,7 @@ export function DraggableFunSticker({ sticker }: { sticker: typeof FUN_STICKERS[
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={onTouchStart}
     >
       <div className="w-[55px] h-[55px] overflow-hidden rounded-[4px]">
         {renderContent()}

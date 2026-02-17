@@ -1,10 +1,10 @@
-import { useDragLayer } from 'react-dnd';
+import { useTouchDrag } from './TouchDragContext';
 import svgPaths from '../imports/svg-fkhx66co9q';
 import { STICKER_TYPES, FUN_STICKERS, TIME_STICKER_TYPES, GOAL_SHAPE_PATH } from '../constants/stickers';
 
 function StickerPreview({ item }: { item: any }) {
   if (item.stickerType !== undefined) {
-    const sticker = STICKER_TYPES.find((s) => s.stickerType === item.stickerType);
+    const sticker = STICKER_TYPES.find((s) => s.id === item.stickerType);
     if (!sticker) return null;
     return (
       <div className="w-[70px] h-[51px] relative">
@@ -80,7 +80,7 @@ function StickerPreview({ item }: { item: any }) {
   }
 
   if (item.timeId) {
-    const timeSticker = TIME_STICKER_TYPES.find((t) => t.timeId === item.timeId);
+    const timeSticker = TIME_STICKER_TYPES.find((t) => t.id === item.timeId);
     if (!timeSticker) return null;
     return (
       <div className="w-[40px] h-[40px] relative">
@@ -120,27 +120,25 @@ function StickerPreview({ item }: { item: any }) {
 }
 
 export function TouchDragPreview() {
-  const { item, itemType, isDragging, currentOffset } = useDragLayer((monitor) => ({
-    item: monitor.getItem(),
-    itemType: monitor.getItemType(),
-    isDragging: monitor.isDragging(),
-    currentOffset: monitor.getClientOffset(),
-  }));
+  const ctx = useTouchDrag();
+  if (!ctx) return null;
 
-  if (!isDragging || !currentOffset || !item) return null;
+  const { dragState } = ctx;
+  if (!dragState.item) return null;
 
   return (
     <div
       style={{
         position: 'fixed',
+        left: dragState.x,
+        top: dragState.y,
+        transform: 'translate(-50%, -50%)',
         pointerEvents: 'none',
         zIndex: 9999,
-        left: currentOffset.x,
-        top: currentOffset.y,
-        transform: 'translate(-50%, -50%)',
+        opacity: 0.9,
       }}
     >
-      <StickerPreview item={item} />
+      <StickerPreview item={dragState.item} />
     </div>
   );
 }

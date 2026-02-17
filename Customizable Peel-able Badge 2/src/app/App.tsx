@@ -1,7 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { DndProvider } from 'react-dnd';
-import { HTML5toTouch } from 'rdndmb-html5-to-touch';
-import { MultiBackend } from 'react-dnd-multi-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import type { BorderStyle, CordColor, Background, DrawSize, MobileTab, Screen, StickerTab, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
@@ -15,6 +14,7 @@ import { StickersPanel } from '../components/StickersPanel';
 import { StickerRoll, PronounStickerRoll, AboutStickerRoll, GoalStickerRoll, TimeStickerRoll, RoleStickerRoll } from '../components/StickerRolls';
 import { DecorativeElements } from '../components/DecorativeElements';
 import { TouchDragPreview } from '../components/TouchDragPreview';
+import { TouchDragProvider } from '../components/TouchDragContext';
 
 import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
 import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
@@ -65,6 +65,25 @@ export default function App() {
     }
   };
 
+  const handleTouchDrop = useCallback((item: any, x: number, y: number) => {
+    const rotation = Math.random() * 30 - 15;
+    if (item.stickerType !== undefined) {
+      setPlacedStickers(prev => [...prev, { id: `sticker-${Date.now()}`, type: item.stickerType, x, y, rotation }]);
+    } else if (item.goalId) {
+      setPlacedStickers(prev => [...prev, { id: `goal-${Date.now()}`, type: 0, x, y, rotation, pronounText: item.label, goalColor: item.color }]);
+    } else if (item.aboutId) {
+      setPlacedStickers(prev => [...prev, { id: `about-${Date.now()}`, type: 0, x, y, rotation, pronounText: item.label, aboutColor: item.color }]);
+    } else if (item.text) {
+      setPlacedStickers(prev => [...prev, { id: `pronoun-${Date.now()}`, type: 0, x, y, rotation, pronounText: item.text }]);
+    } else if (item.funStickerId) {
+      setPlacedStickers(prev => [...prev, { id: `fun-${Date.now()}`, type: 0, x, y, rotation, funStickerId: item.funStickerId }]);
+    } else if (item.roleId) {
+      setPlacedStickers(prev => [...prev, { id: `role-${Date.now()}`, type: 0, x, y, rotation, roleColor: item.color, roleLabel: item.label }]);
+    } else if (item.timeId) {
+      setPlacedStickers(prev => [...prev, { id: `time-${Date.now()}`, type: 0, x, y, rotation, timeId: item.timeId }]);
+    }
+  }, []);
+
   if (currentScreen === 'welcome') {
     return (
       <WelcomeScreen
@@ -98,7 +117,7 @@ export default function App() {
   }
 
   return (
-    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+    <DndProvider backend={HTML5Backend}>
       <div className="size-full bg-[#F5F5F5] overflow-hidden relative">
         <div className="hidden lg:flex h-screen overflow-hidden">
           <div className="flex gap-4 xl:gap-6 items-start w-full px-6 xl:px-[80px] pt-[48px]">
@@ -182,6 +201,7 @@ export default function App() {
         </div>
 
         {/* Mobile/Tablet Layout */}
+        <TouchDragProvider badgeRef={mobileBadgeRef} onDrop={handleTouchDrop}>
         <div className="flex lg:hidden flex-col h-screen">
           <TouchDragPreview />
           {/* Back button */}
@@ -425,6 +445,7 @@ export default function App() {
             </div>
           </div>
         </div>
+        </TouchDragProvider>
 
         {/* Decorative Elements at Bottom */}
         <DecorativeElements />

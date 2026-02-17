@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
-import { HTML5toTouch } from 'rdndmb-html5-to-touch';
-import { MultiBackend } from 'react-dnd-multi-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { toPng } from 'html-to-image';
 import { DecorativeElements } from './DecorativeElements';
 import { BadgePreview } from './BadgePreview';
@@ -161,7 +160,7 @@ export function CompleteScreen({
           style={{ width: BADGE_NATIVE_WIDTH, height: BADGE_NATIVE_HEIGHT, position: 'relative', overflow: 'hidden' }}
         >
           <div style={{ position: 'absolute', top: LANYARD_HEIGHT }}>
-            <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+            <DndProvider backend={HTML5Backend}>
               <BadgePreview
                 ref={hiddenBadgeRef}
                 borderStyle={borderStyle}
@@ -248,7 +247,7 @@ export function CompleteScreen({
 
             {/* Badge on top of background - centered and clipped */}
             <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-              <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+              <DndProvider backend={HTML5Backend}>
                 <div ref={onScreenBadgeWrapperRef} className="scale-[0.50] origin-center -translate-y-[80px]">
                   <BadgePreview
                     ref={staticBadgeRef}
