@@ -253,9 +253,10 @@ export const BadgePreview = React.forwardRef<
           if (sticker.funStickerId) {
             const funSticker = FUN_STICKERS.find(s => s.id === sticker.funStickerId);
             if (!funSticker) return null;
+            const scaledSize = 55 * 1.5;
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x - 27, top: sticker.y - 27, transform: `rotate(${sticker.rotation}deg) scale(1.5)` }}>
+                style={{ left: sticker.x - scaledSize/2, top: sticker.y - scaledSize/2, transform: `rotate(${sticker.rotation}deg) scale(1.5)` }}>
                 <div className="w-[55px] h-[55px] overflow-hidden rounded-[4px]">
                   {funSticker.type === 'text' && (
                     <div className="w-full h-full px-[8px] py-[4px] flex items-center justify-center" style={{ backgroundColor: (funSticker as any).bg }}>
@@ -306,9 +307,11 @@ export const BadgePreview = React.forwardRef<
             );
           }
           if (sticker.roleColor && sticker.roleLabel) {
+            const scaledWidth = 75 * 1.75;
+            const scaledHeight = 52 * 1.75;
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x - 37, top: sticker.y - 26, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
+                style={{ left: sticker.x - scaledWidth/2, top: sticker.y - scaledHeight/2, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
                 <div className="w-[75px] h-[52px] relative">
                   <svg width="75" height="52" viewBox="0 0 105.423 73.0645" fill="none" className="absolute inset-0">
                     <path d={GOAL_SHAPE_PATH} fill={sticker.roleColor} />
@@ -326,9 +329,10 @@ export const BadgePreview = React.forwardRef<
           if (sticker.timeId) {
             const timeSticker = TIME_STICKER_TYPES.find(s => s.id === sticker.timeId);
             if (!timeSticker) return null;
+            const scaledSize = 52 * 1.75;
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x - 26, top: sticker.y - 26, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
+                style={{ left: sticker.x - scaledSize/2, top: sticker.y - scaledSize/2, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
                 <div className="w-[52px] h-[52px] relative">
                   <img src={timeSticker.src} alt="" className="absolute inset-0 w-full h-full" />
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -342,9 +346,11 @@ export const BadgePreview = React.forwardRef<
             );
           }
           if (sticker.goalColor && sticker.pronounText) {
+            const scaledWidth = 75 * 1.75;
+            const scaledHeight = 52 * 1.75;
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x - 37, top: sticker.y - 26, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
+                style={{ left: sticker.x - scaledWidth/2, top: sticker.y - scaledHeight/2, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
                 <div className="w-[75px] h-[52px] relative">
                   <svg width="75" height="52" viewBox="0 0 105.423 73.0645" fill="none" className="absolute inset-0">
                     <path d={GOAL_SHAPE_PATH} fill={sticker.goalColor} />
@@ -362,7 +368,7 @@ export const BadgePreview = React.forwardRef<
           if (sticker.aboutColor && sticker.pronounText) {
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x - 40, top: sticker.y - 14, transform: `rotate(${sticker.rotation}deg) scale(1.5)` }}>
+                style={{ left: sticker.x, top: sticker.y, transform: `translate(-50%, -50%) rotate(${sticker.rotation}deg) scale(1.5)` }}>
                 <div className="px-[11px] py-[6px] rounded-[100px] whitespace-nowrap" style={{ backgroundColor: sticker.aboutColor }}>
                   <span className="text-[12px] text-black uppercase leading-[1.2]" style={{ fontFamily: "'Figma Mono VF:Regular', monospace" }}>
                     {sticker.pronounText}
@@ -374,7 +380,7 @@ export const BadgePreview = React.forwardRef<
           if (sticker.pronounText) {
             return (
               <div key={sticker.id} className="absolute pointer-events-none"
-                style={{ left: sticker.x - 40, top: sticker.y - 14, transform: `rotate(${sticker.rotation}deg) scale(1.5)` }}>
+                style={{ left: sticker.x, top: sticker.y, transform: `translate(-50%, -50%) rotate(${sticker.rotation}deg) scale(1.5)` }}>
                 <div className="bg-[#e4ff97] px-[12px] py-[6px] whitespace-nowrap">
                   <span className="font-['Figma_Mono_VF:Regular',sans-serif] text-[14px] text-black uppercase leading-[1.2]">
                     {sticker.pronounText}
@@ -384,9 +390,11 @@ export const BadgePreview = React.forwardRef<
             );
           }
           const StickerType = STICKER_TYPES.find(s => s.id === sticker.type);
+          const scaledWidth = 70 * 1.75;
+          const scaledHeight = 51 * 1.75;
           return (
             <div key={sticker.id} className="absolute pointer-events-none"
-              style={{ left: sticker.x - 35, top: sticker.y - 25, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
+              style={{ left: sticker.x - scaledWidth/2, top: sticker.y - scaledHeight/2, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
               <div className="w-[70px] h-[51px] relative">
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="rotate-90">

@@ -19,7 +19,7 @@ export function DraggableSticker({ stickerType, color, label, textColor }: { sti
       className="cursor-move transition-all duration-300"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+        transform: (isHovered || isDragging) ? 'translateY(-8px) scale(1.15)' : 'translateY(0) scale(1)',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -123,7 +123,7 @@ export function DraggableAboutSticker({ aboutId, label, color }: { aboutId: stri
       className="cursor-move transition-all duration-300 flex-shrink-0"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+        transform: (isHovered || isDragging) ? 'translateY(-8px) scale(1.15)' : 'translateY(0) scale(1)',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -174,7 +174,7 @@ export function DraggableGoalSticker({ goalId, label, color }: { goalId: string;
       className="cursor-move transition-all duration-300 flex-shrink-0"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+        transform: (isHovered || isDragging) ? 'translateY(-8px) scale(1.15)' : 'translateY(0) scale(1)',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -227,7 +227,7 @@ export function DraggableRoleSticker({ roleId, label, color, textColor }: { role
       className="cursor-move transition-all duration-300 flex-shrink-0"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+        transform: (isHovered || isDragging) ? 'translateY(-8px) scale(1.15)' : 'translateY(0) scale(1)',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -280,7 +280,7 @@ export function DraggableTimeSticker({ timeId, label, src, textColor }: { timeId
       className="cursor-move transition-all duration-300 flex-shrink-0"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        transform: isHovered && !isDragging ? 'translateY(-8px)' : 'translateY(0)',
+        transform: (isHovered || isDragging) ? 'translateY(-8px) scale(1.15)' : 'translateY(0) scale(1)',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

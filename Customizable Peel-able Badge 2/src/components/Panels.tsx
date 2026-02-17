@@ -84,10 +84,10 @@ export function BackgroundPanel({ background, setBackground }: { background: Bac
           <button
             key={id}
             onClick={() => setBackground(id)}
-            className="flex flex-col gap-[9.5px] items-start relative w-[104px]"
+            className="flex flex-col gap-[9.5px] items-start relative flex-1 max-w-[104px]"
           >
             <div className={`p-[4.7px] rounded-[2.4px] relative w-full ${background === id ? 'border border-[#4d49fc]' : ''}`}>
-              <div className="w-[94.8px] h-[43.8px] overflow-hidden rounded-[1px]">
+              <div className="w-full aspect-[94.8/43.8] overflow-hidden rounded-[1px]">
                 <img src={img} alt={label} className="w-full h-full object-cover" />
               </div>
             </div>

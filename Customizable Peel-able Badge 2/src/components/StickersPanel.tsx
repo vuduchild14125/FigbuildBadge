@@ -25,7 +25,7 @@ export function StickersPanel() {
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-4 mb-5">
-        {(['year', 'time', 'pronouns', 'about', 'goals', 'role', 'fun'] as const).map((tab) => (
+        {(['year', 'time', 'pronouns', 'about', 'goals', 'role'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => handleTabChange(tab)}
@@ -33,24 +33,20 @@ export function StickersPanel() {
               activeTab === tab ? 'bg-[#c4baff] text-[#4d49fc]' : 'text-black'
             }`}
           >
-            {tab === 'fun' ? 'FIGbuild' : tab}
+            {tab}
           </button>
         ))}
       </div>
 
       {/* Content Area */}
-      {activeTab === 'fun' ? (
-        <FunStickersSheet />
-      ) : (
-        <div className="relative h-[111px] overflow-hidden">
-          {activeTab === 'year' && <StickerRoll isAnimating={isAnimating} />}
-          {activeTab === 'pronouns' && <PronounStickerRoll isAnimating={isAnimating} />}
-          {activeTab === 'about' && <AboutStickerRoll isAnimating={isAnimating} />}
-          {activeTab === 'goals' && <GoalStickerRoll isAnimating={isAnimating} />}
-          {activeTab === 'time' && <TimeStickerRoll isAnimating={isAnimating} />}
-          {activeTab === 'role' && <RoleStickerRoll isAnimating={isAnimating} />}
-        </div>
-      )}
+      <div className="relative h-[111px] overflow-hidden flex items-center justify-center">
+        {activeTab === 'year' && <StickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'pronouns' && <PronounStickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'about' && <AboutStickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'goals' && <GoalStickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'time' && <TimeStickerRoll isAnimating={isAnimating} />}
+        {activeTab === 'role' && <RoleStickerRoll isAnimating={isAnimating} />}
+      </div>
     </div>
   );
 }

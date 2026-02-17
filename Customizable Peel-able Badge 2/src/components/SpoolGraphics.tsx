@@ -30,7 +30,7 @@ export function SpoolGraphics({ id }: { id: string }) {
       </div>
 
       {/* Highlight effect */}
-      <div className="absolute flex h-[76px] items-center justify-center right-[17px] mix-blend-overlay top-[16px] w-[1px]">
+      <div className="absolute flex h-[76px] items-center justify-center right-[17px] mix-blend-overlay top-[3px] w-[1px]">
         <div className="rotate-[-0.53deg]">
           <div className="h-[76px] relative w-0">
             <div className="absolute inset-[0_-2.5px]">
