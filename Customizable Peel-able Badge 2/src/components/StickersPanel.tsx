@@ -1,14 +1,7 @@
 import { useState } from 'react';
 import { FUN_STICKERS } from '../constants/stickers';
 import { DraggableFunSticker } from './DraggableStickers';
-import {
-  StickerRoll,
-  PronounStickerRoll,
-  AboutStickerRoll,
-  GoalStickerRoll,
-  RoleStickerRoll,
-  TimeStickerRoll,
-} from './StickerRolls';
+import { StickerRoll, PronounStickerRoll, AboutStickerRoll, GoalStickerRoll, RoleStickerRoll, TimeStickerRoll } from './StickerRolls';
 import type { StickerTab } from '../types';
 
 export function StickersPanel() {
@@ -28,27 +21,21 @@ export function StickersPanel() {
   return (
     <div className="bg-[#ececec] rounded-[12px] pt-[20px] pb-[24px] px-[20px] w-full relative shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
       {/* Header */}
-      <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-4">
-        Stickers
-      </h2>
+      <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-4">Stickers</h2>
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-4 mb-5">
-        {(['year', 'time', 'pronouns', 'about', 'goals', 'role', 'fun'] as const).map(
-          (tab) => (
-            <button
-              key={tab}
-              onClick={() => handleTabChange(tab)}
-              className={`px-1 py-1 text-[14px] uppercase font-['Fragment_Mono:Regular',sans-serif] leading-[1.2] transition-colors ${
-                activeTab === tab
-                  ? 'bg-[#c4baff] text-[#4d49fc]'
-                  : 'text-black'
-              }`}
-            >
-              {tab === 'fun' ? 'FIGbuild' : tab}
-            </button>
-          )
-        )}
+        {(['year', 'time', 'pronouns', 'about', 'goals', 'role', 'fun'] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => handleTabChange(tab)}
+            className={`px-1 py-1 text-[14px] uppercase font-['Fragment_Mono:Regular',sans-serif] leading-[1.2] transition-colors ${
+              activeTab === tab ? 'bg-[#c4baff] text-[#4d49fc]' : 'text-black'
+            }`}
+          >
+            {tab === 'fun' ? 'FIGbuild' : tab}
+          </button>
+        ))}
       </div>
 
       {/* Content Area */}
@@ -57,12 +44,8 @@ export function StickersPanel() {
       ) : (
         <div className="relative h-[111px] overflow-hidden">
           {activeTab === 'year' && <StickerRoll isAnimating={isAnimating} />}
-          {activeTab === 'pronouns' && (
-            <PronounStickerRoll isAnimating={isAnimating} />
-          )}
-          {activeTab === 'about' && (
-            <AboutStickerRoll isAnimating={isAnimating} />
-          )}
+          {activeTab === 'pronouns' && <PronounStickerRoll isAnimating={isAnimating} />}
+          {activeTab === 'about' && <AboutStickerRoll isAnimating={isAnimating} />}
           {activeTab === 'goals' && <GoalStickerRoll isAnimating={isAnimating} />}
           {activeTab === 'time' && <TimeStickerRoll isAnimating={isAnimating} />}
           {activeTab === 'role' && <RoleStickerRoll isAnimating={isAnimating} />}
@@ -74,20 +57,13 @@ export function StickersPanel() {
 
 export function FunStickersSheet() {
   return (
-    <div className="bg-white rounded-[8px] p-4 min-h-[180px] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
-      {/* Scroll instead of compressing */}
-      <div className="max-h-[240px] overflow-auto pr-1">
-        {/* Grid keeps spacing consistent */}
-        <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-3">
-          {FUN_STICKERS.map((sticker) => (
-            <div
-              key={sticker.id}
-              className="relative aspect-square w-12 overflow-visible"
-            >
-              <DraggableFunSticker sticker={sticker} />
-            </div>
-          ))}
-        </div>
+    <div className="bg-white rounded-[8px] p-4 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]">
+      <div className="flex flex-wrap gap-3">
+        {FUN_STICKERS.map((sticker) => (
+          <div key={sticker.id} className="w-[30px] h-[30px]">
+            <DraggableFunSticker sticker={sticker} />
+          </div>
+        ))}
       </div>
     </div>
   );
