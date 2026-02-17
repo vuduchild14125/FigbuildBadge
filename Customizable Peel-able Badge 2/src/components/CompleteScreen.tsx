@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import html2canvas from 'html2canvas';
 import { DecorativeElements } from './DecorativeElements';
 import { BadgePreview } from './BadgePreview';
 import type { BorderStyle, CordColor, Background, DrawSize, PlacedSticker, DrawPath, DrawPoint } from '../types';
@@ -26,22 +27,47 @@ export function CompleteScreen({
   drawPaths: DrawPath[];
 }) {
   const staticBadgeRef = useRef<HTMLDivElement>(null);
+  const downloadContainerRef = useRef<HTMLDivElement>(null);
   const [isDrawing] = useState(false);
   const [currentPath] = useState<DrawPoint[]>([]);
   const [layoutType, setLayoutType] = useState<'story' | 'grid'>('story'); // Default to story
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  const handleDownload = (aspectRatio: '3:4' | '9:16') => {
+  const triggerDownload = async (aspectRatio: '3:4' | '9:16') => {
+    const target = downloadContainerRef.current;
+    if (!target) return;
+
+    const canvas = await html2canvas(target, {
+      backgroundColor: '#F5F5F5',
+      useCORS: true,
+      scale: 2,
+    });
+
+    const link = document.createElement('a');
+    link.download = `${aspectRatio === '9:16' ? 'FigBuild2026_Story' : 'FigBuild2026_Grid'}.jpg`;
+    link.href = canvas.toDataURL('image/jpeg', 0.95);
+    link.click();
+  };
+
+  const handleDownload = async (aspectRatio: '3:4' | '9:16') => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+
     // Switch layout based on aspect ratio
     if (aspectRatio === '3:4') {
       setLayoutType('grid');
     } else {
       setLayoutType('story');
     }
-    console.log('💾 Switching to', aspectRatio === '3:4' ? 'grid' : 'story', 'layout');
-    // User can take screenshot after layout changes
-    setTimeout(() => {
-      alert('Layout ready! Take a screenshot now (Cmd+Shift+4 on Mac)');
-    }, 100);
+
+    // Wait one frame so layout updates are applied before capture.
+    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+
+    try {
+      await triggerDownload(aspectRatio);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -74,16 +100,18 @@ export function CompleteScreen({
           <div className="flex flex-col gap-4 w-full max-w-md">
             <button
               onClick={() => handleDownload('3:4')}
+              disabled={isDownloading}
               className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
             >
-              Download 3:4 (Grid)
+              {isDownloading ? 'Preparing Download...' : 'Download 3:4 (Grid)'}
             </button>
 
             <button
               onClick={() => handleDownload('9:16')}
+              disabled={isDownloading}
               className="px-6 py-4 bg-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] text-white hover:bg-black/90 transition-colors"
             >
-              Download 9:16 (Story)
+              {isDownloading ? 'Preparing Download...' : 'Download 9:16 (Story)'}
             </button>
           </div>
 
@@ -94,7 +122,7 @@ export function CompleteScreen({
 
         {/* Right Column - Badge Preview with Background */}
         <div className="flex-1 flex items-center justify-center lg:justify-end">
-          <div className="relative w-full h-full overflow-hidden">
+          <div ref={downloadContainerRef} className="relative w-full h-full overflow-hidden">
             {/* Background Image - Full width and height */}
             <img
               src={layoutType === 'story' ? photoBackgroundStory : photoBackgroundGrid}
