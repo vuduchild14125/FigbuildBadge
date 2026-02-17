@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import html2canvas from 'html2canvas';
+import { toPng } from 'html-to-image';
 import { DecorativeElements } from './DecorativeElements';
 import { BadgePreview } from './BadgePreview';
 import type { BorderStyle, CordColor, Background, DrawSize, PlacedSticker, DrawPath, DrawPoint } from '../types';
@@ -57,17 +57,19 @@ export function CompleteScreen({
   const [downloadingFormat, setDownloadingFormat] = useState<'3:4' | '9:16' | null>(null);
   const [badgeDataUrl, setBadgeDataUrl] = useState<string | null>(null);
 
-  // Rasterize the hidden native-size badge on mount
+  // Rasterize the hidden native-size badge on mount.
+  // Uses html-to-image (SVG foreignObject) which leverages the browser's
+  // own CSS renderer — handles transforms, object-fit, custom fonts, etc.
   useEffect(() => {
     const rasterize = async () => {
       const target = hiddenBadgeWrapperRef.current;
       if (!target) return;
-      const canvas = await html2canvas(target, {
-        backgroundColor: null,
-        useCORS: true,
-        scale: 2,
-      });
-      setBadgeDataUrl(canvas.toDataURL('image/png'));
+
+      // html-to-image can produce incomplete results on first call
+      // due to resource loading. Call twice — first warms up, second captures.
+      try { await toPng(target, { pixelRatio: 2 }); } catch { /* warm-up */ }
+      const dataUrl = await toPng(target, { pixelRatio: 2 });
+      setBadgeDataUrl(dataUrl);
     };
     const timer = setTimeout(rasterize, 500);
     return () => clearTimeout(timer);
