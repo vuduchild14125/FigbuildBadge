@@ -209,7 +209,7 @@ export function CompleteScreen({
             >
               <span className="inline-flex items-center justify-center gap-2">
                 <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[28px] transition-all duration-300 ease-in-out">
-                  <img src="/Icon-Download.svg" alt="" className="w-5 h-5 shrink-0" />
+                  <img src={`${import.meta.env.BASE_URL}Icon-Download.svg`} alt="" className="w-5 h-5 shrink-0" />
                 </span>
                 {downloadingFormat === '9:16' ? 'Preparing Download...' : 'Download 9:16 (Story)'}
               </span>
@@ -222,7 +222,7 @@ export function CompleteScreen({
             >
               <span className="inline-flex items-center justify-center gap-2">
                 <span className="inline-block max-w-0 overflow-hidden group-hover:max-w-[28px] transition-all duration-300 ease-in-out">
-                  <img src="/Icon-Download.svg" alt="" className="w-5 h-5 shrink-0" />
+                  <img src={`${import.meta.env.BASE_URL}Icon-Download.svg`} alt="" className="w-5 h-5 shrink-0" />
                 </span>
                 {downloadingFormat === '3:4' ? 'Preparing Download...' : 'Download 3:4 (Grid)'}
               </span>
