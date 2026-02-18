@@ -41,27 +41,31 @@ export function CameraScreen({ onCapture, onBack }: { onCapture: (imageData: str
     };
   }, []);
 
-  // Simulate real-time detection feedback
+  // Simulate real-time detection feedback with animations
   useEffect(() => {
     if (!stream || isCapturing) return;
 
     const simulateDetection = () => {
-      // Simulate gradual detection of elements
+      // Simulate gradual detection of elements with animations
       setTimeout(() => {
         setDetectionFeedback(prev => ({ ...prev, lanyardColor: 'Periwinkle' }));
-      }, 1000);
+      }, 800);
 
       setTimeout(() => {
         setDetectionFeedback(prev => ({ ...prev, background: 'Swag pattern' }));
-      }, 1500);
+      }, 1400);
 
       setTimeout(() => {
-        setDetectionFeedback(prev => ({ ...prev, stickersCount: 3 }));
-      }, 2000);
+        setDetectionFeedback(prev => ({ ...prev, stickersCount: 2 }));
+      }, 1800);
 
       setTimeout(() => {
-        setDetectionFeedback(prev => ({ ...prev, stickersCount: 5 }));
-      }, 2500);
+        setDetectionFeedback(prev => ({ ...prev, stickersCount: 4 }));
+      }, 2200);
+
+      setTimeout(() => {
+        setDetectionFeedback(prev => ({ ...prev, stickersCount: 6 }));
+      }, 2600);
     };
 
     simulateDetection();
@@ -269,10 +273,11 @@ export function CameraScreen({ onCapture, onBack }: { onCapture: (imageData: str
               playsInline
               muted
               className="absolute inset-0 w-full h-full object-cover"
+              style={{ transform: 'scaleX(-1)' }}
             />
 
             {/* Guide square with corner brackets - larger for easier scanning */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none pt-24">
               <div
                 className="relative border-4 border-white"
                 style={{ width: '400px', height: '550px' }}
@@ -282,6 +287,44 @@ export function CameraScreen({ onCapture, onBack }: { onCapture: (imageData: str
                 <div className="absolute top-0 right-0 w-12 h-12 border-t-4 border-r-4 border-white" />
                 <div className="absolute bottom-0 left-0 w-12 h-12 border-b-4 border-l-4 border-white" />
                 <div className="absolute bottom-0 right-0 w-12 h-12 border-b-4 border-r-4 border-white" />
+
+                {/* Detection overlays - visual boxes showing what's being detected */}
+                {detectionFeedback.lanyardColor && (
+                  <div className="absolute -top-24 left-0 right-0 h-20 border-2 border-green-400 bg-green-400/10 animate-pulse">
+                    <div className="absolute -top-6 left-2 bg-green-400 text-black text-xs font-semibold px-2 py-1 rounded">
+                      Lanyard
+                    </div>
+                  </div>
+                )}
+
+                {detectionFeedback.background && (
+                  <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 h-32 border-2 border-green-400 bg-green-400/10 animate-pulse">
+                    <div className="absolute -top-6 left-2 bg-green-400 text-black text-xs font-semibold px-2 py-1 rounded">
+                      Background
+                    </div>
+                  </div>
+                )}
+
+                {detectionFeedback.stickersCount && detectionFeedback.stickersCount >= 2 && (
+                  <>
+                    <div className="absolute top-20 left-12 w-16 h-16 border-2 border-green-400 bg-green-400/10 rounded-full animate-pulse" />
+                    <div className="absolute top-32 right-16 w-20 h-12 border-2 border-green-400 bg-green-400/10 animate-pulse" />
+                  </>
+                )}
+
+                {detectionFeedback.stickersCount && detectionFeedback.stickersCount >= 4 && (
+                  <>
+                    <div className="absolute bottom-32 left-20 w-24 h-16 border-2 border-green-400 bg-green-400/10 animate-pulse" />
+                    <div className="absolute bottom-24 right-12 w-14 h-14 border-2 border-green-400 bg-green-400/10 rounded-full animate-pulse" />
+                  </>
+                )}
+
+                {detectionFeedback.stickersCount && detectionFeedback.stickersCount >= 6 && (
+                  <>
+                    <div className="absolute top-1/3 left-24 w-12 h-20 border-2 border-green-400 bg-green-400/10 animate-pulse" />
+                    <div className="absolute top-2/3 right-20 w-18 h-12 border-2 border-green-400 bg-green-400/10 animate-pulse" />
+                  </>
+                )}
               </div>
             </div>
 
@@ -292,26 +335,41 @@ export function CameraScreen({ onCapture, onBack }: { onCapture: (imageData: str
               </p>
             </div>
 
-            {/* Detection Feedback */}
+            {/* Detection Feedback - Enhanced with active scanning indicators */}
             <div className="absolute bottom-32 left-0 right-0 flex items-center justify-center pointer-events-none px-4">
-              <div className="bg-black/70 backdrop-blur-sm px-6 py-4 rounded-2xl max-w-md">
-                <div className="flex flex-col gap-2">
+              <div className="bg-black/70 backdrop-blur-sm px-6 py-4 rounded-2xl max-w-md border border-white/10">
+                <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-3">
-                    <div className={`w-2 h-2 rounded-full ${detectionFeedback.lanyardColor ? 'bg-green-400' : 'bg-white/30'} animate-pulse`} />
-                    <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[14px]">
-                      {detectionFeedback.lanyardColor ? `Lanyard: ${detectionFeedback.lanyardColor}` : 'Detecting lanyard...'}
+                    <div className="relative">
+                      <div className={`w-3 h-3 rounded-full ${detectionFeedback.lanyardColor ? 'bg-green-400' : 'bg-white/30'} ${!detectionFeedback.lanyardColor && 'animate-pulse'}`} />
+                      {detectionFeedback.lanyardColor && (
+                        <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-400 animate-ping opacity-75" />
+                      )}
+                    </div>
+                    <p className={`font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] ${detectionFeedback.lanyardColor ? 'text-green-400' : 'text-white/60'}`}>
+                      {detectionFeedback.lanyardColor ? `✓ Lanyard: ${detectionFeedback.lanyardColor}` : 'Scanning lanyard...'}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className={`w-2 h-2 rounded-full ${detectionFeedback.background ? 'bg-green-400' : 'bg-white/30'} animate-pulse`} />
-                    <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[14px]">
-                      {detectionFeedback.background ? `Background: ${detectionFeedback.background}` : 'Detecting background...'}
+                    <div className="relative">
+                      <div className={`w-3 h-3 rounded-full ${detectionFeedback.background ? 'bg-green-400' : 'bg-white/30'} ${!detectionFeedback.background && 'animate-pulse'}`} />
+                      {detectionFeedback.background && (
+                        <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-400 animate-ping opacity-75" />
+                      )}
+                    </div>
+                    <p className={`font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] ${detectionFeedback.background ? 'text-green-400' : 'text-white/60'}`}>
+                      {detectionFeedback.background ? `✓ Background: ${detectionFeedback.background}` : 'Scanning background...'}
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className={`w-2 h-2 rounded-full ${detectionFeedback.stickersCount ? 'bg-green-400' : 'bg-white/30'} animate-pulse`} />
-                    <p className="font-['Figma_Sans_VF:Regular',sans-serif] text-white text-[14px]">
-                      {detectionFeedback.stickersCount ? `Stickers: ${detectionFeedback.stickersCount} detected` : 'Detecting stickers...'}
+                    <div className="relative">
+                      <div className={`w-3 h-3 rounded-full ${detectionFeedback.stickersCount ? 'bg-green-400' : 'bg-white/30'} ${!detectionFeedback.stickersCount && 'animate-pulse'}`} />
+                      {detectionFeedback.stickersCount && (
+                        <div className="absolute inset-0 w-3 h-3 rounded-full bg-green-400 animate-ping opacity-75" />
+                      )}
+                    </div>
+                    <p className={`font-['Figma_Sans_VF:Regular',sans-serif] text-[14px] ${detectionFeedback.stickersCount ? 'text-green-400' : 'text-white/60'}`}>
+                      {detectionFeedback.stickersCount ? `✓ Stickers: ${detectionFeedback.stickersCount} detected` : 'Scanning stickers...'}
                     </p>
                   </div>
                 </div>
