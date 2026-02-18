@@ -7,6 +7,8 @@ import type { BorderStyle, CordColor, Background, DrawSize, MobileTab, Screen, S
 import { WelcomeScreen } from '../components/WelcomeScreen';
 import { GalleryScreen } from '../components/GalleryScreen';
 import { CompleteScreen } from '../components/CompleteScreen';
+import { CameraScreen } from '../components/CameraScreen';
+import { IRLCompleteScreen } from '../components/IRLCompleteScreen';
 import { BadgePreview } from '../components/BadgePreview';
 import { BorderSelector } from '../components/BorderSelector';
 import { DrawTools, CordsPanel, BackgroundPanel, PatternPreview } from '../components/Panels';
@@ -15,6 +17,7 @@ import { StickerRoll, PronounStickerRoll, AboutStickerRoll, GoalStickerRoll, Tim
 import { DecorativeElements } from '../components/DecorativeElements';
 import { TouchDragPreview } from '../components/TouchDragPreview';
 import { TouchDragProvider } from '../components/TouchDragContext';
+import { analyzeBadge } from '../utils/badgeVisionAnalysis';
 
 import lanyardCordBlack from '../assets/LanyardCord-Black.svg';
 import lanyardCordBlue from '../assets/LanyardCord-Blue.svg';
@@ -40,6 +43,8 @@ export default function App() {
   const [mobileTab, setMobileTab] = useState<MobileTab>('background');
   const [mobileStickerTab, setMobileStickerTab] = useState<StickerTab>('year');
   const [isMobileStickerAnimating, setIsMobileStickerAnimating] = useState(false);
+  const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
+  const [isAnalyzingBadge, setIsAnalyzingBadge] = useState(false);
 
   const handleUndo = () => {
     if (drawPaths.length > 0) {
@@ -91,7 +96,55 @@ export default function App() {
     return (
       <WelcomeScreen
         onStart={() => setCurrentScreen('customize')}
-        onGallery={() => setCurrentScreen('gallery')}
+        onIRL={() => setCurrentScreen('camera')}
+      />
+    );
+  }
+
+  if (currentScreen === 'camera') {
+    return (
+      <CameraScreen
+        onCapture={async (imageData) => {
+          setIsAnalyzingBadge(true);
+          try {
+            console.log('Analyzing scanned badge...');
+
+            // Use AI vision to analyze and reconstruct the badge
+            const analysis = await analyzeBadge(imageData);
+
+            // Set the badge state from the analysis
+            setCordColor(analysis.cordColor);
+            setBackground(analysis.background);
+            setBorderStyle(analysis.borderStyle);
+            setPlacedStickers(analysis.stickers);
+            setDrawPaths(analysis.drawings);
+
+            console.log('Badge reconstructed from scan:', analysis);
+
+            // Navigate to complete screen with the reconstructed badge
+            setCurrentScreen('complete');
+          } catch (error) {
+            console.error('Failed to analyze badge:', error);
+            // Fallback: use the photo directly
+            setCapturedPhoto(imageData);
+            setCurrentScreen('irl-complete');
+          } finally {
+            setIsAnalyzingBadge(false);
+          }
+        }}
+        onBack={() => setCurrentScreen('welcome')}
+      />
+    );
+  }
+
+  if (currentScreen === 'irl-complete' && capturedPhoto) {
+    return (
+      <IRLCompleteScreen
+        onRestart={() => {
+          setCapturedPhoto(null);
+          setCurrentScreen('welcome');
+        }}
+        capturedPhoto={capturedPhoto}
       />
     );
   }
