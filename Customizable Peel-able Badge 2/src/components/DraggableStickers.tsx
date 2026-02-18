@@ -313,7 +313,7 @@ export function DraggableTimeSticker({ timeId, label, src, textColor }: { timeId
     >
       <div className="relative">
         <div className="w-[40px] h-[40px] relative">
-          <img src={src} alt="" className="absolute inset-0 w-full h-full object-contain" />
+          <img src={`${import.meta.env.BASE_URL}${src}`} alt="" className="absolute inset-0 w-full h-full object-contain" />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span
               className="text-[6.5px] uppercase leading-[1.2] text-center whitespace-nowrap font-['Figma_Mono_VF:Regular',monospace]"

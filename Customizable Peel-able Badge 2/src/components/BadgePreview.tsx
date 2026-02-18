@@ -267,8 +267,9 @@ export const BadgePreview = React.forwardRef<
         {/* Background Pattern */}
         <div className="absolute bottom-[-70px] left-0 right-0 h-[45%]">
           <img
-            src={`/${background === 'swag' ? 'swagbg' : background === 'creative' ? 'coolbg' : 'funbg'}.png`}
-            alt="" className="w-full h-full object-cover object-top"
+            src={`${import.meta.env.BASE_URL}${background === 'swag' ? 'swagbg' : background === 'creative' ? 'coolbg' : 'funbg'}.png`}
+            alt=""
+            className="w-full h-full object-cover object-top"
           />
         </div>
 
@@ -371,7 +372,7 @@ export const BadgePreview = React.forwardRef<
               <div key={sticker.id} className="absolute pointer-events-none"
                 style={{ left: sticker.x - scaledSize/2, top: sticker.y - scaledSize/2, transform: `rotate(${sticker.rotation}deg) scale(1.75)` }}>
                 <div className="w-[52px] h-[52px] relative">
-                  <img src={timeSticker.src} alt="" className="absolute inset-0 w-full h-full" />
+                  <img src={`${import.meta.env.BASE_URL}${timeSticker.src}`} alt="" className="absolute inset-0 w-full h-full" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className="text-[8px] uppercase leading-[1.2] text-center whitespace-nowrap"
                       style={{ color: timeSticker.textColor, fontFamily: "'Figma Mono VF:Regular', monospace" }}>

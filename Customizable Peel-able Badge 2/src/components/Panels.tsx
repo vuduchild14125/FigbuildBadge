@@ -77,9 +77,9 @@ export function BackgroundPanel({ background, setBackground }: { background: Bac
       <h2 className="font-['Figma_Sans_VF:Bold',sans-serif] text-[24px] tracking-[-0.72px] leading-[0.95] mb-5">Background</h2>
       <div className="flex gap-[9.5px]">
         {([
-          { id: 'swag' as Background, label: 'Swag', img: '/swagbg.png' },
-          { id: 'creative' as Background, label: 'Cool', img: '/coolbg.png' },
-          { id: 'playful' as Background, label: 'Fun', img: '/funbg.png' },
+          { id: 'swag' as Background, label: 'Swag', img: `${import.meta.env.BASE_URL}swagbg.png` },
+          { id: 'creative' as Background, label: 'Cool', img: `${import.meta.env.BASE_URL}coolbg.png` },
+          { id: 'playful' as Background, label: 'Fun', img: `${import.meta.env.BASE_URL}funbg.png` },
         ]).map(({ id, label, img }) => (
           <button
             key={id}
