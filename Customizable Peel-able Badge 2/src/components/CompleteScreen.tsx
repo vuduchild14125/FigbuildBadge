@@ -6,8 +6,8 @@ import { DecorativeElements } from './DecorativeElements';
 import { BadgePreview } from './BadgePreview';
 import type { BorderStyle, CordColor, Background, DrawSize, PlacedSticker, DrawPath, DrawPoint } from '../types';
 
-import photoBackgroundGrid from '../assets/PhotoBackground_Grid.png';
-import photoBackgroundStory from '../assets/PhotoBackground_Story.png';
+import photoBackgroundGrid from '../assets/PhotoBackground_Grid 2.png';
+import photoBackgroundStory from '../assets/PhotoBackground_Story 2.png';
 
 const BADGE_NATIVE_WIDTH = 483;
 const BADGE_NATIVE_HEIGHT = 1418; // lanyard 736 + badge 682
@@ -192,12 +192,12 @@ export function CompleteScreen({
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-8 lg:gap-20 px-4 sm:px-8 lg:px-16 xl:px-20 py-12 lg:py-16 max-w-[1800px] mx-auto">
         {/* Left Column - Text Content */}
         <div className="flex flex-col items-start max-w-xl order-last lg:order-first flex-shrink-0">
-          <h1 className="mb-2 lg:mb-3 font-['Figma_Sans_VF:Medium',sans-serif] text-[32px] lg:text-[64px] tracking-[-1.62px] text-black text-left leading-[1.05] lg:leading-tight">
-            Get hyped, <br />you're competing in FigBuild 2026!
+          <h1 className="mb-2 lg:mb-3 font-['Figma_Sans_VF:Medium',sans-serif] text-[30px] lg:text-[52px] tracking-[-1.62px] text-black text-left leading-[1.05] lg:leading-tight">
+            Get hyped, <br />you're competing in <br />FigBuild 2026!
           </h1>
 
-          <p className="mb-6 lg:mb-12 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] lg:text-[36px] text-black/70 text-left leading-tight">
-            Share your journey <br className="hidden lg:block" />with #FigBuild2026 <br className="hidden lg:block" />on LinkedIn or IG!
+          <p className="mb-6 lg:mb-12 font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] lg:text-[28px] text-black/70 text-left leading-tight">
+            Share your journey with<br />#FigBuild2026 on LinkedIn or IG!
           </p>
 
           {/* Action Buttons */}

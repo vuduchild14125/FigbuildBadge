@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { DecorativeElements } from './DecorativeElements';
-import photoBackgroundGrid from '../assets/PhotoBackground_Grid.png';
-import photoBackgroundStory from '../assets/PhotoBackground_Story.png';
+import photoBackgroundGrid from '../assets/PhotoBackground_Grid 2.png';
+import photoBackgroundStory from '../assets/PhotoBackground_Story 2.png';
 
 const BG_DIMS = {
   story: { width: 2400, height: 4708, src: photoBackgroundStory },
