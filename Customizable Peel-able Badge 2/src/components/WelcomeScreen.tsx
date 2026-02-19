@@ -53,6 +53,9 @@ export function WelcomeScreen({ onStart, onIRL }: { onStart: () => void; onIRL: 
       </div>
 
       <DecorativeElements />
+      <p className="absolute bottom-4 w-full text-center text-gray-400 text-[14px]">
+        Built by Rochester Institute of Technology's<br className="sm:hidden" /> Figma Campus Leaders
+      </p>
     </div>
   );
 }
