@@ -174,7 +174,7 @@ export default function App() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="size-full bg-[#F5F5F5] overflow-hidden relative">
+      <div className="screen-fade-in size-full bg-[#F5F5F5] overflow-hidden relative">
         <div className="hidden lg:flex h-screen overflow-hidden">
           <div className="flex gap-4 xl:gap-6 items-start w-full px-6 xl:px-[80px] pt-[48px]">
             {/* Left Column - Header + Border + Cords */}
@@ -235,19 +235,19 @@ export default function App() {
               <div className="flex gap-3 items-center -mt-[100px] lg:-mt-[200px] xl:-mt-[200px] 2xl:-mt-[60px]">
                 <button
                   onClick={handleUndo}
-                  className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+                  className="px-[8px] py-[9px] bg-white hover:bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:rounded-none transition-all duration-200 ease-in-out"
                 >
                   Undo
                 </button>
                 <button
                   onClick={handleClear}
-                  className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+                  className="px-[8px] py-[9px] bg-white hover:bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:rounded-none transition-all duration-200 ease-in-out"
                 >
                   Clear
                 </button>
                 <button
                   onClick={handleDone}
-                  className="px-[19px] py-[14px] bg-[#4d49fc] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-white hover:bg-[#3d39ec] transition-colors"
+                  className="px-[19px] py-[14px] bg-[#4d49fc] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] text-white hover:rounded-none transition-all duration-200 ease-in-out"
                 >
                   I'm done!
                 </button>
@@ -314,13 +314,13 @@ export default function App() {
             <div className="flex justify-center gap-3 py-2 flex-shrink-0 -mt-[-10px] w-full">
               <button
                 onClick={handleUndo}
-                className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+                className="px-[8px] py-[9px] bg-white hover:bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:rounded-none transition-all duration-200 ease-in-out"
               >
                 Undo
               </button>
               <button
                 onClick={handleClear}
-                className="px-[8px] py-[9px] bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:bg-black/5 transition-colors"
+                className="px-[8px] py-[9px] bg-white hover:bg-white border border-black rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[16px] hover:rounded-none transition-all duration-200 ease-in-out"
               >
                 Clear
               </button>
@@ -347,7 +347,7 @@ export default function App() {
               <button
                 ref={doneButtonRef}
                 onClick={handleDone}
-                className="px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717] flex-shrink-0"
+                className="px-[8px] py-[12px] rounded-[9px] text-[13px] text-[#f5f5f5] whitespace-nowrap font-['Figma_Sans_VF:Regular',sans-serif] bg-[#171717] flex-shrink-0 hover:rounded-none transition-all duration-200 ease-in-out"
               >
                 Done!
               </button>

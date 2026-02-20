@@ -101,7 +101,7 @@ export function IRLCompleteScreen({
   };
 
   return (
-    <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
+    <div className="screen-fade-in size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
       {/* Start Over - top left */}
       <button
         onClick={onRestart}

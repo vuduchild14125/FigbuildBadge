@@ -17,7 +17,7 @@ export function GalleryScreen({ onBack, onComplete }: { onBack: () => void; onCo
   };
 
   return (
-    <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
+    <div className="screen-fade-in size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen gap-8 px-4 sm:px-6 lg:px-8 py-12">
         {/* Back button */}
         <button

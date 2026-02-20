@@ -152,7 +152,7 @@ export function CompleteScreen({
   };
 
   return (
-    <div className="size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
+    <div className="screen-fade-in size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
       {/* Hidden off-screen badge at native size for rasterization */}
       <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
         <div

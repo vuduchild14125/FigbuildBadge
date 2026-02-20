@@ -240,7 +240,7 @@ export function CameraScreen({ onCapture, onBack }: { onCapture: (imageData: str
   }
 
   return (
-    <div className="fixed inset-0 bg-black z-50 flex flex-col">
+    <div className="screen-fade-in fixed inset-0 bg-black z-50 flex flex-col">
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 p-6">
         <button
