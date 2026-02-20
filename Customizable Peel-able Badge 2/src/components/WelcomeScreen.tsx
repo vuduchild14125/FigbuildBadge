@@ -2,7 +2,7 @@ import React from 'react';
 import { DecorativeElements } from './DecorativeElements';
 import lanyardWholeExample from '../assets/LanyardWhole_Example.svg';
 
-export function WelcomeScreen({ onStart, onIRL }: { onStart: () => void; onIRL: () => void }) {
+export function WelcomeScreen({ onStart }: { onStart: () => void }) {
   return (
     <div className="screen-fade-in size-full bg-[#F5F5F5] relative overflow-hidden min-h-screen">
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center min-h-screen gap-6 sm:gap-8 lg:gap-16 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
@@ -41,12 +41,6 @@ export function WelcomeScreen({ onStart, onIRL }: { onStart: () => void; onIRL: 
               className="bg-[#4d49fc] w-full px-[16px] sm:px-[19px] py-[12px] sm:py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] sm:text-[21px] text-center text-white leading-[1.45] tracking-[-0.1px] hover:bg-[#3d39ec] hover:rounded-none transition-all duration-200 ease-in-out"
             >
               Build a FigBuild Badge
-            </button>
-            <button
-              onClick={onIRL}
-              className="border border-[#171717] w-full px-[16px] sm:px-[19px] py-[12px] sm:py-[14px] rounded-[9px] font-['Figma_Sans_VF:Regular',sans-serif] text-[18px] sm:text-[21px] text-black text-center leading-[1.45] tracking-[-0.1px] hover:rounded-none transition-all duration-200 ease-in-out"
-            >
-              I made a FigBuild Badge IRL
             </button>
           </div>
         </div>
