@@ -16,7 +16,7 @@
 }
 
 .screen-fade-in {
-  animation: screen-fade-in 0.35s ease;
+  animation: screen-fade-in 0.5s ease;
 }
 
 @layer base {
